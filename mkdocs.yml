@@ -1,0 +1,112 @@
+site_name: Cyber Learning
+site_description: Livro aberto sobre fundamentos de cibersegurança e laboratórios autorizados.
+site_author: Uri Wernik
+site_url: https://uri-wernik.github.io/cyber-learning/
+
+repo_url: https://github.com/Uri-Wernik/cyber-learning
+repo_name: Uri-Wernik/cyber-learning
+edit_uri: edit/main/Cloud-Based%20Hacking/
+
+docs_dir: Cloud-Based Hacking
+site_dir: site
+use_directory_urls: true
+
+copyright: Copyright &copy; 2026 Uri Wernik
+
+theme:
+  name: material
+  language: pt-BR
+  font: false
+  icon:
+    logo: material/shield-lock-outline
+    repo: fontawesome/brands/github
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Usar tema escuro
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Usar tema claro
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search:
+      lang: pt
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Uri-Wernik
+      name: Uri Wernik no GitHub
+
+nav:
+  - Início: index.md
+  - 1. Contexto e fundamentos:
+      - 1. Visão geral do curso: 01-introduction-to-cloud-computing-for-hackers/01-teaser.md
+      - 2. Hacking ético, pentest e Red Team: 01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud.md
+      - 3. O que é computação em nuvem?: 01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md
+      - 4. Nuvem em testes autorizados: 01-introduction-to-cloud-computing-for-hackers/04-why-learn-cloud-computing-as-a-hacker.md
+  - 2. Fundamentos da nuvem:
+      - 5. Roteiro e laboratório seguro: 02-cloud-basics/05-introduction-to-cloud-basics.md
+      - 6. Criando e protegendo uma conta AWS: 02-cloud-basics/06-signing-up-with-aws.md
+      - 7. Provisionando Kali Linux no EC2: 02-cloud-basics/07-installing-kali-linux-on-the-cloud.md
+      - 8. Acesso remoto com SSH: 02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh.md
+      - 9. Fundamentos do terminal Linux: 02-cloud-basics/09-linux-terminal-basics.md
+  - 3. Phishing e infraestrutura web:
+      - 10. Phishing e engenharia social: 03-phishing/10-introduction-to-phishing.md
+      - 11. Apache, HTTP e exposição web: 03-phishing/11-file-hosting-and-firewall-settings.md
+      - 12. Cópia de páginas e SFTP: 03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud.md
+
+draft_docs: |
+  03-phishing/1[3-9]-*.md
+  04-phishing-bypassing-2fa-mfa/**
+  05-accessing-cloud-server-desktop/**
+  06-bitb-browser-in-browser-attack/**
+  07-mobile-bitb/**
+  08-multi-bitb-attack/**
+  09-hacking-web-browsers/**
+  10-command-and-control-servers/**
+  11-hacking-windows-linux-macos-from-the-cloud/**
+  12-post-exploitation-with-starkiller/**
+  13-hacking-windows-using-discord-as-a-c2/**
+  14-windows-post-exploitation-via-discord/**
+  15-creating-windows-trojans/**
+  16-creating-apple-macos-and-linux-trojans/**
+  17-advanced-malware-delivery/**
+  18-bonus-section/**
