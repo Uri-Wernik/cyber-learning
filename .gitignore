@@ -1,0 +1,35 @@
+# Credentials and private keys
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.kdbx
+*.ovpn
+
+# Third-party course material and large local media
+*.pdf
+*.zip
+*.7z
+*.rar
+*.mp4
+*.mkv
+*.avi
+*.mov
+
+# Local editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Generated site and dependency files
+_site/
+.jekyll-cache/
+.sass-cache/
+site/
+node_modules/
+.venv/
+__pycache__/
