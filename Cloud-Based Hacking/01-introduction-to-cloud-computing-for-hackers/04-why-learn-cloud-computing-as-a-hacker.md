@@ -11,7 +11,7 @@ Ao final desta aula, você deverá ser capaz de:
 - explicar por que provedores aumentam, e não eliminam, a rastreabilidade;
 - planejar o uso responsável e a limpeza de um laboratório.
 
-Os fundamentos de rede, hospedagem e exposição estão na [Aula 3 — O que é computação em nuvem](03-what-is-the-cloud.md). Autorização e escopo estão na [Aula 2 — Hacking ético, pentest e Red Team](02-introduction-to-hacking-using-the-cloud.md).
+Os fundamentos de rede, hospedagem e exposição estão na [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md). Autorização e escopo estão na [Aula 2: Hacking ético, pentest e Red Team](02-introduction-to-hacking-using-the-cloud.md).
 
 ## Arquitetura cliente-servidor
 

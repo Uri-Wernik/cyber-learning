@@ -15,19 +15,23 @@ copyright: Copyright &copy; 2026 Uri Wernik
 
 theme:
   name: material
+  custom_dir: overrides
   language: pt-BR
   font: false
+  logo: assets/site/brand-mark.png
+  favicon: assets/site/brand-mark.png
   icon:
-    logo: material/shield-lock-outline
     repo: fontawesome/brands/github
   palette:
-    - scheme: default
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: custom
       accent: custom
       toggle:
         icon: material/weather-night
         name: Usar tema escuro
-    - scheme: slate
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
       primary: custom
       accent: custom
       toggle:
@@ -35,8 +39,10 @@ theme:
         name: Usar tema claro
   features:
     - navigation.instant
+    - navigation.instant.prefetch
     - navigation.instant.progress
-    - navigation.sections
+    - navigation.path
+    - navigation.tracking
     - navigation.top
     - navigation.footer
     - toc.follow

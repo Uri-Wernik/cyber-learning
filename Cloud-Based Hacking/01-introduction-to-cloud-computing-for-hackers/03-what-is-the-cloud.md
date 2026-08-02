@@ -167,7 +167,7 @@ Escala não acontece magicamente. A aplicação precisa suportar distribuição 
 
 A computação em nuvem fornece recursos por rede com provisionamento sob demanda, compartilhamento controlado, elasticidade e medição. Esses recursos dependem de datacenters, hardware, sistemas e redes reais. Internet, Web, rede local e nuvem são conceitos relacionados, mas distintos.
 
-Na [Aula 4 — Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md), esses fundamentos serão aplicados aos laboratórios autorizados.
+Na [Aula 4: Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md), esses fundamentos serão aplicados aos laboratórios autorizados.
 
 ## Perguntas de fixação
 

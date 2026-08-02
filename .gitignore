@@ -29,7 +29,7 @@ desktop.ini
 _site/
 .jekyll-cache/
 .sass-cache/
-site/
+/site/
 node_modules/
 .venv/
 __pycache__/

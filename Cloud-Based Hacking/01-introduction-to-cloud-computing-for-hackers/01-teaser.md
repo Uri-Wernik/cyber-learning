@@ -23,7 +23,7 @@ O objetivo realista não é ensinar alguém a “invadir qualquer sistema”, ma
 - interpretar o alcance e as limitações de cada resultado;
 - documentar evidências sem expor credenciais ou dados reais.
 
-A diferença entre hacking ético, pentest e Red Team, assim como entre comprometer uma conta, um navegador e um sistema operacional, será explicada na [Aula 2 — Hacking ético e testes autorizados](02-introduction-to-hacking-using-the-cloud.md).
+A diferença entre hacking ético, pentest e Red Team, assim como entre comprometer uma conta, um navegador e um sistema operacional, será explicada na [Aula 2: Hacking ético e testes autorizados](02-introduction-to-hacking-using-the-cloud.md).
 
 ## Autorização vem antes da técnica
 

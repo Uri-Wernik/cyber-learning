@@ -140,7 +140,7 @@ Abra **Arquivo → Gerenciador de Sites → Novo site** e informe:
 
 ![Configuração SFTP do laboratório no Gerenciador de Sites do FileZilla](assets/aula-12/01-configuracao-sftp-filezilla.png)
 
-*Figura 1 — Configuração do cliente SFTP. O IP e o caminho da chave privada estão desfocados.*
+*Figura 1: Configuração do cliente SFTP. O IP e o caminho da chave privada estão desfocados.*
 
 Na primeira conexão, o FileZilla pode pedir confirmação da chave de host. Compare a fingerprint por uma fonte confiável, conforme explicado na [aula 8](../02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh.md), antes de aceitar.
 
@@ -155,7 +155,7 @@ Arrastar um arquivo da esquerda para a direita realiza upload. Arrastar da direi
 
 ![Conexão SFTP entre o computador local e a instância Kali](assets/aula-12/02-conexao-sftp-bem-sucedida.png)
 
-*Figura 2 — O computador local aparece à esquerda e o sistema de arquivos remoto à direita. Dados particulares estão desfocados.*
+*Figura 2: O computador local aparece à esquerda e o sistema de arquivos remoto à direita. Dados particulares estão desfocados.*
 
 ## Transferindo uma página de laboratório
 

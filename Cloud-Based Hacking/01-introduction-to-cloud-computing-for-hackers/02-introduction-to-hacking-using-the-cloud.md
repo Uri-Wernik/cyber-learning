@@ -104,7 +104,7 @@ Uma conta comprometida pode expor dados daquele serviço. Uma sessão web pode f
 
 A nuvem fornecerá infraestrutura remota para os laboratórios. Ela poderá hospedar máquinas, aplicações e serviços de apoio, mas não altera os requisitos de autorização nem garante que uma técnica funcione.
 
-Os fundamentos técnicos estão na [Aula 3 — O que é computação em nuvem](03-what-is-the-cloud.md). A razão para utilizá-la em testes autorizados será aprofundada na [Aula 4 — Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md).
+Os fundamentos técnicos estão na [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md). A razão para utilizá-la em testes autorizados será aprofundada na [Aula 4: Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md).
 
 ## Correções importantes
 
