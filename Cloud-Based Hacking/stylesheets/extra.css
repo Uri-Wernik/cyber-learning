@@ -892,8 +892,8 @@ body {
   text-transform: uppercase;
 }
 
-.md-typeset .quiz-shell h2,
-.md-typeset .quiz-shell h3 {
+.md-typeset :is(.quiz-shell, .lesson-quiz-shell) h2,
+.md-typeset :is(.quiz-shell, .lesson-quiz-shell) h3 {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1049,6 +1049,7 @@ body {
   font-family: "IBM Plex Sans";
   font-size: 0.72rem;
   font-weight: 700;
+  text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
@@ -1449,6 +1450,55 @@ body {
   font-size: 0.72rem;
 }
 
+.lesson-quiz-shell {
+  margin-top: 3.2rem;
+  padding-top: 2.4rem;
+  border-top: 2px solid var(--book-border);
+  color: var(--book-ink);
+}
+
+.lesson-quiz-intro {
+  display: grid;
+  padding: 1.5rem 1.6rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.5rem;
+  border: 1px solid var(--book-border);
+  border-radius: 12px;
+  background-color: var(--quiz-panel);
+  box-shadow: var(--quiz-shadow);
+}
+
+.md-typeset .lesson-quiz-intro h2 {
+  font-family: "IBM Plex Sans";
+  font-size: 1.2rem;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.lesson-quiz-intro__copy p {
+  margin: 0.45rem 0 0;
+  color: var(--book-muted);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.lesson-quiz-intro__action {
+  display: grid;
+  justify-items: end;
+  gap: 0.55rem;
+}
+
+.lesson-quiz-intro__action > span {
+  color: var(--book-muted);
+  font-family: "IBM Plex Mono";
+  font-size: 0.52rem;
+}
+
+.lesson-quiz-shell .quiz-play {
+  max-width: none;
+}
+
 @media screen and (max-width: 44.984375em) {
   .quiz-page__lead {
     font-size: 0.82rem;
@@ -1587,6 +1637,31 @@ body {
     padding: 1.4rem 1.2rem;
     border-top: 1px solid var(--book-border);
     border-left: 0;
+  }
+
+  .lesson-quiz-shell {
+    margin-top: 2.5rem;
+    padding-top: 1.6rem;
+  }
+
+  .lesson-quiz-intro {
+    padding: 1.2rem 1rem;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 1rem;
+    border-radius: 10px;
+  }
+
+  .lesson-quiz-intro__action {
+    justify-items: stretch;
+  }
+
+  .lesson-quiz-intro__action > span {
+    text-align: left;
+  }
+
+  .lesson-quiz-intro__action .quiz-button {
+    width: 100%;
   }
 }
 

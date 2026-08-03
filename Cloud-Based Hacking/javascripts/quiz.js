@@ -1,6 +1,8 @@
 (() => {
-  const QUIZ_SELECTOR = "[data-quiz-app]";
+  const QUIZ_SELECTOR = "[data-quiz-app], [data-lesson-quiz]";
   const STORAGE_KEY = "cyber-learning-quiz-v1";
+  const GENERAL_SESSION_LENGTH = 10;
+  const LESSON_SESSION_LENGTH = 5;
   const LEVELS = {
     easy: {
       label: "Fácil",
@@ -91,6 +93,11 @@
     constructor(root, questions) {
       this.root = root;
       this.questions = questions;
+      this.isLessonQuiz = root.hasAttribute("data-lesson-quiz");
+      this.lessonPath = root.dataset.lessonPath || "";
+      this.lessonQuestions = questions.filter(
+        (question) => question.source === this.lessonPath
+      );
       this.progress = readProgress();
       this.selectedLevel = this.progress.lastLevel || "easy";
       this.sessionQuestions = [];
@@ -101,10 +108,17 @@
 
       this.root.dataset.quizReady = "true";
       this.root.removeAttribute("aria-labelledby");
-      this.root.setAttribute("aria-label", "Quiz de cibersegurança");
+      this.root.setAttribute(
+        "aria-label",
+        this.isLessonQuiz ? "Quiz desta aula" : "Quiz de cibersegurança"
+      );
       this.root.addEventListener("click", (event) => this.handleClick(event));
       this.root.addEventListener("change", (event) => this.handleChange(event));
-      this.renderStart();
+      if (this.isLessonQuiz) {
+        this.renderLessonStart();
+      } else {
+        this.renderStart();
+      }
     }
 
     handleClick(event) {
@@ -142,13 +156,37 @@
       this.updateStartSummary();
     }
 
+    renderLessonStart() {
+      const lesson = this.lessonQuestions[0]?.lesson || "Esta aula";
+      const questionCount = this.lessonQuestions.length;
+      const best = this.progress.lessonBest?.[this.lessonPath];
+      const bestLabel = Number.isInteger(best)
+        ? `Melhor resultado: ${best}/${questionCount}`
+        : "Primeira tentativa";
+
+      this.root.innerHTML = `
+        <div class="lesson-quiz-intro quiz-view">
+          <div class="lesson-quiz-intro__copy">
+            <span class="quiz-kicker">Quiz da aula</span>
+            <h2 tabindex="-1">Fixe o conteúdo antes de avançar</h2>
+            <p>${escapeHtml(lesson)} · ${questionCount} perguntas com correção explicada.</p>
+          </div>
+          <div class="lesson-quiz-intro__action">
+            <span>${bestLabel}</span>
+            <button class="quiz-button quiz-button--primary" type="button" data-quiz-action="start">
+              Começar <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>`;
+    }
+
     renderStart() {
       const levelOptions = Object.entries(LEVELS)
         .map(([value, level]) => {
           const isChecked = value === this.selectedLevel;
           const best = this.progress.best?.[value];
           const bestLabel = Number.isInteger(best)
-            ? `Melhor resultado: ${best}/10`
+            ? `Melhor resultado: ${best}/${GENERAL_SESSION_LENGTH}`
             : "Ainda não jogado";
 
           return `
@@ -206,16 +244,22 @@
     }
 
     startGame() {
-      this.sessionQuestions = shuffle(
-        this.questions.filter(
-          (question) => question.difficulty === this.selectedLevel
-        )
-      ).map(prepareQuestion);
+      const questionPool = this.isLessonQuiz
+        ? this.lessonQuestions
+        : this.questions.filter(
+            (question) => question.difficulty === this.selectedLevel
+          );
+      const sessionLength = this.isLessonQuiz
+        ? LESSON_SESSION_LENGTH
+        : GENERAL_SESSION_LENGTH;
+      this.sessionQuestions = shuffle(questionPool)
+        .slice(0, sessionLength)
+        .map(prepareQuestion);
       this.answers = [];
       this.currentIndex = 0;
       this.score = 0;
       this.hasAnswered = false;
-      this.progress.lastLevel = this.selectedLevel;
+      if (!this.isLessonQuiz) this.progress.lastLevel = this.selectedLevel;
       saveProgress(this.progress);
       this.renderQuestion();
     }
@@ -225,6 +269,9 @@
       const currentNumber = this.currentIndex + 1;
       const total = this.sessionQuestions.length;
       const progress = Math.round((this.currentIndex / total) * 100);
+      const quizLabel = this.isLessonQuiz
+        ? "Quiz da aula"
+        : LEVELS[this.selectedLevel].label;
       const choices = question.choices
         .map(
           (choice, index) => `
@@ -240,7 +287,7 @@
         <div class="quiz-play quiz-view">
           <header class="quiz-progress">
             <div class="quiz-progress__meta">
-              <span class="quiz-badge">${LEVELS[this.selectedLevel].label}</span>
+              <span class="quiz-badge">${quizLabel}</span>
               <span>Questão <strong>${currentNumber}</strong> de ${total}</span>
               <span><strong data-quiz-score>${this.score}</strong> acertos</span>
             </div>
@@ -326,7 +373,11 @@
           <strong>${escapeHtml(feedbackTitle)}</strong>
           <p>${escapeHtml(question.explanation)}</p>
           <a href="${escapeHtml(getLessonUrl(question.source))}">
-            Revisar: ${escapeHtml(question.lesson)} <span aria-hidden="true">→</span>
+            ${
+              this.isLessonQuiz
+                ? "Rever o conteúdo desta aula"
+                : `Revisar: ${escapeHtml(question.lesson)}`
+            } <span aria-hidden="true">→</span>
           </a>
         </div>`;
       feedback.hidden = false;
@@ -357,12 +408,21 @@
     renderResults() {
       const total = this.sessionQuestions.length;
       const percentage = Math.round((this.score / total) * 100);
-      const previousBest = this.progress.best?.[this.selectedLevel] || 0;
+      const previousBest = this.isLessonQuiz
+        ? this.progress.lessonBest?.[this.lessonPath] || 0
+        : this.progress.best?.[this.selectedLevel] || 0;
       const best = Math.max(previousBest, this.score);
-      this.progress.best = {
-        ...this.progress.best,
-        [this.selectedLevel]: best,
-      };
+      if (this.isLessonQuiz) {
+        this.progress.lessonBest = {
+          ...this.progress.lessonBest,
+          [this.lessonPath]: best,
+        };
+      } else {
+        this.progress.best = {
+          ...this.progress.best,
+          [this.selectedLevel]: best,
+        };
+      }
       saveProgress(this.progress);
 
       const resultMessage =
@@ -372,7 +432,9 @@
             ? "Boa base. Revise os pontos que faltaram."
             : percentage >= 50
               ? "Você está avançando. Uma revisão vai consolidar a base."
-              : "Revise as aulas indicadas e tente novamente.";
+              : this.isLessonQuiz
+                ? "Revise esta aula e tente novamente."
+                : "Revise as aulas indicadas e tente novamente.";
       const mistakes = this.answers.filter((answer) => !answer.isCorrect);
       const review = mistakes.length
         ? `<div class="quiz-review">
@@ -383,7 +445,9 @@
                   ({ question }) => `
                     <a href="${escapeHtml(getLessonUrl(question.source))}">
                       <span>${escapeHtml(question.topic)}</span>
-                      <strong>${escapeHtml(question.lesson)}</strong>
+                      <strong>${escapeHtml(
+                        this.isLessonQuiz ? question.question : question.lesson
+                      )}</strong>
                       <span aria-hidden="true">→</span>
                     </a>`
                 )
@@ -391,6 +455,16 @@
             </div>
           </div>`
         : `<p class="quiz-result__perfect">Você acertou todas as perguntas desta rodada.</p>`;
+      const context = this.isLessonQuiz
+        ? `Quiz desta aula. Sua melhor marca é ${best}/${total}.`
+        : `Nível ${LEVELS[this.selectedLevel].label}. Seu melhor resultado neste nível é ${best}/${total}.`;
+      const secondaryAction = this.isLessonQuiz
+        ? `<a class="quiz-button quiz-button--secondary" href="${escapeHtml(
+            getLessonUrl("quiz/")
+          )}">Abrir quiz geral</a>`
+        : `<button class="quiz-button quiz-button--secondary" type="button" data-quiz-action="levels">
+            Trocar nível
+          </button>`;
 
       this.root.innerHTML = `
         <div class="quiz-result quiz-view">
@@ -400,7 +474,7 @@
               <strong>${this.score}</strong><span>/${total}</span>
             </div>
             <h2 tabindex="-1">${resultMessage}</h2>
-            <p>Nível ${LEVELS[this.selectedLevel].label}. Seu melhor resultado neste nível é ${best}/${total}.</p>
+            <p>${context}</p>
 
             <dl class="quiz-result__stats">
               <div><dt>Acertos</dt><dd>${this.score}</dd></div>
@@ -410,11 +484,9 @@
 
             <div class="quiz-result__actions">
               <button class="quiz-button quiz-button--primary" type="button" data-quiz-action="restart">
-                Jogar novamente <span aria-hidden="true">→</span>
+                ${this.isLessonQuiz ? "Refazer quiz" : "Jogar novamente"} <span aria-hidden="true">→</span>
               </button>
-              <button class="quiz-button quiz-button--secondary" type="button" data-quiz-action="levels">
-                Trocar nível
-              </button>
+              ${secondaryAction}
             </div>
           </div>
           ${review}
