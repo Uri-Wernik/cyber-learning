@@ -1,21 +1,6 @@
 # Provisionando Kali Linux no Amazon EC2
 
-## Objetivos da aula
-
-Ao final desta aula, você deverá ser capaz de:
-
-- diferenciar Linux, Debian e Kali Linux;
-- distinguir máquina virtual, AMI e instância;
-- compreender o papel do Amazon EC2;
-- relacionar tipo de instância a CPU e memória;
-- diferenciar capacidade computacional de armazenamento;
-- verificar o publicador de uma imagem;
-- criar e proteger um key pair;
-- reconhecer os estados do ciclo de vida de uma instância.
-
-## Pré-requisitos
-
-Esta aula pressupõe uma [conta AWS protegida, uma Região definida e alertas de cobrança configurados](06-signing-up-with-aws.md).
+Esta aula parte de uma [conta AWS protegida, uma Região definida e alertas de cobrança configurados](06-signing-up-with-aws.md).
 
 A definição de computação em nuvem está na [aula 3: O que é a nuvem?](../01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md).
 
@@ -39,14 +24,7 @@ Uma **Amazon Machine Image (AMI)** não é a máquina em execução. É uma imag
 
 Uma **instância EC2** é o recurso criado a partir da AMI. Possui estado, identificador, rede, armazenamento e capacidade próprios.
 
-```text
-AMI: sistema e configuração inicial
-+ tipo de instância: vCPU, RAM e capacidade de rede
-+ volumes: armazenamento
-+ rede e Security Group: conectividade permitida
-+ key pair: chave pública para acesso inicial
-= instância EC2
-```
+Ao criar uma instância, a AMI fornece o sistema e a configuração inicial. O tipo de instância acrescenta vCPU, RAM e capacidade de rede; os volumes fornecem armazenamento; a rede e o Security Group definem a conectividade permitida; e o key pair fornece a chave pública usada no acesso inicial.
 
 Uma AMI pode iniciar várias instâncias. AMIs são regionais e precisam ser compatíveis com a arquitetura escolhida.
 
@@ -105,19 +83,19 @@ A AWS não mantém cópia recuperável da chave privada. Criar outro key pair co
 
 Para OpenSSH, escolha normalmente `.pem`. O formato `.ppk` é destinado ao PuTTY.
 
-## Provisionando a instância
+## Levando essas escolhas para o Console
 
 Os nomes e posições dos controles podem mudar, mas as decisões técnicas permanecem.
 
-### 1. Confirmar a Região
+### Confirmar a Região
 
 Selecione a Região definida na aula anterior. AMIs, key pairs, instâncias e Security Groups serão criados nela.
 
-### 2. Abrir o EC2
+### Abrir o EC2
 
 Localize **EC2** e inicie uma nova instância. Use nome descritivo, como `kali-lab`, sem dados de clientes ou alvos reais.
 
-### 3. Selecionar a AMI
+### Selecionar a AMI
 
 Use a referência oficial do projeto Kali e confira:
 
@@ -128,17 +106,17 @@ Use a referência oficial do projeto Kali e confira:
 - preço de software;
 - termos do Marketplace.
 
-### 4. Escolher o tipo
+### Escolher o tipo
 
 Escolha a menor capacidade suficiente. Confirme vCPUs, RAM, arquitetura, preço e eventual cobertura por créditos.
 
 Uma instância pode consumir capacidade cobrável ao entrar em `running`, mesmo sem SSH aberto.
 
-### 5. Criar o key pair
+### Criar o key pair
 
 Crie um key pair relacionado ao laboratório, baixe a chave privada e mova-a para diretório protegido. Não abra, fotografe, publique ou cole seu conteúdo.
 
-### 6. Configurar a rede
+### Configurar a rede
 
 Confirme que a instância receberá endereço público se o acesso vier diretamente da Internet.
 
@@ -154,15 +132,15 @@ Liberar TCP/22 não inicia o SSH. Um `sshd` ativo também não será alcançáve
 
 Não libere HTTP ou HTTPS nesta etapa.
 
-### 7. Configurar armazenamento
+### Configurar armazenamento
 
 Confira tipo e tamanho do EBS, preço atual, exclusão na terminação e volumes adicionais. Não aumente o disco apenas porque um limite antigo já foi gratuito.
 
-### 8. Revisar e iniciar
+### Revisar e iniciar
 
 Revise Região, AMI, publicador, tipo, key pair, regra TCP/22, endereço público, volumes e estimativa de preço. Depois, inicie.
 
-### 9. Verificar o resultado
+### Verificar o resultado
 
 Aguarde:
 
@@ -190,15 +168,7 @@ Ao parar e iniciar, o IPv4 público automático pode mudar. A terminação é ir
 
 Além do tempo da instância, verifique EBS, snapshots, IPv4 público, Elastic IP, tráfego e preço da AMI.
 
-Ao terminar definitivamente:
-
-1. encerre a sessão SSH;
-2. termine a instância;
-3. confira volumes restantes;
-4. remova snapshots e endereços sem uso;
-5. remova regra ou Security Group do laboratório;
-6. exclua key pair e chave local somente quando nada depender deles;
-7. consulte cobrança depois da atualização.
+Ao terminar definitivamente, encerre a sessão SSH e termine a instância. Em seguida, confira volumes restantes, remova snapshots, endereços, regras e Security Groups sem uso e só exclua o key pair e a chave local quando nenhum recurso depender deles. Consulte a cobrança depois da atualização.
 
 ## Problemas comuns
 
@@ -226,24 +196,23 @@ Ao terminar definitivamente:
 
 Isso pode ser esperado em imagem de nuvem. Consulte os metapacotes oficiais e instale somente o necessário.
 
-## Resumo
-
-A AMI é o template; a instância é a máquina criada a partir dele. O tipo determina principalmente vCPU, RAM e rede; EBS fornece armazenamento persistente. A imagem deve vir de publicador verificado, e a chave privada deve permanecer com o usuário.
-
-## Perguntas de fixação
-
-1. Por que Kali não é apenas “Debian com ferramentas”?
-2. Qual é a diferença entre AMI e instância?
-3. O que o tipo de instância determina?
-4. Por que disco não deve ser inferido pelo tipo?
-5. Qual é o risco de publicador desconhecido?
-6. Onde ficam as partes pública e privada do key pair?
-7. Por que instância parada ainda pode gerar custos?
-8. Qual é a diferença entre parar e terminar?
-
 ## Referências oficiais
 
 - [Kali Linux na AWS](https://www.kali.org/docs/cloud/aws/)
 - [Amazon Machine Images](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)
 - [Key pairs do EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)
 - [Ciclo de vida do EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html)
+
+## Perguntas de fixação
+
+1. Qual é a relação entre kernel Linux, distribuição Debian e distribuição Kali Linux?
+2. O que uma AMI fornece e o que só passa a existir quando uma instância EC2 é criada?
+3. Como tipo de instância, volume EBS, rede, Security Group e key pair participam da composição da instância?
+4. Por que RAM e armazenamento EBS possuem ciclos de vida e cobrança diferentes?
+5. Quais dados de publicador, arquitetura, Região, usuário padrão e preço devem ser verificados antes de escolher uma AMI?
+6. Onde a chave pública e a chave privada do key pair ficam após a primeira inicialização?
+7. Por que criar outro key pair com o mesmo nome não concede acesso automático a uma instância antiga?
+8. Qual regra de entrada deve ser configurada para SSH e por que uma origem `/32` é mais restrita que `0.0.0.0/0`?
+9. Por que o estado `running` não comprova sozinho que a instância está pronta para receber SSH?
+10. O que muda entre reiniciar, parar e terminar uma instância, inclusive para IP público e volumes?
+11. Quais recursos além da instância devem ser procurados durante a limpeza para evitar cobrança residual?

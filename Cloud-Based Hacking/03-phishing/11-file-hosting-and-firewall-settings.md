@@ -1,30 +1,8 @@
 # Apache, HTTP e exposição de um serviço web
 
-## Objetivos da aula
-
-Nesta aula, vamos:
-
-- compreender o Apache HTTP Server;
-- diferenciar programa, processo e serviço;
-- acompanhar uma requisição HTTP sobre TCP;
-- conhecer a porta padrão `80`;
-- localizar o document root `/var/www/html`;
-- entender `index.html` e o erro `404`;
-- instalar pacotes com APT;
-- iniciar e verificar o serviço com `systemctl`;
-- configurar uma regra HTTP no Security Group;
-- distinguir tráfego permitido de serviço ativo.
-
 O laboratório deve usar somente uma instância própria e conteúdo inofensivo. Não hospede malware nem páginas que recebam credenciais reais.
 
-## Pré-requisitos e conexões
-
-Esta aula parte de:
-
-- [Aula 3: o que é a nuvem](../01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md), para máquina remota, IP e porta;
-- [Aula 8: SSH](../02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh.md), para acessar a instância;
-- [Aula 9: terminal Linux](../02-cloud-basics/09-linux-terminal-basics.md), para comandos e caminhos;
-- [Aula 10: phishing](10-introduction-to-phishing.md), para separar infraestrutura web de influência social.
+Esta aula aplica máquina remota, IP e porta da [aula 3](../01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md), o acesso SSH da [aula 8](../02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh.md), os comandos e caminhos da [aula 9](../02-cloud-basics/09-linux-terminal-basics.md) e a distinção entre infraestrutura web e influência social da [aula 10](10-introduction-to-phishing.md).
 
 Os comandos são executados no Kali remoto depois da conexão SSH.
 
@@ -32,12 +10,7 @@ Os comandos são executados no Kali remoto depois da conexão SSH.
 
 **Apache HTTP Server** é um software servidor web. No Kali e em outras distribuições baseadas em Debian, o pacote normalmente se chama `apache2`.
 
-| Elemento | Significado |
-|---|---|
-| Máquina servidora | Computador ou VM que fornece recursos |
-| Software servidor | Programa que implementa protocolo, como Apache |
-| Processo | Instância de programa em execução |
-| Serviço | Função de longa duração gerenciada pelo sistema |
+Uma **máquina servidora** é o computador ou a VM que fornece recursos. O **software servidor**, como Apache, implementa o protocolo. Quando esse programa é iniciado, surge um **processo** em execução; o sistema administra essa função de longa duração como um **serviço**.
 
 O Apache instalado é um conjunto de arquivos no disco. Quando iniciado, cria um ou mais processos. O sistema gerencia essa função como o serviço `apache2`.
 
@@ -47,12 +20,7 @@ Um serviço pode possuir vários processos. Reiniciá-lo pode produzir novos IDs
 
 **HTTP**, ou *Hypertext Transfer Protocol*, é um protocolo da camada de aplicação usado para trocar requisições e respostas web.
 
-Neste cenário:
-
-1. HTTP define a requisição e a resposta.
-2. TCP estabelece a conexão e transporta bytes ordenados.
-3. IP encaminha pacotes entre origem e destino.
-4. A porta identifica qual aplicação deve receber a conexão.
+Neste cenário, HTTP define a requisição e a resposta, TCP estabelece a conexão e transporta bytes ordenados, IP encaminha os pacotes e a porta identifica qual aplicação deve recebê-los.
 
 A porta padrão do HTTP é `80`. Assim:
 
@@ -79,15 +47,7 @@ flowchart LR
     E -->|Resposta HTTP| A
 ```
 
-Fluxo simplificado:
-
-1. o navegador inicia TCP com o IP público na porta `80`;
-2. a AWS encaminha o tráfego até a interface;
-3. o Security Group verifica a entrada;
-4. o sistema entrega a conexão ao processo em escuta;
-5. o Apache interpreta a requisição HTTP;
-6. localiza o conteúdo;
-7. a resposta retorna pela conexão.
+O navegador inicia TCP com o IP público na porta `80`, e a AWS encaminha o tráfego até a interface. O Security Group verifica a entrada; o sistema entrega a conexão ao processo em escuta; o Apache interpreta a requisição HTTP, localiza o conteúdo e devolve a resposta pela conexão.
 
 Permitir tráfego no Security Group não cria o Apache. Iniciar Apache também não altera automaticamente o Security Group.
 
@@ -132,11 +92,7 @@ No Kali ou Debian, uma configuração comum usa:
 /var/www/html
 ```
 
-| Caminho da URL | Possível caminho no servidor |
-|---|---|
-| `/` | `/var/www/html/index.html` |
-| `/files/one.jpg` | `/var/www/html/files/one.jpg` |
-| `/pagina.html` | `/var/www/html/pagina.html` |
+Uma requisição para `/` pode corresponder a `/var/www/html/index.html`. `/files/one.jpg` pode levar a `/var/www/html/files/one.jpg`, enquanto `/pagina.html` pode ser atendido por `/var/www/html/pagina.html`.
 
 Essa associação pode ser alterada. O navegador não recebe acesso livre ao sistema de arquivos; o Apache decide quais recursos servir.
 
@@ -168,13 +124,7 @@ Kali usa APT para gerenciar pacotes.
 sudo apt update
 ```
 
-```text
-sudo apt update
-├─ sudo: executa com privilégio autorizado
-├─ apt: gerenciador de pacotes
-├─ update: atualiza índices locais dos repositórios
-└─ verificação: confirme a conclusão sem erros
-```
+`sudo` executa a operação com privilégio autorizado, `apt` é o gerenciador de pacotes e `update` atualiza os índices locais dos repositórios. Confirme a conclusão sem erros.
 
 `apt update` não atualiza automaticamente todos os programas. Obtém metadados recentes sobre pacotes disponíveis.
 
@@ -186,14 +136,7 @@ sudo apt update
 sudo apt install apache2
 ```
 
-```text
-sudo apt install apache2
-├─ sudo: elevação autorizada
-├─ apt: gerenciador de pacotes
-├─ install: instala pacote
-├─ apache2: nome do pacote
-└─ verificação: consulte o serviço depois
-```
+Aqui, `install` solicita a instalação e `apache2` é o pacote escolhido. Leia dependências e espaço informado pelo APT antes de confirmar e consulte o serviço depois.
 
 Leia dependências e espaço informado pelo APT antes de confirmar.
 
@@ -209,14 +152,7 @@ Em sistemas com `systemd`, `systemctl` gerencia serviços.
 sudo systemctl start apache2
 ```
 
-```text
-sudo systemctl start apache2
-├─ sudo: elevação autorizada
-├─ systemctl: gerencia unidades do systemd
-├─ start: solicita inicialização
-├─ apache2: serviço
-└─ verificação: systemctl is-active apache2
-```
+`systemctl` administra unidades do systemd, `start` solicita a inicialização e `apache2` identifica o serviço. Verifique o resultado com `systemctl is-active apache2`.
 
 Ausência de mensagem não é verificação suficiente.
 
@@ -250,16 +186,7 @@ sudo service apache2 start
 sudo ss -ltnp 'sport = :80'
 ```
 
-```text
-ss -ltnp 'sport = :80'
-├─ ss: consulta sockets
-├─ -l: mostra sockets em escuta
-├─ -t: limita a TCP
-├─ -n: mantém números
-├─ -p: mostra o processo, quando permitido
-├─ filtro: porta local 80
-└─ verificação: procure listener associado ao servidor web
-```
+`ss` consulta sockets. As opções mostram apenas sockets em escuta, limitam o resultado a TCP, mantêm números e incluem o processo quando permitido. O filtro seleciona a porta local `80`; procure um listener associado ao servidor web.
 
 Um listener `0.0.0.0:80` significa que o processo aceita conexões na porta `80` das interfaces IPv4 locais. Isso não é igual a `0.0.0.0/0` em Security Group.
 
@@ -271,14 +198,7 @@ Antes de investigar a AWS:
 curl -I http://127.0.0.1/
 ```
 
-```text
-curl -I http://127.0.0.1/
-├─ curl: cliente de protocolos
-├─ -I: solicita apenas cabeçalhos HTTP
-├─ 127.0.0.1: loopback da própria máquina
-├─ porta: 80 por padrão
-└─ verificação: procure uma linha de estado HTTP
-```
+`curl` é o cliente, `-I` solicita apenas os cabeçalhos e `127.0.0.1` aponta para a própria máquina. Como a URL usa HTTP sem indicar outra porta, o destino padrão é `80`. Procure uma linha de estado HTTP.
 
 Esse teste não atravessa Internet nem Security Group. Qualquer resposta HTTP demonstra que um servidor respondeu; o código informa o resultado.
 
@@ -288,13 +208,7 @@ Esse teste não atravessa Internet nem Security Group. Qualquer resposta HTTP de
 ls -la /var/www/html
 ```
 
-```text
-ls -la /var/www/html
-├─ ls: lista conteúdo
-├─ -l: formato detalhado
-├─ -a: inclui ocultos
-└─ /var/www/html: document root
-```
+`ls` lista o conteúdo, `-l` usa o formato detalhado, `-a` inclui itens ocultos e `/var/www/html` é o document root examinado.
 
 Para `/files/one.jpg`:
 
@@ -308,14 +222,7 @@ Não use `chmod 777` como correção genérica. Identifique qual usuário precis
 
 Um **Security Group** é um controle virtual de tráfego associado à interface da instância.
 
-Para HTTP, uma regra costuma conter:
-
-```text
-Tipo: HTTP
-Protocolo: TCP
-Porta de destino: 80
-Origem: faixa CIDR autorizada
-```
+Para HTTP, uma regra normalmente seleciona o tipo HTTP, protocolo TCP, porta de destino `80` e uma faixa CIDR de origem autorizada.
 
 A regra permite que conexões compatíveis cheguem à instância. Não instala, inicia ou configura Apache.
 
@@ -348,15 +255,9 @@ Para somente um IPv4:
 
 O equivalente para qualquer origem IPv6 é `::/0`.
 
-## Configuração no laboratório AWS
+## Configurando o acesso no laboratório AWS
 
-1. Abra o Security Group associado.
-2. Edite regras de entrada.
-3. Adicione `HTTP`.
-4. Confirme TCP e porta `80`.
-5. Selecione origem adequada ao escopo.
-6. Salve.
-7. Teste com o IP público atual.
+Abra o Security Group associado e edite suas regras de entrada. Adicione HTTP, confirme TCP e porta `80`, selecione uma origem adequada ao escopo e salve. Então teste com o IP público atual.
 
 Para teste somente do estudante, use o IP público atual com `/32`. Use `0.0.0.0/0` apenas se o objetivo autorizado exigir acesso público.
 
@@ -373,18 +274,9 @@ A instância ainda precisa de endereço público e rota válida. O Security Grou
 
 No painel AWS, a regra apenas permite tráfego. Para a porta responder, a conexão precisa alcançar um processo em escuta.
 
-## Verificação em camadas
+## Verificando uma camada de cada vez
 
-1. confirme que o pacote foi instalado;
-2. consulte `systemctl is-active apache2`;
-3. use `ss` para procurar TCP/80;
-4. teste localmente com `curl`;
-5. confira o Security Group;
-6. confirme o IP atual;
-7. abra `http://<IP-PUBLICO-DO-LAB>/`;
-8. interprete o resultado.
-
-Essa ordem separa problemas do Apache de problemas de rede.
+Comece confirmando que o pacote foi instalado e consulte `systemctl is-active apache2`. Use `ss` para procurar o listener TCP/80 e teste localmente com `curl`. Só então confira o Security Group, confirme o IP atual e abra `http://<IP-PUBLICO-DO-LAB>/`. Essa ordem separa problemas do Apache de problemas de rede.
 
 ## Interpretação de falhas
 
@@ -406,49 +298,21 @@ Não altere várias camadas ao mesmo tempo. Faça uma mudança e repita a verifi
 sudo systemctl stop apache2
 ```
 
-Depois:
+Depois, verifique o estado e a porta, remova a regra temporária TCP/80 e confirme que a exposição terminou. Pare ou termine a instância e verifique os custos.
 
-1. verifique o estado e a porta;
-2. remova a regra temporária TCP/80;
-3. confirme que a exposição terminou;
-4. pare ou termine a instância;
-5. verifique custos.
-
-## Correções da transcrição
-
-- O termo correto é **document root**, não “rota da Web”.
-- O caminho é `/var/www/html`.
-- `0.0.0.0/0` significa qualquer origem IPv4, não o IP da instância.
-- Liberar TCP/80 não inicia Apache.
-- Iniciar Apache não garante acesso público.
-- Comando sem erro visível deve ser verificado.
-- PHP não é necessário para `index.html` estático.
-- `404` é resposta válida para recurso não encontrado.
-
-## Resumo
-
-- Apache é software servidor web gerenciado como `apache2`.
-- HTTP define requisições e respostas e usa TCP/80 neste laboratório.
-- Security Group filtra a entrada antes do serviço.
-- `/var/www/html` é um document root padrão comum.
-- `index.html` costuma ser recurso padrão.
-- `apt update` atualiza índices; `apt install` instala.
-- `systemctl` inicia e verifica o serviço.
-- Serviço ativo e tráfego permitido são condições distintas.
-- `0.0.0.0/0` abrange qualquer IPv4.
-- Testes locais devem anteceder o teste público.
+O termo correto é **document root**, e o caminho usado nesta aula é `/var/www/html`. `0.0.0.0/0` significa qualquer origem IPv4, não o IP da instância. Liberar TCP/80 não inicia Apache, iniciar Apache não garante acesso público, PHP não é necessário para um `index.html` estático e um `404` comprova que houve resposta HTTP, embora o recurso não tenha sido encontrado.
 
 ## Perguntas de fixação
 
-1. Qual é a diferença entre máquina, software servidor, processo e serviço?
-2. Qual função pertence a HTTP, TCP e IP?
-3. O que a porta `80` identifica?
-4. Por que Security Group não inicia Apache?
-5. O que `0.0.0.0/0` representa?
-6. Qual é a diferença entre `0.0.0.0:80` e `0.0.0.0/0`?
-7. Para qual arquivo uma requisição a `/` pode ser mapeada?
-8. O que um `404` comprova?
-9. Qual é a diferença entre `apt update` e `apt install apache2`?
-10. Por que testar com `curl` antes da AWS?
-11. Se Apache funciona localmente, mas não pelo IP público, o que verificar?
-12. Quais ações encerram corretamente o laboratório?
+1. Qual é a diferença entre máquina servidora, software Apache instalado, processo em execução e serviço `apache2`?
+2. Como HTTP, TCP, IP e a porta `80` participam de camadas diferentes da mesma requisição?
+3. Na requisição `GET /files/one.jpg HTTP/1.1`, o que representam as partes, e o que `200`, `404` e `403` informam?
+4. Como `/files/one.jpg` é mapeado para `/var/www/html/files/one.jpg` sem expor livremente o sistema de arquivos?
+5. Qual é a diferença entre `sudo apt update` e `sudo apt install apache2`, e o que cada parte desses comandos faz?
+6. O que `sudo systemctl start apache2` altera, e como `is-active` e `status` verificam resultados diferentes?
+7. Em `sudo ss -ltnp 'sport = :80'`, o que fazem o programa, as opções e o filtro?
+8. Qual é a diferença entre o listener `0.0.0.0:80` e a origem `0.0.0.0/0` no Security Group?
+9. O que `curl -I http://127.0.0.1/` testa, o que `-I` solicita e por que a conexão não atravessa a AWS?
+10. Em `ls -la /var/www/html`, o que fazem o comando, as opções e o caminho?
+11. O que `/0` e `/32` significam em CIDR, e por que liberar TCP/80 não inicia o Apache?
+12. Se o teste local funciona e o público falha, como investigar uma camada por vez e encerrar serviço, regra e instância ao final?

@@ -1,18 +1,6 @@
 # O que é computação em nuvem?
 
-## Objetivos da aula
-
-Ao final desta aula, você deverá ser capaz de:
-
-- definir computação em nuvem sem reduzi-la a “um computador remoto”;
-- identificar a infraestrutura física por trás dos serviços;
-- distinguir servidor físico, processo servidor e máquina virtual;
-- diferenciar rede local, Internet e Web;
-- separar nuvem pública, endereço público e serviço exposto;
-- explicar hospedagem, disponibilidade, escalabilidade e elasticidade;
-- descrever como uma requisição chega a um serviço hospedado.
-
-## Uma definição inicial
+## A nuvem como modelo de uso
 
 **Computação em nuvem** é um modelo no qual recursos computacionais são disponibilizados por rede, provisionados conforme a necessidade e administrados por interfaces padronizadas, como painéis e APIs.
 
@@ -37,14 +25,7 @@ Um servidor remoto pode fazer parte da nuvem, mas nem todo servidor remoto const
 
 “Nuvem” é uma abstração. Dados e programas continuam sendo processados por equipamentos reais em datacenters.
 
-Na base dessa infraestrutura existem:
-
-- edifícios e controles de acesso físico;
-- energia, geradores e refrigeração;
-- racks com servidores físicos;
-- dispositivos de armazenamento;
-- switches, roteadores e enlaces de rede;
-- sistemas de monitoramento e administração.
+Na base dessa infraestrutura existem edifícios com controle de acesso, energia, geradores, refrigeração, racks de servidores, dispositivos de armazenamento, switches, roteadores e sistemas de monitoramento. A abstração não elimina nenhum desses componentes; ela permite administrá-los por interfaces de software.
 
 Sobre o hardware, o provedor utiliza virtualização e automação. Um **hipervisor** pode dividir um servidor físico em várias **máquinas virtuais**, cada uma com processador, memória, disco e interfaces de rede virtuais. Em muitos provedores, uma máquina criada pelo cliente é chamada de **instância**.
 
@@ -68,12 +49,7 @@ O programa é o elemento que efetivamente atende clientes. Um servidor web, por 
 
 Uma **rede**, ou *network*, é um conjunto de dispositivos e interfaces capazes de trocar dados segundo protocolos comuns.
 
-| Conceito | Definição |
-|---|---|
-| **Rede local (LAN)** | Rede limitada a uma residência, laboratório ou escritório. |
-| **Internet** | Rede mundial formada pela interconexão de redes que encaminham pacotes com TCP/IP. |
-| **Web** | Serviço de documentos e aplicações acessados principalmente por HTTP ou HTTPS. |
-| **Nuvem** | Modelo de fornecimento e administração de recursos computacionais por rede. |
+Uma **rede local**, ou LAN, conecta dispositivos dentro de um ambiente como residência, laboratório ou escritório. A **Internet** interliga redes e encaminha pacotes com a família de protocolos TCP/IP. A **Web** é apenas um dos serviços construídos sobre essas redes, composto por documentos e aplicações acessados principalmente por HTTP ou HTTPS. A **nuvem**, por sua vez, é o modelo de fornecimento e administração de recursos computacionais por rede.
 
 A Web utiliza redes, mas não é sinônimo de Internet. SSH, DNS e correio eletrônico utilizam a Internet sem fazer parte da Web. Um site também pode existir apenas em uma rede local.
 
@@ -81,26 +57,15 @@ Nem toda aplicação conectada à Internet utiliza nuvem. Também existem recurs
 
 ## IP, domínio, URL e porta
 
-- Um **endereço IP** identifica uma interface ou ponto lógico em uma rede e permite o roteamento dos pacotes.
-- Um **domínio** é um nome que pode ser resolvido pelo DNS para um ou mais endereços.
-- Uma **URL** informa como localizar um recurso, incluindo protocolo, host e caminho.
-- Uma **porta de rede** é um identificador lógico de `0` a `65535` usado para entregar dados ao processo correto. Não é uma entrada física.
+Um **endereço IP** identifica uma interface ou ponto lógico em uma rede e permite o roteamento dos pacotes. Um **domínio** é um nome que o DNS pode resolver para um ou mais endereços. Uma **URL** reúne as informações usadas para localizar um recurso, incluindo protocolo, host e caminho. Já uma **porta de rede** é um identificador lógico de `0` a `65535` usado para entregar os dados ao processo correto; não é uma entrada física.
 
 Na URL `https://exemplo.test/area`, `https` indica o protocolo, `exemplo.test` é o host e `/area` é o caminho. No fluxo HTTPS tradicional, o cliente normalmente estabelece TCP com a porta `443`, negocia TLS e então troca mensagens HTTP protegidas.
 
 ## Como uma requisição chega a um serviço hospedado
 
-Considere um serviço web autorizado e público:
+Considere um serviço web autorizado e público. Quando o usuário informa uma URL, o navegador consulta o DNS para descobrir o endereço correspondente. O sistema encontra uma rota e inicia a conexão; roteadores encaminham os pacotes até a rede do provedor, onde um endereço público, balanceador ou gateway recebe o tráfego.
 
-1. O usuário informa uma URL no navegador.
-2. O navegador consulta o DNS para resolver o domínio.
-3. O sistema identifica uma rota para o endereço de destino.
-4. O navegador inicia uma conexão de transporte.
-5. Roteadores encaminham os pacotes até a rede do provedor.
-6. Um endereço público, balanceador ou gateway recebe o tráfego.
-7. Regras de rede e firewall decidem se a conexão pode continuar.
-8. Um processo precisa estar em execução e escutando na porta de destino.
-9. O processo recebe a requisição, responde e os pacotes retornam ao cliente.
+Antes de a requisição chegar à aplicação, regras de rede e firewalls decidem se a conexão pode continuar. No destino, um processo precisa estar em execução e escutando na porta correta. Só então ele recebe a requisição, produz uma resposta e envia os pacotes de volta ao cliente.
 
 Apenas atribuir um IP público não torna um serviço acessível. É necessário haver rota, controles de rede compatíveis, firewall local, processo em execução e porta em escuta. Liberar uma porta não inicia o serviço; iniciar o serviço também não faz o firewall permitir a conexão.
 
@@ -108,11 +73,7 @@ Um computador em uma LAN também pode publicar um serviço mediante roteamento, 
 
 ## Público e privado: três distinções
 
-| Contexto | Público | Privado |
-|---|---|---|
-| **Modelo de nuvem** | Infraestrutura oferecida a vários clientes com isolamento lógico. | Ambiente destinado exclusivamente a uma organização. |
-| **Endereço IP** | Endereço roteável na Internet pública. | Endereço usado em redes privadas. |
-| **Exposição do serviço** | Serviço planejado para receber conexões da Internet. | Serviço acessível apenas por caminhos controlados. |
+“Público” e “privado” mudam de significado conforme o contexto. Uma **nuvem pública** oferece infraestrutura a vários clientes com isolamento lógico, enquanto uma **nuvem privada** é destinada a uma organização. Um **IP público** é roteável pela Internet; um **IP privado** pertence ao espaço de uma rede interna. Um **serviço público** foi planejado para aceitar conexões externas, enquanto um serviço privado depende de caminhos controlados.
 
 Uma máquina em nuvem pública pode possuir apenas IP privado. Uma nuvem privada pode publicar determinados serviços. “Nuvem pública” não significa que todos os recursos estejam visíveis ao público.
 
@@ -154,28 +115,20 @@ Um SLA descreve compromissos do provedor, mas não elimina a possibilidade de in
 
 Escala não acontece magicamente. A aplicação precisa suportar distribuição de trabalho, os dados precisam permanecer consistentes e limites de custo e capacidade devem ser considerados. Disponibilidade e escalabilidade são relacionadas, mas diferentes.
 
-## Correções importantes
-
-- Nuvem não é apenas “computadores remotos”.
-- Recursos de nuvem não ficam automaticamente acessíveis pela Internet.
-- Ter IP público não basta para tornar um serviço acessível.
-- O provedor não assume toda a manutenção e segurança das aplicações.
-- Uma instância não corresponde necessariamente a um servidor físico exclusivo.
-- Disponibilidade e escala dependem da arquitetura.
-
-## Resumo
-
-A computação em nuvem fornece recursos por rede com provisionamento sob demanda, compartilhamento controlado, elasticidade e medição. Esses recursos dependem de datacenters, hardware, sistemas e redes reais. Internet, Web, rede local e nuvem são conceitos relacionados, mas distintos.
+Disponibilidade e escala dependem da arquitetura; não surgem apenas porque um recurso está na nuvem. Da mesma forma, uma instância não corresponde necessariamente a um servidor físico exclusivo, e o provedor não assume toda a manutenção e segurança das aplicações.
 
 Na [Aula 4: Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md), esses fundamentos serão aplicados aos laboratórios autorizados.
 
 ## Perguntas de fixação
 
-1. Por que “computador remoto” é uma definição incompleta de nuvem?
-2. Qual é a diferença entre servidor físico, máquina virtual e processo servidor?
-3. Como a Web se relaciona com a Internet?
-4. Uma máquina em nuvem pública precisa ter IP público?
-5. Quais condições devem existir para a conexão chegar ao processo servidor?
-6. Qual é a diferença entre escala vertical e horizontal?
-7. Por que escalabilidade não garante disponibilidade?
-8. Quais responsabilidades continuam pertencendo ao cliente em uma máquina virtual?
+1. Quais características diferenciam computação em nuvem de um servidor remoto convencional?
+2. Como um hipervisor permite que várias instâncias compartilhem um servidor físico mantendo isolamento lógico?
+3. Qual é a diferença entre plano de controle, máquina virtual e processo servidor executado dentro dela?
+4. Em quais três sentidos diferentes a palavra “servidor” pode ser usada?
+5. Como LAN, Internet, Web e nuvem se relacionam sem serem sinônimos?
+6. Na URL `https://exemplo.test/area`, quais partes representam protocolo, host e caminho, e qual porta é normalmente usada?
+7. Descreva o fluxo desde a resolução DNS até a entrega da requisição ao processo que escuta na porta de destino.
+8. Por que atribuir um IP público e liberar uma porta não bastam para tornar um serviço acessível?
+9. Como “público” e “privado” mudam de significado quando falamos de modelo de nuvem, endereço IP e exposição do serviço?
+10. Qual é a diferença entre escala vertical, escala horizontal e elasticidade, e por que nenhuma delas garante disponibilidade sozinha?
+11. Em uma máquina virtual, quais camadas normalmente pertencem ao provedor e quais continuam sob responsabilidade do cliente?

@@ -33,6 +33,24 @@ Não trate uma nota isolada como verdade definitiva. Atualize a compreensão con
 7. Quando houver dúvida factual, sinalize-a e prefira documentação oficial ou validação no laboratório.
 8. Responda em português do Brasil, mantendo em inglês os nomes oficiais que facilitam pesquisa e certificações.
 
+## Estilo narrativo dos capítulos
+
+As notas finais devem funcionar como capítulos para leitura contínua, e não como transcrições, checklists operacionais ou fichas produzidas por um molde.
+
+- Preserve a ordem em que o assunto foi compreendido na aula: contexto, ação ou conceito, resultado observado, explicação do motivo e continuação natural.
+- Use títulos que nomeiem acontecimentos ou ideias, como `Abrindo o diretório remoto`, `Por que o envio foi recusado` e `Confirmando a mudança`. Não use títulos artificiais como `Passo 1`, `Passo 2` ou `Etapa 3` quando a mesma progressão puder ser transmitida pela narrativa.
+- Escreva predominantemente em parágrafos. Use listas somente quando o conteúdo for realmente enumerável e a lista melhorar a compreensão.
+- Não force seções de `Objetivos`, `Pré-requisitos`, `Resumo`, `Checklist`, `Correções da transcrição` ou `Problemas comuns`. Inclua uma delas apenas quando tiver função didática real naquele capítulo.
+- Finalize cada aula com `## Perguntas de fixação`: perguntas numeradas, específicas ao conteúdo realmente ensinado e formuladas para o leitor explicar relações e causas com suas próprias palavras. Não inclua respostas, não transforme a seção em checklist e não repita perguntas genéricas entre capítulos.
+- Faça as perguntas testarem compreensão técnica, não apenas memorização de definições. Quando houver comandos, pergunte em qual máquina são executados, o que fazem programa, opções e argumentos, qual efeito produzem, como confirmar o resultado e como interpretar falhas. Quando a aula usar Console ou interface gráfica, pergunte o papel dos campos, valores e controles observados. Em aulas conceituais, cobre componentes, fluxo, dependências, limites e diferenças entre termos próximos.
+- Use normalmente de 6 a 12 perguntas, conforme a densidade da aula. Combine assuntos diretamente relacionados em uma pergunta para evitar uma lista cansativa, mas não misture mecanismos sem relação apenas para reduzir a quantidade.
+- Incorpore correções da tradução diretamente na explicação. Crie uma seção separada somente quando várias correções relevantes não couberem naturalmente no texto.
+- Explique primeiro o que acontece e por que acontece. Não repita a mesma informação em introdução, quadro, resumo e perguntas.
+- Restrinja o capítulo ao que a aula realmente ensinou. Conceitos laterais ou mais avançados devem ser omitidos ou ligados à nota canônica correspondente, não adicionados para tornar o capítulo artificialmente completo.
+- Uma aula prática deve parecer acompanhada: o instrutor realiza uma ação, observa um resultado, interpreta esse resultado e decide a próxima ação. Preserve esse encadeamento sem copiar a fala original.
+- Uma aula conceitual deve desenvolver uma pergunta central em prosa, avançando do significado simples ao funcionamento técnico e às implicações do conceito.
+- Conecte aulas e módulos com uma transição curta quando a relação não for evidente. Explique qual conhecimento anterior será reutilizado e por que o tema seguinte depende dele, sem recapitular o capítulo inteiro.
+
 ## Nível iniciante e profundidade obrigatória
 
 Tanto a conversa quanto as notas e o livro devem ensinar alguém que está vendo o assunto pela primeira vez.
@@ -82,21 +100,11 @@ Explique explicitamente que:
 4. Não apresente a fala do curso como autoria do estudante.
 5. Converta o conteúdo em uma síntese original e clara, evitando reproduzir longos trechos literalmente.
 6. Depois de extrair e revisar o conhecimento, remova a transcrição bruta da nota. As notas finais devem conter síntese autoral, não uma cópia da fala do curso.
-7. Estruture conforme a necessidade, usando apenas seções úteis:
-   - objetivo da aula;
-   - ideia principal;
-   - pré-requisitos;
-   - conceitos e vocabulário;
-   - fluxo do laboratório autorizado;
-   - ferramentas e comandos;
-   - perspectiva Red Team;
-  - perspectiva Blue Team, somente quando baseada em material defensivo já estudado;
-   - problemas comuns;
-   - resultado observado;
-   - resumo, checklist e perguntas de fixação;
-   - fontes e relações com outras aulas.
+7. Identifique a pergunta central e reconstrua a aula como narrativa autoral na mesma ordem lógica do aprendizado.
+8. Em aulas práticas, aproxime cada evidência da ação que a produziu e explique imediatamente o que ela demonstra.
+9. Em aulas conceituais, organize os títulos pela progressão das ideias, sem converter cada definição em uma ficha isolada.
 
-Não force todas as seções em aulas pequenas. Clareza é mais importante que preencher um modelo.
+Não aplique um sumário padrão. A estrutura deve nascer do conteúdo específico da aula.
 
 Antes de escrever, procure se o conceito já possui uma nota canônica em uma aula anterior. Se possuir:
 
@@ -161,16 +169,11 @@ Para uma ferramenta, explique:
 
 ## Como explicar comandos
 
-Apresente comandos somente com contexto e use este formato:
+Mostre em bloco de código apenas o comando literal que o leitor pode precisar reconhecer ou executar. Em seguida, explique suas partes em prosa, na ordem em que aparecem, ligando cada parte ao efeito do comando naquele contexto.
 
-```text
-comando completo
-├─ programa: o que executa
-├─ opção: o que altera
-├─ argumento: dado fornecido
-├─ resultado esperado
-└─ como confirmar ou desfazer
-```
+Não transforme automaticamente todo comando em árvore com `├─` e `└─`. Esse formato fragmenta a leitura e só deve ser usado quando o estudante solicitar explicitamente uma decomposição esquemática.
+
+Não repita o mesmo comando em vários blocos apenas para mostrar uma forma “organizada”. Se a aula usou uma sintaxe válida, mostre-a uma vez e explique eventuais convenções no parágrafo seguinte.
 
 Inclua, quando relevante:
 
@@ -252,6 +255,9 @@ No livro, defina cada sigla e termo técnico na primeira ocorrência de cada con
 - Remova ou desfoque senhas, tokens, cookies, chaves, QR codes, fingerprints desnecessárias, e-mails, nomes reais, usuário local, IPs, domínios privados, caminhos pessoais, nomes de arquivos privados, IDs de conta, instância, recurso ou Security Group, ARNs, dados de cobrança, abas, notificações e outros elementos que possam identificar pessoas ou ambientes.
 - Recorte áreas irrelevantes e remova metadados da cópia publicada quando possível.
 - Preserve os controles e resultados necessários para entender a aula.
+- Posicione cada captura imediatamente depois da ação ou observação que ela comprova. A legenda deve dizer o que olhar, e o parágrafo seguinte deve interpretar a evidência.
+- Não agrupe todas as imagens no final do capítulo e não substitua uma captura disponível por uma reprodução textual em caixa.
+- Use diagramas apenas quando relações invisíveis, como fluxo de rede ou hierarquia, não puderem ser explicadas com clareza em prosa. Não desenhe árvores de diretórios para representar um caminho simples como `/var/www/html`; explique o caminho em palavras.
 - Use setas, círculos e rótulos apenas quando mostrarem algo difícil de perceber sem marcação.
 - Não adicione decoração ou muitas cores.
 - Explique na legenda o que é local, nuvem, origem, destino ou resultado quando isso bastar.

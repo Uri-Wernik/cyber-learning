@@ -1,29 +1,14 @@
 # Phishing e engenharia social
 
-## Objetivos da aula
+Agora que a instância Kali pode ser acessada e administrada pelo terminal, essa infraestrutura servirá de base para páginas e arquivos de um laboratório web. Antes de configurar esses serviços, é necessário compreender o cenário humano que eles podem apoiar.
 
-Esta aula apresenta phishing como processo de engenharia social. Ao final, você deverá compreender:
-
-- o que caracteriza phishing;
-- como pretexto, isca, entrega, landing page e ação esperada se relacionam;
-- por que uma página web não é, por si só, um ataque;
-- como phishing difere de exploração de navegador e malware;
-- quais limites devem existir em uma simulação autorizada.
-
-A aula é conceitual. Ela não ensina coleta de credenciais, cookies, tokens ou outros dados reais.
+Esta aula apresenta phishing como processo de engenharia social. Ela é conceitual e não ensina coleta de credenciais, cookies, tokens ou outros dados reais.
 
 ## Limite ético e autorização
 
 Phishing contra terceiros sem autorização pode causar fraude, invasão de privacidade, perda financeira e comprometimento de contas.
 
-Uma simulação somente deve ocorrer:
-
-- em infraestrutura própria ou preparada para o laboratório;
-- com autorização explícita do responsável legítimo;
-- com escopo, duração e participantes definidos;
-- usando identidades, contas e dados fictícios;
-- sem solicitar ou armazenar senhas reais;
-- com condição clara de encerramento e remoção dos artefatos.
+Uma simulação somente deve ocorrer em infraestrutura própria ou preparada para o laboratório, com autorização explícita, escopo, duração e participantes definidos. Identidades, contas e dados devem ser fictícios; senhas reais não podem ser solicitadas nem armazenadas; e o encerramento precisa prever a remoção dos artefatos.
 
 Ser proprietário de um servidor na nuvem não concede autorização para testar pessoas, empresas, marcas ou sistemas externos. Os fundamentos de escopo estão na [aula 2](../01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud.md).
 
@@ -50,19 +35,9 @@ Essa ação pode ser:
 
 Uma página de login falsa é apenas um cenário possível. Phishing não é sinônimo de página clonada nem exige obrigatoriamente uma página web.
 
-## Modelo conceitual
+## Como o cenário se desenvolve
 
-```mermaid
-flowchart LR
-    A[Objetivo e autorização] --> B[Pretexto]
-    B --> C[Isca]
-    C --> D[Entrega]
-    D --> E[Landing page ou destino]
-    E --> F[Ação esperada]
-    F --> G[Evidência permitida e encerramento]
-```
-
-Nem todo cenário utiliza todas as etapas. Uma interação por telefone, por exemplo, pode não possuir landing page.
+Um cenário começa pelo objetivo autorizado. A partir dele é criado um pretexto, acompanhado de uma isca e entregue por algum canal. Quando existe um link, ele pode levar a uma landing page ou outro destino, onde se espera uma ação definida previamente. A evidência permitida e o encerramento também pertencem ao planejamento. Nem todo cenário utiliza todas essas partes; uma interação por telefone, por exemplo, pode não possuir landing page.
 
 ## Pretexto
 
@@ -75,7 +50,7 @@ Ele responde:
 - por que a mensagem chegou naquele momento;
 - por que a ação pareceria necessária.
 
-O pretexto é o contexto da história, não necessariamente o elemento que desperta o interesse.
+O pretexto esclarece quem supostamente entra em contato, qual relação teria com o destinatário, por que a mensagem chegou naquele momento e por que a solicitação pareceria necessária. Ele é o contexto da história, não necessariamente o elemento que desperta o interesse.
 
 ## Isca
 
@@ -127,35 +102,19 @@ A **ação esperada** é o comportamento que o cenário procura provocar.
 
 Ela deve ser definida antes da simulação, pois determina o que está sendo avaliado e qual evidência seria permitida.
 
-Em laboratório seguro, pode ser apenas:
-
-- visitar página de treinamento;
-- pressionar botão que não transmite dados pessoais;
-- confirmar recebimento de mensagem;
-- identificar os componentes do cenário.
+Em laboratório seguro, a ação pode ser apenas visitar uma página de treinamento, pressionar um botão que não transmite dados pessoais, confirmar o recebimento da mensagem ou identificar os componentes do cenário.
 
 “Comprometer uma conta” não é métrica apropriada para exercício introdutório.
 
-## Dependência entre etapas
+## Uma etapa não garante a seguinte
 
-Cada etapa depende da anterior, mas não garante a seguinte:
-
-1. a mensagem pode ser entregue sem ser lida;
-2. o pretexto pode ser compreendido sem convencer;
-3. a isca pode chamar atenção sem gerar clique;
-4. a landing page pode abrir sem produzir a ação;
-5. uma ação pode ocorrer sem exploração ou malware.
+A mensagem pode ser entregue sem ser lida; o pretexto pode ser compreendido sem convencer; a isca pode chamar atenção sem gerar clique; e a landing page pode abrir sem produzir a ação esperada. Mesmo quando uma ação ocorre, isso não demonstra automaticamente exploração ou malware.
 
 Essa separação evita tratar o processo como uma única ferramenta ou vulnerabilidade.
 
 ## Phishing, exploração de navegador e malware
 
-| Conceito | Natureza | Relação possível |
-|---|---|---|
-| **Phishing** | Influência sobre decisão humana | Pode ser canal inicial |
-| **Exploração de navegador** | Aproveitamento de vulnerabilidade no navegador ou componente | Um link pode levar a exploit, mas são técnicas distintas |
-| **Malware** | Software criado para ações maliciosas ou não autorizadas | Pode ser entregue por phishing, mas não é obrigatório |
-| **Coleta de credenciais** | Obtenção de dados de autenticação inseridos por uma pessoa | Possível objetivo abusivo, fora deste laboratório |
+Phishing procura influenciar uma decisão humana. Exploração de navegador aproveita uma vulnerabilidade no navegador ou em um de seus componentes. Malware é software criado para executar ações maliciosas ou não autorizadas. Um link de phishing pode levar a um exploit ou entregar malware, mas as técnicas continuam distintas. A obtenção de credenciais reais está fora deste laboratório.
 
 Uma página comum não “explora o navegador” apenas por ser carregada. Exploração exige vulnerabilidade ou condição técnica específica.
 
@@ -186,15 +145,7 @@ Considere este cenário fictício:
 
 > Um instrutor autorizado envia uma mensagem somente a uma conta de teste. A mensagem informa que há uma atividade no portal do laboratório e aponta para `https://treinamento.exemplo.invalid/atividade`. A página mostra “simulação concluída”, não possui formulário e não registra dados pessoais.
 
-| Elemento | Identificação |
-|---|---|
-| Autorização | Laboratório próprio e conta de teste |
-| Pretexto | Existência de atividade do curso |
-| Isca | Convite para consultá-la |
-| Entrega | Mensagem à conta de teste |
-| Landing page | `/atividade` no domínio ilustrativo |
-| Ação esperada | Abrir a página |
-| Evidência permitida | Confirmação sem dados sensíveis |
+O laboratório próprio e a conta de teste fornecem a autorização. A existência da atividade é o pretexto, enquanto o convite para consultá-la funciona como isca. A entrega ocorre por mensagem; `/atividade` é a landing page; abrir a página é a ação esperada; e a única evidência permitida é uma confirmação sem dados sensíveis.
 
 O domínio `.invalid` é reservado para exemplos e não representa serviço real.
 
@@ -204,26 +155,17 @@ Se a página explorasse vulnerabilidade, haveria exploração de navegador. Se e
 
 Hospedagem, Apache e acesso HTTP serão estudados na [aula 11](11-file-hosting-and-firewall-settings.md) usando conteúdo inofensivo.
 
-## Resumo
-
-- Engenharia social procura influenciar decisões humanas.
-- Phishing é técnica de engenharia social, não protocolo ou programa.
-- Pretexto fornece narrativa; isca fornece estímulo.
-- Entrega transporta a mensagem.
-- Landing page é apenas o destino e não é maliciosa por definição.
-- A ação esperada deve estar dentro do escopo.
-- Phishing, exploração, malware e coleta de credenciais são distintos.
-- Simulação introdutória não precisa receber senhas ou dados reais.
-
 ## Perguntas de fixação
 
-1. Qual é a relação entre engenharia social e phishing?
-2. Qual é a diferença entre pretexto e isca?
-3. Por que o canal não define sozinho se algo é phishing?
-4. Uma landing page precisa conter login?
-5. Por que abrir uma página não significa explorar o navegador?
-6. Como malware e phishing podem coexistir sem serem sinônimos?
-7. Por que um exploit não funciona automaticamente em todo sistema?
-8. O que deve ser definido antes de uma simulação?
-9. Como comprovar uma ação sem coletar credenciais?
-10. Por que HTTPS não comprova legitimidade?
+1. Como engenharia social pode produzir uma ação mesmo quando nenhum software apresenta vulnerabilidade?
+2. Como pretexto e isca cumprem funções diferentes dentro do encadeamento entre objetivo, entrega e ação esperada?
+3. Por que a entrega bem-sucedida de uma mensagem não comprova leitura, convencimento, clique ou ação?
+4. O que torna uma mensagem phishing: o canal usado ou a combinação de representação enganosa e influência?
+5. Qual é a diferença entre aparência, domínio, servidor que entrega os arquivos e código que define o comportamento?
+6. Por que uma landing page pode ser legítima e não precisa conter formulário de login?
+7. Qual é a diferença técnica entre phishing, exploração de navegador, malware e coleta de credenciais?
+8. Por que carregar uma página comum não comprova exploração do navegador?
+9. Quais dependências impedem afirmar que um exploit ou malware funciona em qualquer dispositivo?
+10. O que HTTPS protege, e por que um domínio enganoso também pode usar certificado válido?
+11. No cenário com domínio `.invalid`, quais elementos correspondem a autorização, pretexto, isca, entrega, destino, ação e evidência?
+12. Como comprovar a ação esperada sem solicitar ou armazenar dados pessoais ou senhas?

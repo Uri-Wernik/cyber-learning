@@ -1,20 +1,5 @@
 # Acessando uma instância remota com SSH
 
-## Objetivos da aula
-
-Ao final desta aula, você deverá ser capaz de:
-
-- explicar a arquitetura cliente-servidor do SSH;
-- identificar o cliente `ssh` e o servidor `sshd`;
-- descrever uma conexão TCP para a porta `22`;
-- diferenciar chave de host de chave do usuário;
-- verificar uma fingerprint antes de confiar no servidor;
-- proteger uma chave privada no Linux, macOS e Windows;
-- interpretar o comando `ssh`;
-- investigar erros comuns.
-
-## Pré-requisitos
-
 Esta aula utiliza a [instância Kali criada no EC2](07-installing-kali-linux-on-the-cloud.md). Os comandos executados depois da conexão serão aprofundados na [aula 9](09-linux-terminal-basics.md).
 
 ## O que é SSH
@@ -25,15 +10,7 @@ Nesta aula, o canal transportará uma **shell remota**: um interpretador de coma
 
 SSH também pode transportar arquivos, encaminhar portas e criar outros canais, mas o primeiro uso será uma sessão de shell.
 
-| Componente | Local | Função |
-|---|---|---|
-| Terminal | Computador local | Interface de texto |
-| Cliente `ssh` | Computador local | Inicia o protocolo e protege a sessão |
-| Chave privada | Computador local | Prova controle da credencial autorizada |
-| Endereço público | AWS | Permite localizar o destino |
-| Security Group | AWS | Filtra tráfego até a interface |
-| Servidor `sshd` | Kali | Escuta conexões e fornece SSH |
-| Shell | Kali | Executa comandos após autenticação |
+O terminal, o cliente `ssh` e a chave privada permanecem no computador local. O endereço público localiza a instância e o Security Group filtra o tráfego que chega à interface. No Kali, o servidor `sshd` aguarda a conexão e, depois da autenticação, inicia a shell que executará os comandos.
 
 `sshd` significa *SSH daemon*. Um daemon é um processo que permanece em execução aguardando solicitações.
 
@@ -50,21 +27,11 @@ Em uma conexão típica:
 - a porta de destino é `22`;
 - o processo remoto em escuta é o `sshd`.
 
-## Fluxo da conexão
+## Como a conexão chega ao Kali
 
-1. O cliente recebe IP público ou DNS da instância.
-2. Se houver nome, o DNS o resolve para IP.
-3. O computador inicia TCP para `<IP-PUBLICO>:22`.
-4. Roteadores encaminham pacotes pela Internet.
-5. Rota da subnet e Internet Gateway alcançam a interface.
-6. O Security Group verifica TCP/22 e a origem.
-7. O firewall do Kali também pode filtrar.
-8. O kernel entrega a conexão ao `sshd` em escuta.
-9. Cliente e servidor negociam algoritmos e chaves temporárias.
-10. O cliente verifica a identidade do servidor pela chave de host.
-11. O servidor autentica o usuário pela chave pública autorizada.
-12. O `sshd` inicia uma shell para o usuário.
-13. Respostas voltam pela conexão estabelecida.
+O cliente recebe o IP público ou DNS da instância. Se houver um nome, o DNS o resolve; então o computador inicia TCP para a porta `22`. Roteadores encaminham os pacotes pela Internet até a VPC, onde a rota da subnet, o Internet Gateway e o Security Group determinam se eles alcançam a interface. O firewall do Kali ainda pode aplicar outro filtro.
+
+Se a conexão for aceita, o kernel a entrega ao `sshd`. Cliente e servidor negociam algoritmos e chaves temporárias, o cliente verifica a identidade do servidor pela chave de host e o servidor autentica o usuário pela chave pública autorizada. Depois disso, o `sshd` inicia uma shell e as respostas passam pela conexão estabelecida.
 
 O Security Group é stateful: a resposta de uma conexão permitida pode retornar.
 
@@ -78,22 +45,15 @@ Ao parar e iniciar, o IPv4 público automático pode mudar. Confirme o endereço
 
 ## Dois pares de chaves diferentes
 
-| Chave | O que comprova | Privada fica em | Pública fica em |
-|---|---|---|---|
-| Chave de host | Identidade do servidor | Instância | Apresentada ao cliente |
-| Chave do usuário | Autorização do usuário | Computador local | `~/.ssh/authorized_keys` |
+A **chave de host** comprova a identidade do servidor: a parte privada fica na instância e a pública é apresentada ao cliente. A **chave do usuário** comprova a autorização para entrar: a privada fica no computador local e a pública autorizada fica em `~/.ssh/authorized_keys` no servidor.
 
 A chave de host evita confiar silenciosamente em outro servidor. A chave do usuário permite login sem enviar a chave privada.
 
 Não confunda a fingerprint do key pair exibida no EC2 com a fingerprint da chave de host apresentada durante a conexão.
 
-## Autenticação por chave pública
+## Como a chave autentica o usuário
 
-1. O cliente indica uma chave pública.
-2. O servidor procura essa chave entre as autorizadas.
-3. O cliente usa a chave privada para assinar dados vinculados à sessão.
-4. O servidor verifica a assinatura com a chave pública.
-5. O login é permitido se a assinatura e as regras forem válidas.
+O cliente indica qual chave pública pretende usar, e o servidor procura essa chave entre as autorizadas. O cliente usa a chave privada para assinar dados vinculados à sessão; o servidor verifica a assinatura com a chave pública. O login é permitido quando a assinatura e as demais regras são válidas.
 
 A chave privada não é enviada ao servidor. Dizer que ela funciona exatamente como senha ou que os arquivos são “comparados” é simplificação incorreta.
 
@@ -122,31 +82,13 @@ Uma chave diferente depois disso pode indicar reconstrução legítima, reutiliz
 
 `ssh-keyscan` coleta uma chave, mas sozinho não prova que pertence ao servidor correto, pois usa a mesma rede que está sendo verificada.
 
-## Checklist de conectividade
-
-- [ ] Região correta.
-- [ ] Instância `running`.
-- [ ] Verificações de status aprovadas.
-- [ ] IPv4 ou DNS público atual.
-- [ ] Rota pública válida.
-- [ ] Security Group permitindo TCP/22 somente do IP atual.
-- [ ] Cliente OpenSSH instalado.
-- [ ] Usuário `kali`.
-- [ ] Chave privada correspondente.
-- [ ] Permissões restritas na chave.
-- [ ] Fingerprint disponível para comparação.
-
 ## Verificando o cliente local
 
-```text
+```powershell
 ssh -V
-├─ ssh: cliente OpenSSH
-├─ -V: mostra a versão
-├─ efeito: não inicia conexão
-└─ resultado: identificação do cliente
 ```
 
-Não confunda `-V`, versão, com `-v`, diagnóstico.
+O programa `ssh` é o cliente OpenSSH; a opção `-V` mostra sua versão sem iniciar conexão. Não a confunda com `-v`, usada para diagnóstico.
 
 ## Protegendo a chave privada
 
@@ -209,21 +151,11 @@ No Linux ou macOS:
 ssh -i "/caminho/<CHAVE>.pem" kali@<IP-PUBLICO>
 ```
 
-```text
-ssh -i "<CAMINHO-DA-CHAVE>" kali@<IP-PUBLICO>
-├─ ssh: executa o cliente Secure Shell local
-├─ -i: seleciona o arquivo de identidade
-├─ caminho: chave privada correspondente à instância
-├─ kali: usuário existente no sistema remoto
-├─ @: separa usuário e host
-├─ IP: endereço atual da instância
-├─ porta: TCP/22 por padrão
-└─ resultado: abre uma shell remota após as verificações
-```
+O cliente `ssh` inicia a sessão. A opção `-i` seleciona o arquivo de identidade; `kali` é o usuário remoto; `@` separa usuário e host; e o IP identifica a instância atual. Sem outra configuração, o destino é TCP/22.
 
 Se o servidor tiver sido configurado em outra porta:
 
-```text
+```bash
 ssh -p <PORTA> -i "<CHAVE>" kali@<IP-PUBLICO>
 ```
 
@@ -259,7 +191,7 @@ Resultado positivo comprova apenas que TCP pode ser estabelecido. Não comprova 
 
 ## Diagnóstico detalhado
 
-```text
+```bash
 ssh -vvv -i "<CHAVE>" kali@<IP-PUBLICO>
 ```
 
@@ -309,33 +241,9 @@ Depois reconecte e valide a nova chave.
 
 O IPv4 público automático pode ter mudado. Atualize endereço e origem do Security Group, se necessário.
 
-## Limpeza
+## Encerrando o acesso sem esquecer a instância
 
-1. Execute `exit`.
-2. Pare ou termine a instância no Console.
-3. Remova TCP/22 quando não for mais necessário.
-4. Confira volumes e endereços remanescentes.
-5. Preserve ou destrua a chave conforme os recursos que dependem dela.
-6. Revise cobrança e créditos.
-
-## Resumo
-
-SSH usa cliente local e `sshd` remoto para transportar uma shell em canal criptografado sobre TCP. A porta padrão é `22`, mas endereço, rota, Security Group, firewall e serviço precisam estar corretos.
-
-A chave de host autentica o servidor; o key pair autentica o usuário. A chave privada permanece local e deve ser acessível somente ao proprietário.
-
-## Perguntas de fixação
-
-1. Qual é a diferença entre terminal, shell, `ssh` e `sshd`?
-2. Qual processo escuta TCP/22?
-3. Por que liberar a porta não inicia SSH?
-4. Qual é a diferença entre chave de host e chave do usuário?
-5. A chave privada é enviada ao servidor?
-6. O que a fingerprint representa?
-7. Por que `400` ou `600` é preferível a `700`?
-8. O que `-i` informa?
-9. Qual é a diferença entre timeout e `Permission denied`?
-10. Por que `exit` não encerra cobrança?
+Execute `exit` para fechar a shell e a conexão SSH. Depois, pare ou termine a instância no Console e remova a regra TCP/22 quando ela não for mais necessária. Confira volumes e endereços remanescentes, preserve ou destrua a chave conforme os recursos que ainda dependem dela e revise cobrança e créditos. `exit` encerra o acesso remoto, não a cobrança da instância.
 
 ## Referências oficiais
 
@@ -343,3 +251,18 @@ A chave de host autentica o servidor; o key pair autentica o usuário. A chave p
 - [Pré-requisitos de conexão](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connection-prereqs-general.html)
 - [Solução de problemas no EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/TroubleshootingInstancesConnecting.html)
 - [Kali Linux na AWS](https://www.kali.org/docs/cloud/aws/)
+
+## Perguntas de fixação
+
+1. Em quais máquinas são executados o cliente `ssh`, o servidor `sshd` e a shell remota?
+2. Descreva o caminho da conexão desde o IP público e o Security Group até o processo `sshd` na porta TCP `22`.
+3. Qual é a diferença entre a chave de host e o key pair do usuário, e como a chave privada autentica sem ser enviada ao servidor?
+4. O que a fingerprint representa, onde a chave aceita é armazenada e por que ela deve ser verificada antes de responder `yes`?
+5. No comando `ssh -V`, o que fazem `ssh` e `-V`, e por que `-V` não é igual a `-v`?
+6. Em `ssh -i "C:\CAMINHO\<CHAVE>.pem" kali@<IP-PUBLICO>`, o que fazem cada parte e em qual computador o comando é executado?
+7. O que a opção `-p <PORTA>` altera e quais configurações do `sshd` e do Security Group também precisam coincidir?
+8. Como `chmod 400`, `chmod 600` e as restrições feitas por `icacls.exe` protegem a chave privada em sistemas diferentes?
+9. O que `whoami`, `hostname` e `uname -a` confirmam depois da conexão?
+10. O que um resultado positivo de `Test-NetConnection <IP> -Port 22` comprova e o que ainda não comprova?
+11. Como distinguir timeout, conexão recusada e falha de chave, e quando `ssh -vvv` ajuda a localizar a etapa da falha?
+12. O que `exit` encerra e por que ele não para a instância EC2?

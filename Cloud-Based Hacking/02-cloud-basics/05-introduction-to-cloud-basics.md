@@ -1,46 +1,22 @@
 # Fundamentos da nuvem: roteiro da seção e laboratório seguro
 
-## Objetivos da aula
-
-Ao final desta aula, você deverá ser capaz de:
-
-- identificar o papel de cada aula desta seção;
-- seguir um ciclo seguro para criar, usar e remover recursos;
-- entender por que gratuidade, créditos e orçamento não eliminam o risco de cobrança;
-- verificar se o laboratório foi realmente encerrado.
-
-## Ponto de partida
+## Dos conceitos para um laboratório real
 
 A explicação conceitual sobre computação em nuvem está na [aula 3: O que é a nuvem?](../01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md). Nesta seção, o foco passa a ser operacional: preparar uma conta, criar uma máquina virtual, acessá-la remotamente e usar o terminal.
 
 Todo procedimento deve ser realizado somente em uma conta própria e em laboratórios isolados ou expressamente autorizados.
 
-## Mapa da seção
+## Como a seção avança
 
-1. [Aula 6: Criando uma conta na AWS](06-signing-up-with-aws.md)  
-   Conta, Console, Região, MFA, cobrança, orçamento e condições variáveis do Free Tier.
+A preparação começa na [aula 6](06-signing-up-with-aws.md), com conta, Console, Região, MFA, cobrança e orçamento. Na [aula 7](07-installing-kali-linux-on-the-cloud.md), essas decisões permitem criar uma instância Kali no EC2 e compreender AMI, capacidade, armazenamento e key pair. A [aula 8](08-communicating-with-cloud-computers-remotely-using-ssh.md) estabelece o acesso remoto por SSH; então a [aula 9](09-linux-terminal-basics.md) ensina a localizar-se e trabalhar no terminal Linux.
 
-2. [Aula 7: Provisionando Kali Linux no EC2](07-installing-kali-linux-on-the-cloud.md)  
-   Distribuição Linux, máquina virtual, AMI, instância, capacidade, armazenamento, publicador e key pair.
-
-3. [Aula 8: Acesso remoto com SSH](08-communicating-with-cloud-computers-remotely-using-ssh.md)  
-   Cliente e servidor SSH, TCP/22, identidade do servidor, autenticação por chave e diagnóstico.
-
-4. [Aula 9: Fundamentos do terminal Linux](09-linux-terminal-basics.md)  
-   Diretórios, caminhos, comandos, opções, argumentos e documentação local.
+Com essa base operacional pronta, as aulas seguintes usam a instância e o terminal para estudar engenharia social, hospedagem web e transferência de arquivos em um laboratório autorizado.
 
 ## Ciclo seguro do laboratório
 
-Um laboratório em nuvem deve ser tratado como recurso temporário:
+Um laboratório em nuvem deve ser tratado como recurso temporário. Antes de criá-lo, define-se o objetivo, a Região, a duração, a capacidade e o valor máximo aceitável. A conta é protegida com MFA e alertas de custo, e somente os recursos e as regras de rede necessários são criados.
 
-1. **Definir o objetivo:** saber o que será criado e qual resultado será verificado.
-2. **Definir limites:** escolher Região, duração, tipo de instância e valor máximo aceitável.
-3. **Preparar a conta:** habilitar MFA e configurar alertas de custo.
-4. **Criar o mínimo necessário:** usar somente recursos e regras de rede exigidos.
-5. **Verificar antes do uso:** confirmar imagem, estado, exposição de rede e chave selecionada.
-6. **Executar o exercício autorizado:** não publicar segredos nem atingir terceiros.
-7. **Encerrar o recurso:** parar temporariamente ou terminar definitivamente.
-8. **Revisar resíduos e custos:** procurar volumes, snapshots, endereços e regras remanescentes.
+Antes do uso, imagem, estado, exposição de rede e chave selecionada são conferidos. O exercício permanece dentro do escopo autorizado e não publica segredos. Ao final, a instância é parada ou terminada conforme a necessidade, e volumes, snapshots, endereços, regras e custos remanescentes são revisados.
 
 ## Custos não dependem apenas da instância
 
@@ -50,28 +26,19 @@ Créditos promocionais, testes e ofertas gratuitas possuem condições, limites 
 
 Alertas de orçamento também não são um bloqueio instantâneo: dados de cobrança podem demorar a atualizar e, por padrão, o alerta não desliga recursos. A configuração será tratada na [aula 6](06-signing-up-with-aws.md).
 
-## Checklist de limpeza
+## Quando o laboratório realmente termina
 
-Ao terminar cada sessão:
+Encerrar a sessão SSH com `exit` fecha apenas o acesso remoto; fechar o terminal também não desliga a instância. Se o laboratório será retomado em breve, a instância pode ser parada. Quando o trabalho acabou, ela deve ser terminada e os volumes EBS adicionais, snapshots, endereços reservados, regras de entrada e Security Groups temporários precisam ser conferidos.
 
-- encerre a sessão SSH com `exit`;
-- lembre-se de que fechar o terminal não desliga a instância;
-- pare a instância se ela ainda será usada em breve;
-- termine a instância quando o laboratório tiver acabado;
-- confira volumes EBS adicionais;
-- exclua snapshots desnecessários;
-- libere endereços reservados sem uso;
-- remova regras de entrada e Security Groups criados apenas para o exercício;
-- mantenha chaves privadas fora de repositórios, diretórios web e pastas compartilhadas;
-- consulte faturamento, créditos e orçamento após a atualização dos dados.
-
-## Resumo
-
-Esta seção transforma fundamentos de nuvem em um laboratório administrável. O fluxo não termina quando o exercício funciona: termina quando o acesso foi fechado, recursos desnecessários foram removidos e a cobrança foi verificada.
+As chaves privadas continuam fora de repositórios, diretórios web e pastas compartilhadas. Depois que os dados de cobrança forem atualizados, faturamento, créditos e orçamento são consultados. O fluxo termina quando o acesso foi fechado, os recursos desnecessários desapareceram e a cobrança foi verificada.
 
 ## Perguntas de fixação
 
-1. Por que fechar o terminal não encerra uma instância EC2?
-2. Que recursos podem continuar gerando custo depois que a instância é parada?
-3. Qual é a diferença entre alerta de orçamento e limite rígido de gastos?
-4. Quando é melhor parar uma instância e quando é melhor terminá-la?
+1. Em que ordem objetivo, limites, proteção da conta, criação, verificação, uso e limpeza aparecem no ciclo do laboratório?
+2. Por que executar `exit` ou fechar o terminal encerra apenas a sessão SSH, mas não a instância EC2?
+3. Qual é a diferença operacional entre parar e terminar uma instância?
+4. Quais recursos podem continuar existindo ou gerando custo depois que a computação é interrompida?
+5. Por que créditos promocionais e o selo de oferta gratuita não garantem custo zero?
+6. Por que um alerta de orçamento não funciona como bloqueio instantâneo de gastos?
+7. Quais elementos de imagem, rede, chave e exposição precisam ser verificados antes de usar a instância?
+8. Que evidências mostram que o laboratório foi realmente encerrado, e não apenas que o terminal foi fechado?

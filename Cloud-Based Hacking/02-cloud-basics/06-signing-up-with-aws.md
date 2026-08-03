@@ -2,25 +2,9 @@
 
 > **Atualidade:** condições comerciais e nomes da interface mudam. As observações temporais desta nota correspondem a agosto de 2026; confirme-as nas páginas oficiais antes de criar recursos.
 
-## Objetivos da aula
+## O que uma conta AWS representa
 
-Ao final desta aula, você deverá ser capaz de:
-
-- criar uma conta usando o site oficial da AWS;
-- reconhecer os elementos principais do AWS Management Console;
-- selecionar e registrar uma Região;
-- diferenciar o usuário root de identidades administradas pelo IAM;
-- habilitar autenticação multifator;
-- acompanhar créditos, uso e cobranças;
-- criar um orçamento e compreender suas limitações.
-
-## Antes de começar
-
-Uma conta AWS é simultaneamente:
-
-- limite administrativo para recursos;
-- limite de identidade e permissões;
-- relação de cobrança com a AWS.
+Uma conta AWS reúne três responsabilidades: delimita os recursos administrados, concentra identidades e permissões e estabelece a relação de cobrança com a AWS.
 
 Prepare um e-mail controlado por você, senha única armazenada em gerenciador, dispositivo para MFA e endereço que receberá alertas de cobrança.
 
@@ -32,26 +16,13 @@ Não existe uma promessa universal de “um ano de AWS grátis”.
 
 Novos clientes podem encontrar planos, créditos iniciais, testes e ofertas gratuitas com prazos e limites diferentes. Contas antigas, países, Regiões e serviços também podem seguir condições distintas.
 
-Por isso:
-
-1. consulte o [AWS Free Tier](https://aws.amazon.com/free/);
-2. leia as [perguntas frequentes](https://aws.amazon.com/free/free-tier-faqs/);
-3. confira qual plano aparece para sua conta;
-4. verifique serviços elegíveis, saldo e vencimento dos créditos;
-5. não confie apenas no selo “Free Tier eligible”.
+Por isso, consulte o [AWS Free Tier](https://aws.amazon.com/free/) e suas [perguntas frequentes](https://aws.amazon.com/free/free-tier-faqs/), confira o plano apresentado à sua conta e verifique serviços elegíveis, saldo e vencimento dos créditos. O selo “Free Tier eligible” sozinho não comprova que o uso será gratuito.
 
 A AWS exige método de pagamento válido em muitos cadastros. Isso não transforma todo recurso em gratuito nem garante ausência de cobrança.
 
-## Criando a conta
+## Criando a conta pelo site oficial
 
-1. Acesse [https://aws.amazon.com/](https://aws.amazon.com/) e inicie a criação.
-2. Confirme o domínio antes de inserir dados.
-3. Informe um e-mail controlado por você e um nome para a conta.
-4. Crie senha forte e exclusiva para o usuário root.
-5. Leia as condições do plano apresentado.
-6. Forneça os dados solicitados pela AWS.
-7. Conclua as verificações de e-mail, telefone ou identidade.
-8. Aguarde a confirmação de ativação antes de provisionar recursos.
+A criação começa em [https://aws.amazon.com/](https://aws.amazon.com/). Antes de inserir dados, confirme o domínio. Informe um e-mail sob seu controle e um nome para a conta, crie uma senha forte e exclusiva para o usuário root e leia as condições do plano apresentado. Depois de fornecer os dados solicitados, conclua as verificações de e-mail, telefone ou identidade e aguarde a confirmação de ativação antes de provisionar recursos.
 
 A ativação pode levar algum tempo. Um atraso não deve ser contornado criando várias contas ou repetindo cobranças de verificação.
 
@@ -107,21 +78,21 @@ Para uma conta pessoal de laboratório:
 
 ## Proteção inicial
 
-### 1. Habilitar MFA no root
+### Habilitar MFA no root
 
 **MFA**, ou autenticação multifator, exige mais de um fator para entrar. A senha é algo que você sabe; uma passkey, chave de segurança ou código temporário vem de algo que possui.
 
 Habilite MFA imediatamente. Quando disponível, prefira passkeys ou chaves de segurança resistentes a phishing e proteja os meios de recuperação.
 
-### 2. Não criar access keys para o root
+### Não criar access keys para o root
 
 Access keys permitem acesso programático às APIs. Uma chave do root teria poder sobre toda a conta. Não crie essa credencial para uso cotidiano.
 
-### 3. Criar e testar a identidade cotidiana
+### Criar e testar a identidade cotidiana
 
 Configure a identidade normal, atribua somente as permissões necessárias, habilite MFA e teste o acesso antes de sair do root.
 
-### 4. Configurar acesso à cobrança quando necessário
+### Configurar acesso à cobrança quando necessário
 
 Identidades IAM não acessam automaticamente o Console de cobrança. O root pode precisar liberar esse acesso nas configurações da conta; depois disso, a identidade ainda precisa das permissões IAM apropriadas.
 
@@ -140,43 +111,15 @@ Créditos podem reduzir a fatura e esconder quanto o laboratório consumiria sem
 
 ### Criando um orçamento
 
-1. Abra **Billing and Cost Management**.
-2. Acesse **Budgets**.
-3. Crie um orçamento mensal de custo.
-4. Defina um valor baixo e compatível com seu limite.
-5. Configure alertas, por exemplo em 50%, 80% e 100%.
-6. Quando disponível, adicione alerta de custo previsto.
-7. Informe um e-mail monitorado.
-8. Salve e confirme que o orçamento aparece como ativo.
+Em **Billing and Cost Management**, abra **Budgets** e crie um orçamento mensal de custo. Defina um valor baixo e compatível com seu limite, configure alertas em percentuais como 50%, 80% e 100% e, quando disponível, adicione uma previsão. Informe um e-mail monitorado, salve e confirme que o orçamento aparece como ativo.
 
 Um orçamento comum **não é teto de gastos**. Ele monitora dados e envia alertas. Como os dados não são atualizados em tempo real, o uso pode continuar antes da notificação.
 
-## Checklist antes de criar a instância
+## Antes de criar a primeira instância
 
-- [ ] A conta foi ativada.
-- [ ] O plano e a validade dos créditos foram conferidos.
-- [ ] O root possui MFA.
-- [ ] Não existem access keys do root.
-- [ ] Uma identidade cotidiana foi configurada e testada.
-- [ ] O acesso à cobrança funciona para a identidade correta.
-- [ ] Um orçamento e seus alertas foram configurados.
-- [ ] A Região foi escolhida e registrada.
-- [ ] Nenhum segredo foi incluído nas notas.
+Só avance quando a conta estiver ativada, o plano e a validade dos créditos tiverem sido conferidos e o root estiver protegido por MFA, sem access keys para uso cotidiano. A identidade normal precisa estar configurada e testada, o acesso à cobrança deve funcionar para a identidade correta, e orçamento, alertas e Região devem estar registrados. Nenhum segredo pertence às notas.
 
 A próxima etapa é [provisionar Kali Linux em uma instância EC2](07-installing-kali-linux-on-the-cloud.md).
-
-## Resumo
-
-O cadastro é apenas o início. Uma conta preparada para laboratório possui root protegido, MFA, identidade cotidiana, Região definida e acompanhamento de cobrança. O Free Tier é um conjunto variável de planos, créditos e ofertas limitadas, não autorização para criar qualquer recurso gratuitamente.
-
-## Perguntas de fixação
-
-1. Por que o root da AWS não deve ser usado diariamente?
-2. Qual é a diferença entre o root da AWS e o `root` do Linux?
-3. O que uma política IAM controla?
-4. Por que uma instância pode parecer ausente na Região errada?
-5. Por que o Free Tier não garante ausência de cobrança?
-6. Por que um orçamento não interrompe necessariamente os gastos?
 
 ## Referências oficiais
 
@@ -185,3 +128,16 @@ O cadastro é apenas o início. Uma conta preparada para laboratório possui roo
 - [Boas práticas para o usuário root](https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html)
 - [Boas práticas do IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 - [AWS Budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html)
+
+## Perguntas de fixação
+
+1. Quais três responsabilidades administrativas, de identidade e de cobrança ficam reunidas em uma conta AWS?
+2. Qual é a diferença entre o usuário root da conta AWS e o usuário `root` dentro do Linux?
+3. Por que o root da AWS deve ser reservado para recuperação e tarefas exclusivas?
+4. O que uma política IAM define e por que ela não altera usuários existentes dentro do Kali?
+5. Quais vantagens existem em usar credenciais temporárias por função ou IAM Identity Center no acesso cotidiano?
+6. Quais recursos são regionais e por que selecionar a Região errada pode fazer uma instância parecer ausente?
+7. O que MFA acrescenta à autenticação e por que passkeys ou chaves de segurança oferecem maior resistência a phishing?
+8. Por que não devem ser criadas access keys para uso cotidiano do root?
+9. Que dados do Free Tier, dos créditos e da fatura precisam ser conferidos antes de criar recursos?
+10. Quais campos e alertas são configurados em um orçamento, e por que ele monitora em vez de interromper automaticamente o consumo?

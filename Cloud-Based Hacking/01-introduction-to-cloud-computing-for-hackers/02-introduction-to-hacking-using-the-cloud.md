@@ -1,25 +1,10 @@
 # Hacking ético, pentest e Red Team: escopo antes da técnica
 
-## Objetivos da aula
-
-Ao final desta aula, você deverá ser capaz de:
-
-- explicar o que torna uma atividade de hacking ética e autorizada;
-- diferenciar hacking ético, pentest e Red Team;
-- definir alvo, ativo, escopo, autorização e regras de engajamento;
-- distinguir comprometimento de conta, navegador e sistema operacional;
-- reconhecer promessas exageradas sobre resultados de ataques.
-
 ## O que é hacking ético
 
 No sentido técnico, *hacking* envolve estudar sistemas, compreender seu funcionamento e encontrar maneiras não previstas de interagir com eles. A mesma habilidade pode ser usada de forma legítima ou abusiva.
 
-O que torna uma avaliação ética não é a ferramenta utilizada nem a boa intenção declarada, mas a existência de:
-
-- autorização válida;
-- objetivo legítimo;
-- limites claros;
-- responsabilidade sobre os efeitos produzidos.
+O que torna uma avaliação ética não é a ferramenta utilizada nem a boa intenção declarada. São a autorização válida, o objetivo legítimo, os limites claros e a responsabilidade sobre os efeitos produzidos que separam uma avaliação de uma atividade abusiva.
 
 **Hacking ético** é o uso autorizado de conhecimentos de segurança para identificar e demonstrar riscos. O profissional deve limitar-se ao escopo, reduzir impactos desnecessários, proteger os dados encontrados e entregar evidências ao responsável pelo sistema.
 
@@ -47,36 +32,15 @@ Hacking ético é a categoria mais ampla. Pentest e Red Team são modalidades de
 
 ## Alvo, ativo e autorização
 
-| Termo | Significado | Exemplo |
-|---|---|---|
-| **Ativo** | Recurso que possui valor para uma pessoa ou organização. | Aplicação, banco de dados, identidade, estação ou informação. |
-| **Alvo** | Ativo ou componente selecionado para uma atividade do teste. | Domínio, IP, aplicativo ou conta incluída no escopo. |
-| **Escopo** | Limite do que pode e não pode ser avaliado. | Sistemas, horários e técnicas permitidos ou excluídos. |
-| **Autorização** | Permissão explícita de quem possui autoridade sobre os ativos. | Contrato, termo ou regras formais de um laboratório. |
-| **Regras de engajamento** | Documento que determina como a avaliação será conduzida. | Contatos, limites, evidências e condições de interrupção. |
+Um **ativo** é qualquer recurso que possua valor, como uma aplicação, banco de dados, identidade, estação ou informação. Quando esse ativo ou um de seus componentes é selecionado para a avaliação, ele se torna um **alvo** do teste.
 
-Uma autorização adequada deve identificar, no mínimo:
-
-- quem autoriza e quem executará o teste;
-- ativos incluídos e excluídos;
-- período da atividade;
-- técnicas permitidas e proibidas;
-- limites de volume, indisponibilidade e acesso a dados;
-- contatos para incidentes;
-- critérios de interrupção;
-- tratamento e descarte das evidências.
+O **escopo** define o limite: quais domínios, IPs, aplicações, contas, horários e técnicas estão incluídos ou excluídos. A **autorização** é a permissão explícita de quem possui autoridade sobre esses ativos. As **regras de engajamento** transformam essa permissão em instruções operacionais, registrando quem autoriza e executa, o período, os limites de volume e indisponibilidade, os contatos para incidentes, os critérios de interrupção e o tratamento das evidências.
 
 Pessoas envolvidas em simulações de engenharia social exigem autorização organizacional específica. Uma porta aberta, falha aparente ou serviço público não representa consentimento.
 
 ## Conta, navegador e sistema não são a mesma coisa
 
 A palavra “invadir” pode esconder resultados muito diferentes. Para avaliar corretamente o impacto, é necessário identificar qual camada foi realmente comprometida.
-
-| Camada | O que foi comprometido | Alcance típico | O que isso não implica |
-|---|---|---|---|
-| **Conta on-line** | Identidade ou sessão em um serviço. | Ações permitidas àquela conta na aplicação. | Controle do navegador, dispositivo ou outras contas. |
-| **Navegador** | Contexto web, perfil, extensão ou processo do navegador. | Depende da origem, permissões e vulnerabilidade. | Controle automático de todo o sistema operacional. |
-| **Sistema operacional** | Conta local, processo ou execução de código no dispositivo. | Ações permitidas ao usuário ou processo. | Privilégios administrativos ou acesso irrestrito. |
 
 ### Comprometimento de conta
 
@@ -106,25 +70,17 @@ A nuvem fornecerá infraestrutura remota para os laboratórios. Ela poderá hosp
 
 Os fundamentos técnicos estão na [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md). A razão para utilizá-la em testes autorizados será aprofundada na [Aula 4: Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md).
 
-## Correções importantes
-
-- Nenhum curso transforma automaticamente um iniciante em especialista.
-- Não existe técnica universal capaz de comprometer qualquer conta, navegador ou sistema.
-- Uma técnica funcionar em um ambiente não garante o mesmo resultado em outros.
-- MFA não é inútil; diferentes fatores apresentam resistências diferentes.
-- “Controle total” exige verificar privilégios, alcance, persistência e restrições.
-- A nuvem não torna uma atividade ética, privada ou anônima.
-
-## Resumo
-
-Hacking ético exige autorização válida e limites explícitos. Pentest demonstra vulnerabilidades dentro de um escopo; Red Team avalia caminhos orientados por objetivos. Conta, navegador e sistema operacional são camadas distintas, e o impacto deve ser descrito sem exageros.
+A nuvem não torna uma atividade ética, privada ou anônima. Também não existe técnica universal capaz de comprometer qualquer conta, navegador ou sistema. Quando alguém afirma ter “controle total”, ainda é necessário verificar privilégios, alcance, persistência e restrições. Descrever o resultado com precisão faz parte do trabalho técnico.
 
 ## Perguntas de fixação
 
-1. O que diferencia uma habilidade de hacking de uma atividade de hacking ético?
-2. Qual é a principal diferença entre pentest e Red Team?
-3. Por que possuir uma conta em um serviço não autoriza testar toda a plataforma?
-4. Quais informações mínimas devem constar nas regras de engajamento?
-5. O que um token de sessão permite e por que ele não é equivalente à senha?
-6. Por que acesso a uma conta não comprova comprometimento do navegador?
-7. Execução como usuário comum significa controle administrativo do sistema?
+1. Quais quatro elementos transformam uma habilidade de hacking em uma atividade ética e autorizada?
+2. Como o objetivo e o escopo de um pentest diferem dos de uma operação Red Team?
+3. Qual é a diferença entre ativo, alvo, escopo, autorização e regras de engajamento?
+4. Quais limites técnicos e operacionais devem aparecer nas regras de engajamento antes do teste?
+5. Como um token de sessão permite ações em uma aplicação sem revelar necessariamente a senha?
+6. Quais controles podem limitar a reutilização de um token de sessão obtido após MFA?
+7. Como a política de mesma origem e a sandbox limitam o código executado por uma página no navegador?
+8. Por que acesso à câmera, ao microfone ou à localização não surge automaticamente ao carregar uma página?
+9. Se um processo obtiver execução no sistema, o que determina suas permissões iniciais e por que isso não garante privilégio administrativo?
+10. Que condições adicionais precisam ser comprovadas para passar de conta comprometida para navegador e depois para sistema operacional?

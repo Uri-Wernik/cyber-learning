@@ -1,20 +1,5 @@
 # Fundamentos do terminal Linux
 
-## Objetivos da aula
-
-Ao final desta aula, você deverá ser capaz de:
-
-- distinguir terminal, shell e CLI;
-- compreender a árvore de diretórios do Linux;
-- diferenciar `/`, `/root` e `/home/kali`;
-- usar caminhos absolutos e relativos;
-- reconhecer comando, opção e argumento;
-- navegar com `pwd`, `ls` e `cd`;
-- consultar ajuda com `man` e `--help`;
-- reutilizar comandos com histórico e Tab;
-- interpretar permissões básicas exibidas por `ls -l`;
-- investigar erros sem executar comandos às cegas.
-
 ## Do SSH ao terminal
 
 Na [aula 8](08-communicating-with-cloud-computers-remotely-using-ssh.md), usamos SSH para abrir uma sessão na máquina Kali. Depois da conexão, os comandos digitados são executados na máquina remota, não no computador local.
@@ -25,44 +10,19 @@ Antes de executar qualquer comando, confirme máquina e usuário no prompt.
 kali@servidor:~$
 ```
 
-Normalmente:
-
-- `kali`: usuário atual;
-- `servidor`: nome da máquina;
-- `~`: diretório pessoal;
-- `$`: usuário comum;
-- `#`: frequentemente usuário administrativo `root`.
+Nesse prompt, `kali` identifica o usuário atual, `servidor` representa o nome da máquina e `~` indica o diretório pessoal. O símbolo `$` costuma acompanhar usuários comuns, enquanto `#` aparece frequentemente em uma shell administrativa de `root`.
 
 O prompt não faz parte do comando e não deve ser digitado.
 
 ## Terminal, shell e CLI
 
-| Termo | Significado |
-|---|---|
-| **Terminal** | Aplicativo que mostra entrada e saída textual. |
-| **Shell** | Programa que interpreta comandos, como Bash ou Zsh. |
-| **CLI** | *Command-Line Interface*: interação baseada em texto. |
-| **Prompt** | Indicação de que o shell está pronto. |
-| **Comando** | Instrução reconhecida pelo shell. |
+O **terminal** é o aplicativo que apresenta entrada e saída textual. Dentro dele, o **shell**, como Bash ou Zsh, interpreta os comandos. **CLI** significa *Command-Line Interface* e descreve essa forma de interação por texto. O **prompt** indica que o shell está pronto para receber uma nova instrução.
 
 Ao pressionar Enter, o shell interpreta a linha, localiza o comando, processa opções e argumentos, executa a operação e mostra saída ou erro.
 
 ## A árvore de diretórios
 
-O sistema de arquivos Linux forma uma única árvore. O ponto mais alto é `/`.
-
-```text
-/
-├── etc/
-├── home/
-│   └── kali/
-├── root/
-├── tmp/
-├── usr/
-└── var/
-    └── www/
-        └── html/
-```
+O sistema de arquivos Linux forma uma única hierarquia iniciada em `/`, o diretório raiz. Dentro dela ficam diretórios como `/etc`, usado por configurações, `/home`, que reúne diretórios pessoais de usuários comuns, `/root`, reservado ao usuário administrativo, `/tmp`, `/usr` e `/var`. O caminho `/var/www/html`, usado posteriormente pelo Apache, também pertence a essa mesma hierarquia.
 
 A palavra *root* aparece em sentidos diferentes:
 
@@ -103,12 +63,7 @@ www/html
 
 Se o diretório atual for `/var`, aponta para `/var/www/html`.
 
-| Referência | Significado |
-|---|---|
-| `.` | Diretório atual |
-| `..` | Diretório pai |
-| `~` | Diretório pessoal atual |
-| `/` | Raiz e separador de diretórios |
+O ponto `.` representa o diretório atual, `..` representa o diretório pai e `~` representa o diretório pessoal do usuário atual. A barra `/` identifica a raiz quando aparece no início e separa os nomes ao longo do caminho.
 
 Linux usa `/`, não a barra invertida `\` comum no Windows. Nomes diferenciam maiúsculas de minúsculas. `Downloads` e `downloads` podem ser locais distintos.
 
@@ -124,16 +79,7 @@ cd "Meus Arquivos"
 ls -la /var/www/html
 ```
 
-```text
-ls -la /var/www/html
-├─ comando: ls
-├─ opções: -l e -a, combinadas como -la
-└─ argumento: /var/www/html
-```
-
-- **Comando:** operação principal.
-- **Opção:** altera o comportamento.
-- **Argumento:** objeto sobre o qual o comando trabalha.
+Nessa linha, `ls` é o comando e define a operação principal. `-la` combina as opções `-l` e `-a`, alterando o formato da listagem e incluindo entradas ocultas. `/var/www/html` é o argumento, ou seja, o diretório sobre o qual `ls` trabalhará.
 
 Opções curtas normalmente usam um hífen, como `-l`. Longas usam dois, como `--help`. Cada programa define suas próprias opções.
 
@@ -145,13 +91,7 @@ Opções curtas normalmente usam um hífen, como `-l`. Longas usam dois, como `-
 pwd
 ```
 
-```text
-pwd
-├─ comando: exibe o diretório atual
-├─ opções: nenhuma
-├─ argumentos: nenhum
-└─ resultado: caminho absoluto, como /home/kali
-```
+Sem opções ou argumentos, `pwd` imprime o caminho absoluto do diretório atual, como `/home/kali`.
 
 ## `ls`: listar conteúdo
 
@@ -189,14 +129,7 @@ O primeiro caractere indica o tipo:
 - `-`: arquivo comum;
 - `l`: link simbólico.
 
-Os nove seguintes formam três grupos:
-
-```text
-rwx  r-x  r-x
-│    │    └─ outros usuários
-│    └────── grupo
-└─────────── proprietário
-```
+Os nove caracteres seguintes formam três grupos de três: o primeiro pertence ao proprietário, o segundo ao grupo e o terceiro aos demais usuários. Em `rwxr-xr-x`, o proprietário possui leitura, escrita e execução; grupo e outros possuem leitura e execução.
 
 - `r`: leitura;
 - `w`: escrita;
@@ -217,14 +150,7 @@ cd ~     # diretório pessoal
 cd -     # diretório anterior, quando suportado
 ```
 
-```text
-cd /var
-├─ comando interno: cd
-├─ argumento: /var
-├─ efeito: altera o diretório desta sessão
-├─ saída: normalmente nenhuma
-└─ verificação: execute pwd
-```
+Em `cd /var`, `cd` é um comando interno do shell e `/var` é o argumento. A operação muda o diretório da sessão e normalmente não mostra saída; `pwd` confirma o novo local.
 
 Ausência de texto não comprova, sozinha, que qualquer comando funcionou. Use uma verificação apropriada.
 
@@ -236,12 +162,7 @@ Ausência de texto não comprova, sozinha, que qualquer comando funcionou. Use u
 man ls
 ```
 
-```text
-man ls
-├─ man: abre uma página de manual
-├─ ls: assunto procurado
-└─ saída: pressione q
-```
+`man` abre a página de manual e `ls` informa o assunto procurado. Pressione `q` para sair da visualização.
 
 Alguns comandos, como `cd`, pertencem ao shell. No Bash, consulte:
 
@@ -279,7 +200,7 @@ Tab pode completar o caminho se houver uma única correspondência. Com várias,
 
 O preenchimento reduz erros, mas não executa o comando. Confira antes de Enter.
 
-## Verificação prática
+## Percorrendo a hierarquia na prática
 
 ```bash
 pwd
@@ -295,13 +216,7 @@ pwd
 ls -la
 ```
 
-Confirme que:
-
-1. depois de `cd /`, `pwd` mostra `/`;
-2. `cd var` funciona como caminho relativo a partir de `/`;
-3. dentro de `/var`, `cd ..` retorna a `/`;
-4. `cd ~` retorna ao diretório pessoal;
-5. `ls -la` inclui entradas iniciadas por ponto.
+Depois de `cd /`, `pwd` deve mostrar `/`. A partir dali, `cd var` usa um caminho relativo e entra em `/var`; `cd ..` retorna à raiz. `cd ~` volta ao diretório pessoal, e `ls -la` inclui também as entradas iniciadas por ponto.
 
 ## Investigando erros
 
@@ -326,36 +241,19 @@ Consulte imediatamente, pois o comando seguinte substitui o valor.
 
 Não adicione `sudo` automaticamente ao encontrar erro. Primeiro confirme comando, caminho, usuário e permissões.
 
-## Correções da transcrição
-
-- `LZ`, `LHS` e `RLS` são erros: o comando correto é `ls`.
-- `/` é a raiz; `/root` é a pasta do usuário `root`.
-- Caminhos Linux usam `/`.
-- `ls -l` mostra normalmente a última modificação, não a criação.
-- No Bash, `help cd` pode ser mais apropriado que `man cd`.
-- Comando sem saída não está automaticamente validado.
-- Opções longas, como `--help`, usam dois hífens.
-
-## Resumo
-
-- O terminal apresenta a sessão; o shell interpreta comandos.
-- Todos os caminhos pertencem à árvore iniciada em `/`.
-- `/`, `/root` e `/home/kali` são locais diferentes.
-- Caminhos absolutos começam em `/`; relativos dependem do diretório atual.
-- `pwd`, `ls` e `cd` permitem localizar e navegar.
-- `man`, `help` e `--help` explicam comandos.
-- `history`, setas e Tab aumentam eficiência.
-- `ls -l` apresenta tipo, permissões e metadados.
+Lembre que `/` é a raiz, enquanto `/root` é o diretório pessoal do usuário `root`. Caminhos Linux usam `/`, e `ls -l` normalmente mostra a última modificação, não a criação. Um comando sem saída também não está automaticamente validado.
 
 ## Perguntas de fixação
 
-1. Qual é a diferença entre terminal, shell e CLI?
-2. Por que `/` e `/root` não são sinônimos?
-3. Onde costuma ficar o diretório do usuário `kali`?
-4. O que torna `/var/www/html` absoluto?
-5. Se você está em `/var`, aonde `www/html` aponta?
-6. Quais são comando, opções e argumento em `ls -la /etc`?
-7. Por que `help cd` pode ser melhor que `man cd`?
-8. O que representam os grupos de permissões?
-9. Como confirmar que `cd` funcionou?
-10. Por que revisar comandos recuperados do histórico?
+1. No prompt `kali@servidor:~$`, o que representam usuário, máquina, `~` e `$`, e por que o prompt não deve ser digitado?
+2. Qual é a diferença entre terminal, shell, CLI, prompt e comando?
+3. Por que `/`, `/root` e `/home/kali` representam locais diferentes?
+4. O que torna `/var/www/html/index.html` absoluto, de que depende `www/html` e como espaços e maiúsculas afetam caminhos?
+5. Em `ls -la /var/www/html`, qual é o comando, quais opções foram combinadas e qual é o argumento?
+6. O que muda entre `ls`, `ls /var`, `ls -l`, `ls -a` e `ls -la`, e como `drwxr-xr-x` deve ser interpretado?
+7. O que fazem `cd /var`, `cd ..`, `cd ~` e `cd -`, e qual comando confirma o diretório resultante?
+8. Quando usar `man ls`, `help cd` e `ls --help`, e como sair da página de manual?
+9. O que `history` armazena e por que comandos recuperados pelas setas precisam ser revisados?
+10. O que o preenchimento com Tab faz e o que ele não faz?
+11. O que `echo $?` mostra, o que normalmente significam `0` e outros valores e por que a consulta deve ser imediata?
+12. Como `pwd`, `ls` e `ls -ld <CAMINHO>` ajudam a distinguir caminho incorreto de falta de permissão?

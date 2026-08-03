@@ -1,16 +1,5 @@
 # Por que usar nuvem em testes de segurança autorizados?
 
-## Objetivos da aula
-
-Ao final desta aula, você deverá ser capaz de:
-
-- explicar a arquitetura cliente-servidor;
-- identificar benefícios e limites de uma infraestrutura remota de testes;
-- compreender conceitualmente callback e Command and Control;
-- relacionar escalabilidade a cargas autorizadas;
-- explicar por que provedores aumentam, e não eliminam, a rastreabilidade;
-- planejar o uso responsável e a limpeza de um laboratório.
-
 Os fundamentos de rede, hospedagem e exposição estão na [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md). Autorização e escopo estão na [Aula 2: Hacking ético, pentest e Red Team](02-introduction-to-hacking-using-the-cloud.md).
 
 ## Arquitetura cliente-servidor
@@ -31,14 +20,7 @@ Ter acesso à Internet não comprova que um aplicativo utiliza nuvem. Ele pode c
 
 ## Infraestrutura remota de testes
 
-Em um laboratório autorizado, a infraestrutura em nuvem pode ocupar uma posição intermediária:
-
-```mermaid
-flowchart LR
-    A[Operador autorizado] -->|administração autenticada| B[Infraestrutura de teste na nuvem]
-    B -->|ações permitidas pelo escopo| C[Ativo de laboratório]
-    C -->|respostas e evidências| B
-```
+Em um laboratório autorizado, a infraestrutura em nuvem ocupa uma posição intermediária. O operador administra essa infraestrutura com uma identidade autenticada; os serviços de teste comunicam-se somente com os ativos previstos no escopo; respostas e evidências retornam ao ambiente controlado.
 
 Essa organização pode oferecer:
 
@@ -62,14 +44,7 @@ Um **callback** ocorre quando um agente previamente executado no sistema de labo
 
 Isso não significa que um callback atravesse qualquer controle. O agente precisa estar executando, possuir permissão, resolver e alcançar o destino e utilizar comunicação permitida.
 
-**Command and Control**, abreviado como **C2**, é a infraestrutura usada para coordenar agentes e trocar tarefas e resultados. Em uma simulação autorizada:
-
-1. O operador autentica-se no serviço de controle.
-2. O agente de laboratório inicia o callback.
-3. O serviço associa a conexão ao exercício autorizado.
-4. O operador envia somente tarefas previstas no escopo.
-5. O agente executa com os privilégios que já possui.
-6. Resultados e registros retornam pelo canal estabelecido.
+**Command and Control**, abreviado como **C2**, é a infraestrutura usada para coordenar agentes e trocar tarefas e resultados. Em uma simulação autorizada, o operador autentica-se no serviço de controle e o agente de laboratório inicia o callback. O serviço associa a conexão ao exercício; o operador envia somente tarefas previstas no escopo; o agente executa com os privilégios que já possui; e os resultados retornam pelo canal estabelecido.
 
 C2 descreve comunicação e coordenação; não concede automaticamente controle total. O agente continua limitado pelo usuário, processo, sistema operacional, rede e controles existentes.
 
@@ -83,14 +58,7 @@ A nuvem permite aumentar temporariamente memória, processamento ou quantidade d
 
 Mais recursos não garantem resultado proporcional. Rede, armazenamento, algoritmo, limites do provedor e capacidade do alvo podem ser gargalos. Aumentar concorrência amplia custo e impacto.
 
-Em avaliações, a escala deve ser controlada por:
-
-- limites de taxa e concorrência;
-- listas exatas de destinos;
-- orçamento e cotas;
-- horários autorizados;
-- critérios automáticos de interrupção;
-- monitoramento do impacto.
+Em avaliações, a escala precisa obedecer a limites de taxa e concorrência, listas exatas de destinos, orçamento, cotas, horários autorizados, critérios de interrupção e monitoramento do impacto.
 
 Escalar sem esses limites pode causar indisponibilidade ou atingir sistemas fora do escopo.
 
@@ -114,53 +82,23 @@ VPNs e proxies modificam parte do caminho observado pelo destino, mas não ofere
 
 Em um teste legítimo, essa rastreabilidade ajuda a demonstrar que as ações ocorreram dentro do período e escopo autorizados.
 
-## Preparação e encerramento do laboratório
+## Preparando e encerrando o laboratório
 
-Antes de utilizar recursos:
+Antes de criar recursos, é necessário obter autorização escrita, confirmar o escopo e consultar as políticas atuais do provedor. Um projeto ou conta de laboratório separado reduz confusões. Identidades, chaves e regras de rede devem ser restritas, enquanto cotas, orçamento, volume e duração limitam o impacto. Dados e credenciais precisam ser fictícios, e os recursos e horários devem ser registrados.
 
-1. obtenha autorização escrita e confirme o escopo;
-2. consulte as políticas atuais do provedor;
-3. use projeto ou conta de laboratório separado;
-4. restrinja identidades, chaves e regras de rede;
-5. defina cotas, orçamento, volume e duração;
-6. utilize dados e credenciais fictícios;
-7. registre recursos e horários;
-8. estabeleça contatos e critérios de interrupção.
+O encerramento faz parte do exercício. Primeiro terminam processos e sessões; depois são removidos serviços, regras e credenciais temporárias. Dados são eliminados conforme o acordo, e instâncias, discos, endereços e outros recursos cobrados precisam ser excluídos. A verificação final confirma que nenhum serviço público permaneceu ativo e que apenas evidências autorizadas foram preservadas.
 
-Ao terminar:
-
-1. encerre processos e sessões;
-2. remova serviços e regras desnecessários;
-3. revogue credenciais temporárias;
-4. elimine dados conforme o acordo;
-5. exclua instâncias, discos, endereços e outros recursos cobrados;
-6. confirme que não restaram serviços públicos;
-7. verifique custos e preserve apenas evidências autorizadas.
-
-## Correções importantes
-
-- Nem toda aplicação conectada à Internet executa seu trabalho na nuvem.
-- Um servidor remoto não está necessariamente disponível o tempo todo.
-- Nuvem não garante privacidade ou anonimato.
-- Callback não contorna universalmente NAT, firewall ou controles de saída.
-- C2 não equivale a controle administrativo.
-- Aumentar recursos não acelera toda carga de forma linear.
-- Hospedar páginas enganosas ou serviços contra terceiros continua sendo não autorizado.
-
-## Resumo
-
-A nuvem pode fornecer infraestrutura temporária, acessível e escalável para testes autorizados. Cliente e servidor descrevem como os componentes se comunicam, enquanto callbacks permitem que um agente de laboratório inicie uma sessão de saída. Esses mecanismos dependem de rotas, permissões e controles.
-
-O provedor não oferece anonimato: contas, operações e conexões deixam registros. Por isso, a nuvem deve ser usada com autorização, limites, controle de custos e limpeza completa.
+Nem toda aplicação conectada à Internet usa nuvem, callback não atravessa universalmente controles de rede e C2 não cria privilégios administrativos. A nuvem oferece conveniência operacional, mas continua exigindo autorização, limites, controle de custos e limpeza completa.
 
 ## Perguntas de fixação
 
-1. O que define os papéis de cliente e servidor?
-2. Por que um aplicativo conectado à Internet não utiliza necessariamente nuvem?
-3. Qual é a diferença entre conexão direta e callback?
-4. Quais condições precisam existir para um callback funcionar?
-5. Por que um agente C2 não possui automaticamente controle total?
-6. Qual é a diferença entre EC2 e C2?
-7. Como a escalabilidade pode aumentar o risco operacional?
-8. Quais registros podem relacionar uma atividade à conta do provedor?
-9. Quais verificações devem ser feitas depois de encerrar o laboratório?
+1. O que faz um processo assumir o papel de cliente ou servidor em uma comunicação?
+2. Por que um mesmo dispositivo pode ser cliente em uma conexão e servidor em outra?
+3. Como uma conexão direta difere de um callback iniciado pelo agente de laboratório?
+4. Quais condições de execução, permissão, DNS, rota e firewall precisam existir para um callback funcionar?
+5. Como operador, serviço de controle e agente participam do fluxo conceitual de C2?
+6. Por que um agente conectado a C2 continua limitado pelos privilégios do processo e do usuário que o executa?
+7. Qual é a diferença técnica entre Amazon EC2 e Command and Control, apesar das siglas parecidas?
+8. Como aumentar instâncias ou concorrência pode elevar custo, impacto e risco de atingir destinos fora do escopo?
+9. Quais registros do provedor, do alvo e do DNS podem relacionar uma atividade à conta usada no laboratório?
+10. Quais recursos precisam ser conferidos depois de excluir a instância para comprovar que o laboratório e a cobrança foram encerrados?
