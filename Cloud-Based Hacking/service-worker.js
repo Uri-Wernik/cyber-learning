@@ -1,11 +1,11 @@
 const APP_ROOT = "/cyber-learning/";
 const CACHE_PREFIX = "cyber-learning-";
-const CACHE_NAME = `${CACHE_PREFIX}pwa-20260803`;
+const CACHE_NAME = `${CACHE_PREFIX}pwa-20260803-v2`;
 
 const PRECACHE_URLS = [
   APP_ROOT,
   `${APP_ROOT}manifest.webmanifest`,
-  `${APP_ROOT}stylesheets/extra.css?v=pwa-20260803`,
+  `${APP_ROOT}stylesheets/extra.css?v=pwa-20260803-2`,
   `${APP_ROOT}assets/stylesheets/main.ec1eaa64.min.css`,
   `${APP_ROOT}assets/stylesheets/palette.ab4e12ef.min.css`,
   `${APP_ROOT}assets/javascripts/bundle.d7400e89.min.js`,
@@ -17,7 +17,8 @@ const PRECACHE_URLS = [
   `${APP_ROOT}assets/site/app-icon-512.png`,
   `${APP_ROOT}assets/site/app-icon-maskable-512.png`,
   `${APP_ROOT}assets/site/brand-mark.png`,
-  `${APP_ROOT}assets/site/cover-network.png`,
+  `${APP_ROOT}assets/site/cover-network-indigo.png`,
+  `${APP_ROOT}assets/site/cover-network-mobile-indigo.png`,
   `${APP_ROOT}assets/fonts/ibm-plex-sans-latin.woff2`,
   `${APP_ROOT}assets/fonts/literata-latin.woff2`,
   `${APP_ROOT}01-introduction-to-cloud-computing-for-hackers/01-teaser/`,

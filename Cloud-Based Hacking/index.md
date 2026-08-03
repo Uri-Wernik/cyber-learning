@@ -6,7 +6,12 @@ hide:
 
 <section class="book-cover" markdown>
 
-<div class="book-cover__media" aria-hidden="true"><img class="book-cover__art" src="assets/site/cover-network.png" alt="" width="1600" height="720" fetchpriority="high"></div>
+<div class="book-cover__media" aria-hidden="true">
+    <picture class="book-cover__picture">
+        <source media="(max-width: 44.984375em)" srcset="assets/site/cover-network-mobile-indigo.png">
+        <img class="book-cover__art" src="assets/site/cover-network-indigo.png" alt="" width="1600" height="720" fetchpriority="high">
+    </picture>
+</div>
 
 <div class="book-cover__content" markdown>
 

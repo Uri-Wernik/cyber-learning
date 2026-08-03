@@ -344,6 +344,12 @@ body {
   inset: 0;
 }
 
+.book-cover__picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .md-typeset .book-cover__art {
   display: block;
   width: 100%;
@@ -617,40 +623,35 @@ body {
   }
 
   .book-cover {
-    display: grid;
-    min-height: 0;
+    display: flex;
+    min-height: 28rem;
     width: calc(100% + 1.6rem);
     margin: -1.35rem -0.8rem 1.5rem;
-    padding: 0;
-    grid-template-rows: auto auto;
-    align-items: stretch;
+    padding: 2rem 1.2rem 2.2rem;
+    align-items: flex-end;
   }
 
   .book-cover__media {
-    position: relative;
-    inset: auto;
+    position: absolute;
+    inset: 0;
     width: 100%;
-    aspect-ratio: 20 / 9;
-    grid-row: 1;
-    overflow: hidden;
-    border-bottom: 1px solid rgb(79 124 255 / 0.35);
-    background: var(--book-header);
+    height: 100%;
   }
 
   .md-typeset .book-cover__art {
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
   }
 
   .book-cover::after {
-    display: none;
+    display: block;
+    background: linear-gradient(180deg, rgb(7 13 26 / 0.06) 0%, rgb(7 13 26 / 0.28) 38%, rgb(7 13 26 / 0.9) 62%, #070D1A 100%);
   }
 
   .book-cover__content {
-    grid-row: 2;
-    max-width: none;
-    padding: 1.6rem 1.2rem 2rem;
-    background: linear-gradient(145deg, #070D1A 0%, #0B1220 62%, #111A2D 100%);
+    max-width: 22rem;
+    padding: 0;
+    background: transparent;
   }
 
   .md-typeset .book-cover h1 {
