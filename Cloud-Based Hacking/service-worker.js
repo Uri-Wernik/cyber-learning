@@ -1,16 +1,19 @@
 const APP_ROOT = "/cyber-learning/";
 const CACHE_PREFIX = "cyber-learning-";
-const CACHE_NAME = `${CACHE_PREFIX}pwa-20260803-v6`;
+const CACHE_NAME = `${CACHE_PREFIX}pwa-20260803-v7`;
 
 const PRECACHE_URLS = [
   APP_ROOT,
   `${APP_ROOT}manifest.webmanifest`,
-  `${APP_ROOT}stylesheets/extra.css?v=pwa-20260803-5`,
+  `${APP_ROOT}stylesheets/extra.css?v=pwa-20260803-6`,
   `${APP_ROOT}assets/stylesheets/main.ec1eaa64.min.css`,
   `${APP_ROOT}assets/stylesheets/palette.ab4e12ef.min.css`,
   `${APP_ROOT}assets/javascripts/bundle.d7400e89.min.js`,
   `${APP_ROOT}assets/javascripts/workers/search.2c215733.min.js`,
   `${APP_ROOT}javascripts/pwa.js?v=20260803`,
+  `${APP_ROOT}javascripts/quiz-loader.js?v=20260803-1`,
+  `${APP_ROOT}javascripts/quiz-data.js?v=20260803-1`,
+  `${APP_ROOT}javascripts/quiz.js?v=20260803-1`,
   `${APP_ROOT}search/search_index.json`,
   `${APP_ROOT}assets/site/apple-touch-icon.png`,
   `${APP_ROOT}assets/site/app-icon-192.png`,
@@ -21,6 +24,7 @@ const PRECACHE_URLS = [
   `${APP_ROOT}assets/site/cover-network-mobile-indigo.png`,
   `${APP_ROOT}assets/fonts/ibm-plex-sans-latin.woff2`,
   `${APP_ROOT}assets/fonts/literata-latin.woff2`,
+  `${APP_ROOT}quiz/`,
   `${APP_ROOT}01-introduction-to-cloud-computing-for-hackers/01-teaser/`,
   `${APP_ROOT}01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/`,
   `${APP_ROOT}01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud/`,

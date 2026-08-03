@@ -73,10 +73,11 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
-  - stylesheets/extra.css?v=pwa-20260803-5
+  - stylesheets/extra.css?v=pwa-20260803-6
 
 extra_javascript:
   - javascripts/pwa.js?v=20260803
+  - javascripts/quiz-loader.js?v=20260803-1
 
 extra:
   social:
@@ -86,6 +87,7 @@ extra:
 
 nav:
   - Início: index.md
+  - Quiz: quiz.md
   - 1. Contexto e fundamentos:
       - 1. Visão geral do curso: 01-introduction-to-cloud-computing-for-hackers/01-teaser.md
       - 2. Hacking ético, pentest e Red Team: 01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud.md
