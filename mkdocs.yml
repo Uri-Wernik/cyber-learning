@@ -73,7 +73,10 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
-  - stylesheets/extra.css?v=34bac43
+  - stylesheets/extra.css?v=pwa-20260803
+
+extra_javascript:
+  - javascripts/pwa.js?v=20260803
 
 extra:
   social:

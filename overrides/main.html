@@ -2,6 +2,15 @@
 
 {% block extrahead %}
   {{ super() }}
+  <link rel="manifest" href="{{ 'manifest.webmanifest' | url }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ 'assets/site/apple-touch-icon.png' | url }}">
+  <meta name="theme-color" content="#070D1A">
+  <meta name="application-name" content="Cyber Learning">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Cyber Learning">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no">
   <link rel="preload" href="{{ 'assets/fonts/ibm-plex-sans-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ 'assets/fonts/literata-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
 {% endblock %}
