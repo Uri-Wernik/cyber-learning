@@ -1,6 +1,6 @@
 const APP_ROOT = "/cyber-learning/";
 const CACHE_PREFIX = "cyber-learning-";
-const CACHE_NAME = `${CACHE_PREFIX}pwa-20260803-v5`;
+const CACHE_NAME = `${CACHE_PREFIX}pwa-20260803-v6`;
 
 const PRECACHE_URLS = [
   APP_ROOT,
@@ -33,8 +33,14 @@ const PRECACHE_URLS = [
   `${APP_ROOT}03-phishing/10-introduction-to-phishing/`,
   `${APP_ROOT}03-phishing/11-file-hosting-and-firewall-settings/`,
   `${APP_ROOT}03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud/`,
+  `${APP_ROOT}03-phishing/13-creating-a-fake-login-page-on-the-cloud/`,
   `${APP_ROOT}03-phishing/assets/aula-12/01-configuracao-sftp-filezilla.png`,
-  `${APP_ROOT}03-phishing/assets/aula-12/02-conexao-sftp-bem-sucedida.png`
+  `${APP_ROOT}03-phishing/assets/aula-12/02-conexao-sftp-bem-sucedida.png`,
+  `${APP_ROOT}03-phishing/assets/aula-13/01-diretorio-remoto-var-www-html.png`,
+  `${APP_ROOT}03-phishing/assets/aula-13/02-erro-permissao-filezilla.png`,
+  `${APP_ROOT}03-phishing/assets/aula-13/03-propriedade-root-root.png`,
+  `${APP_ROOT}03-phishing/assets/aula-13/04-comando-chown-terminal.png`,
+  `${APP_ROOT}03-phishing/assets/aula-13/05-propriedade-kali-kali.png`
 ];
 
 self.addEventListener("install", (event) => {

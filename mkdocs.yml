@@ -101,9 +101,10 @@ nav:
       - 10. Phishing e engenharia social: 03-phishing/10-introduction-to-phishing.md
       - 11. Apache, HTTP e exposição web: 03-phishing/11-file-hosting-and-firewall-settings.md
       - 12. Cópia de páginas e SFTP: 03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud.md
+      - 13. Publicando uma página no Apache: 03-phishing/13-creating-a-fake-login-page-on-the-cloud.md
 
 draft_docs: |
-  03-phishing/1[3-9]-*.md
+  03-phishing/1[4-9]-*.md
   04-phishing-bypassing-2fa-mfa/**
   05-accessing-cloud-server-desktop/**
   06-bitb-browser-in-browser-attack/**
