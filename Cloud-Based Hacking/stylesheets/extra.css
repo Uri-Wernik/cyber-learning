@@ -602,6 +602,12 @@ body {
   }
 }
 
+@media screen and (min-width: 60.0625em) {
+  .md-header__button.md-logo {
+    display: inline-flex;
+  }
+}
+
 @media screen and (max-width: 44.984375em) {
   .md-header__inner {
     min-height: 2.8rem;
@@ -628,10 +634,10 @@ body {
 
   .book-cover {
     display: flex;
-    min-height: 28rem;
+    min-height: 0;
     width: calc(100% + 1.6rem);
     margin: -1.35rem -0.8rem 1.5rem;
-    padding: 2rem 1.2rem 2.2rem;
+    padding: 2.6rem 1.2rem 2.8rem;
     align-items: center;
   }
 

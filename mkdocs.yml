@@ -18,7 +18,7 @@ theme:
   custom_dir: overrides
   language: pt-BR
   font: false
-  logo: assets/site/brand-mark.png
+  logo: assets/site/app-icon-192.png
   favicon: assets/site/brand-mark.png
   icon:
     repo: fontawesome/brands/github
@@ -73,7 +73,7 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
-  - stylesheets/extra.css?v=pwa-20260803-4
+  - stylesheets/extra.css?v=pwa-20260803-5
 
 extra_javascript:
   - javascripts/pwa.js?v=20260803
