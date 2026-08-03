@@ -41,52 +41,53 @@
 :root {
   --md-text-font: "IBM Plex Sans";
   --md-code-font: "IBM Plex Mono";
-  --md-primary-fg-color: #0f706c;
-  --md-primary-fg-color--light: #39938d;
-  --md-primary-fg-color--dark: #09524f;
-  --md-accent-fg-color: #16827c;
+  --md-primary-fg-color: #4F7CFF;
+  --md-primary-fg-color--light: #7C9DFF;
+  --md-primary-fg-color--dark: #3B6FFF;
+  --md-accent-fg-color: #7C5CFC;
   --book-heading-font: "Literata";
-  --book-header: #0d1516;
-  --book-accent: #16827c;
-  --book-accent-strong: #0f706c;
+  --book-header: #070D1A;
+  --book-accent: #4F7CFF;
+  --book-accent-strong: #3B6FFF;
+  --book-accent-secondary: #7C5CFC;
 }
 
 [data-md-color-scheme="default"] {
-  --book-bg: #f3f6f4;
-  --book-surface: #ffffff;
-  --book-surface-muted: #e9efec;
-  --book-border: #d2ddd8;
-  --book-ink: #142326;
-  --book-muted: #5d6e6a;
-  --book-hover: #e5eeea;
-  --book-cover-scrim: linear-gradient(90deg, rgb(243 246 244 / 0.98) 0%, rgb(243 246 244 / 0.9) 54%, rgb(243 246 244 / 0.34) 100%);
-  --book-cover-heading: #142326;
-  --book-cover-lead: #425451;
+  --book-bg: #F8FAFC;
+  --book-surface: #FFFFFF;
+  --book-surface-muted: #F1F5F9;
+  --book-border: #E2E8F0;
+  --book-ink: #0F172A;
+  --book-muted: #475569;
+  --book-hover: #EEF2FF;
+  --book-cover-scrim: linear-gradient(90deg, rgb(7 13 26 / 0.97) 0%, rgb(7 13 26 / 0.82) 54%, rgb(7 13 26 / 0.18) 100%);
+  --book-cover-heading: #F8FAFC;
+  --book-cover-lead: #B8C1CC;
   --md-default-bg-color: var(--book-bg);
   --md-default-fg-color: var(--book-ink);
-  --md-code-bg-color: #e8eeeb;
-  --md-code-fg-color: #183334;
-  --md-typeset-a-color: #0b716d;
+  --md-code-bg-color: #EEF2FF;
+  --md-code-fg-color: #1E3A5F;
+  --md-typeset-a-color: #3B6FFF;
 }
 
 [data-md-color-scheme="slate"] {
-  --book-bg: #101615;
-  --book-surface: #18201e;
-  --book-surface-muted: #202a27;
-  --book-border: #33413c;
-  --book-ink: #e8efeb;
-  --book-muted: #a6b5af;
-  --book-hover: #222e2a;
-  --book-cover-scrim: linear-gradient(90deg, rgb(13 21 22 / 0.96) 0%, rgb(13 21 22 / 0.82) 54%, rgb(13 21 22 / 0.18) 100%);
-  --book-cover-heading: #f6faf8;
-  --book-cover-lead: #cbd8d3;
+  --book-bg: #0B1220;
+  --book-surface: #111827;
+  --book-surface-muted: #161F2E;
+  --book-border: #2B3648;
+  --book-ink: #E5E7EB;
+  --book-muted: #94A3B8;
+  --book-hover: #202C41;
+  --book-cover-scrim: linear-gradient(90deg, rgb(7 13 26 / 0.97) 0%, rgb(7 13 26 / 0.82) 54%, rgb(7 13 26 / 0.18) 100%);
+  --book-cover-heading: #F8FAFC;
+  --book-cover-lead: #B8C1CC;
   --md-default-bg-color: var(--book-bg);
   --md-default-fg-color: var(--book-ink);
-  --md-code-bg-color: #0b1112;
-  --md-code-fg-color: #d6e7e1;
-  --md-typeset-a-color: #57c5bd;
-  --md-primary-fg-color: #16827c;
-  --md-accent-fg-color: #57c5bd;
+  --md-code-bg-color: #0E1827;
+  --md-code-fg-color: #C5D4E8;
+  --md-typeset-a-color: #7C9DFF;
+  --md-primary-fg-color: #4F7CFF;
+  --md-accent-fg-color: #A78BFA;
 }
 
 html,
@@ -126,7 +127,7 @@ body {
 }
 
 .md-header__button.md-logo {
-  color: #55c2ba;
+  color: #4F7CFF;
 }
 
 .md-header__button.md-logo img {
@@ -135,14 +136,17 @@ body {
 }
 
 .md-search__form {
-  background-color: #172224;
-  border: 1px solid #304043;
+  background-color: var(--book-surface);
+  border: 1px solid var(--book-border);
   border-radius: 3px;
 }
 
-.md-search__input,
+.md-search__input {
+  color: var(--book-ink);
+}
+
 .md-search__input::placeholder {
-  color: #e7efeb;
+  color: var(--book-muted);
 }
 
 .md-source__facts {
@@ -175,7 +179,7 @@ body {
 
 .md-typeset {
   color: var(--book-ink);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   line-height: 1.72;
 }
 
@@ -270,7 +274,7 @@ body {
 }
 
 .md-nav {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
 }
 
 .md-sidebar {
@@ -326,7 +330,7 @@ body {
   position: relative;
   display: flex;
   overflow: hidden;
-  min-height: 23rem;
+  min-height: 28rem;
   margin: -2rem 0 2rem;
   padding: 3rem clamp(1.5rem, 5vw, 4rem);
   align-items: center;
@@ -366,12 +370,12 @@ body {
 
 .md-typeset .book-cover h1 {
   max-width: 29rem;
-  margin: 0 0 1rem;
+  margin: 0 0 1.1rem;
   padding: 0;
   border: 0;
   color: var(--book-cover-heading);
-  font-size: 2.35rem;
-  line-height: 1.12;
+  font-size: 2.7rem;
+  line-height: 1.09;
 }
 
 .book-cover .headerlink {
@@ -395,24 +399,28 @@ body {
 .md-typeset .book-cover .md-button {
   display: inline-flex;
   min-height: 2.55rem;
-  padding: 0.65rem 1rem;
+  padding: 0.72rem 1.4rem;
   align-items: center;
-  border: 1px solid var(--book-accent-strong);
-  border-radius: 3px;
-  background-color: var(--book-accent-strong);
-  color: #f6faf8;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4F7CFF 0%, #7C5CFC 100%);
+  color: #F8FAFC;
+  font-size: 0.83rem;
   font-weight: 700;
-  transition: background-color 180ms ease, transform 180ms ease;
+  letter-spacing: 0.015em;
+  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
 }
 
 .md-typeset .book-cover .md-button:hover {
-  border-color: var(--book-accent);
-  background-color: var(--book-accent);
-  color: #f6faf8;
+  background: linear-gradient(135deg, #3B6FFF 0%, #6C4EF7 100%);
+  color: #F8FAFC;
+  box-shadow: 0 6px 28px -4px rgba(79, 124, 255, 0.45);
+  transform: translateY(-1px);
 }
 
 .md-typeset .book-cover .md-button:active {
   transform: translateY(1px);
+  box-shadow: none;
 }
 
 .ethics-note {
@@ -488,7 +496,8 @@ body {
 .md-typeset .module-row:hover {
   background-color: var(--book-hover);
   color: var(--book-ink);
-  transform: translateX(2px);
+  transform: translateX(3px);
+  box-shadow: inset 3px 0 0 var(--book-accent);
 }
 
 .md-typeset .module-row:active {
@@ -563,7 +572,7 @@ body {
 
 .md-footer {
   background-color: var(--book-header);
-  border-top: 1px solid #263335;
+  border-top: 1px solid #1A2640;
 }
 
 @media screen and (max-width: 60em) {
@@ -670,4 +679,37 @@ body {
   .module-row {
     transition: none;
   }
+}
+
+/* ─── Enhancements ───────────────────────────────────────────────────────── */
+
+/* Numbered module badges via CSS counters */
+.module-list {
+  counter-reset: module;
+}
+
+.md-typeset .module-row {
+  counter-increment: module;
+}
+
+.module-row__copy::before {
+  content: "0" counter(module);
+  display: block;
+  font-family: "IBM Plex Mono";
+  font-size: 0.57rem;
+  letter-spacing: 0.12em;
+  color: var(--book-accent);
+  margin-bottom: 0.14rem;
+  opacity: 0.75;
+}
+
+/* Gradient accent line anchoring the section heading */
+.section-heading::before {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  background: linear-gradient(90deg, #4F7CFF, #7C5CFC);
+  margin-bottom: 0.9rem;
+  border-radius: 1px;
 }
