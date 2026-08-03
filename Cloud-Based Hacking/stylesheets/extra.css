@@ -628,11 +628,11 @@ body {
 
   .book-cover {
     display: flex;
-    min-height: 32rem;
+    min-height: 28rem;
     width: calc(100% + 1.6rem);
     margin: -1.35rem -0.8rem 1.5rem;
-    padding: 2rem 1.2rem 2.3rem;
-    align-items: flex-end;
+    padding: 2rem 1.2rem 2.2rem;
+    align-items: center;
   }
 
   .book-cover__media {
@@ -649,7 +649,7 @@ body {
 
   .book-cover::after {
     display: block;
-    background: linear-gradient(180deg, rgb(7 13 26 / 0.04) 0%, rgb(7 13 26 / 0.1) 34%, rgb(7 13 26 / 0.5) 56%, rgb(7 13 26 / 0.9) 74%, rgb(7 13 26 / 0.98) 100%);
+    background: linear-gradient(180deg, rgb(7 13 26 / 0.54) 0%, rgb(7 13 26 / 0.58) 52%, rgb(7 13 26 / 0.94) 100%);
   }
 
   .book-cover__content {
