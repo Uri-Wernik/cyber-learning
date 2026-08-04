@@ -2,6 +2,21 @@
   const QUIZ_SELECTOR = "[data-quiz-app], [data-lesson-quiz]";
   const STORAGE_KEY = "cyber-learning-quiz-v1";
   const GENERAL_SESSION_LENGTH = 10;
+  const LESSON_PATHS = [
+    "01-introduction-to-cloud-computing-for-hackers/01-teaser/",
+    "01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/",
+    "01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud/",
+    "01-introduction-to-cloud-computing-for-hackers/04-why-learn-cloud-computing-as-a-hacker/",
+    "02-cloud-basics/05-introduction-to-cloud-basics/",
+    "02-cloud-basics/06-signing-up-with-aws/",
+    "02-cloud-basics/07-installing-kali-linux-on-the-cloud/",
+    "02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh/",
+    "02-cloud-basics/09-linux-terminal-basics/",
+    "03-phishing/10-introduction-to-phishing/",
+    "03-phishing/11-file-hosting-and-firewall-settings/",
+    "03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud/",
+    "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
+  ];
   const LEVELS = {
     easy: {
       label: "Fácil",
@@ -79,6 +94,11 @@
     return url.href;
   };
 
+  const getNextLessonPath = (source) => {
+    const currentIndex = LESSON_PATHS.indexOf(source);
+    return currentIndex >= 0 ? LESSON_PATHS[currentIndex + 1] || null : null;
+  };
+
   const prepareQuestion = (question) => {
     const choices = shuffle(
       question.choices.map((text, index) => ({
@@ -108,6 +128,10 @@
             question.scope === "lesson-fixation" &&
             question.source === requestedLessonPath
         );
+      if (root.hasAttribute("data-quiz-app") && !this.isStandaloneLessonQuiz) {
+        window.location.replace(getLessonUrl(""));
+        return;
+      }
       this.isLessonQuiz =
         root.hasAttribute("data-lesson-quiz") || this.isStandaloneLessonQuiz;
       this.lessonPath = root.dataset.lessonPath || requestedLessonPath || "";
@@ -563,10 +587,23 @@
       const context = this.isLessonQuiz
         ? `Quiz desta aula. Sua melhor marca é ${best}/${total}.`
         : `Nível ${LEVELS[this.selectedLevel].label}. Seu melhor resultado neste nível é ${best}/${total}.`;
+      const nextLessonPath = this.isLessonQuiz
+        ? getNextLessonPath(this.lessonPath)
+        : null;
+      const progressionAction = this.isLessonQuiz
+        ? `<a class="quiz-button quiz-button--primary" href="${escapeHtml(
+            getLessonUrl(nextLessonPath || "")
+          )}">
+            ${nextLessonPath ? "Próxima aula" : "Voltar ao início"}
+            <span aria-hidden="true">→</span>
+          </a>`
+        : `<button class="quiz-button quiz-button--primary" type="button" data-quiz-action="restart">
+            Jogar novamente <span aria-hidden="true">→</span>
+          </button>`;
       const secondaryAction = this.isLessonQuiz
-        ? `<a class="quiz-button quiz-button--secondary" href="${escapeHtml(
-            getLessonUrl("quiz/")
-          )}">Abrir quiz geral</a>`
+        ? `<button class="quiz-button quiz-button--secondary" type="button" data-quiz-action="restart">
+            Refazer quiz
+          </button>`
         : `<button class="quiz-button quiz-button--secondary" type="button" data-quiz-action="levels">
             Trocar nível
           </button>`;
@@ -589,9 +626,7 @@
             </dl>
 
             <div class="quiz-result__actions">
-              <button class="quiz-button quiz-button--primary" type="button" data-quiz-action="restart">
-                ${this.isLessonQuiz ? "Refazer quiz" : "Jogar novamente"} <span aria-hidden="true">→</span>
-              </button>
+              ${progressionAction}
               ${secondaryAction}
             </div>
           </div>

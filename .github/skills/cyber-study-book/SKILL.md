@@ -57,6 +57,7 @@ As notas finais devem funcionar como capítulos para leitura contínua, e não c
 Toda aula publicada deve terminar com um acesso ao seu próprio quiz interativo. Preserve este comportamento nas aulas existentes e implemente-o ao adicionar uma nova aula:
 
 - mantenha as questões no banco de dados do quiz; não repita uma lista `## Perguntas de fixação` no Markdown;
+- mantenha apenas quizzes vinculados às aulas; não crie item de menu, botão na página inicial ou modo geral separado para o quiz;
 - abra o quiz em uma URL dedicada que identifique a aula de origem;
 - apresente uma pergunta por tela, com quatro alternativas e exatamente uma correta;
 - embaralhe a ordem das perguntas e das alternativas sem alterar a resposta correta;
@@ -69,6 +70,7 @@ Toda aula publicada deve terminar com um acesso ao seu próprio quiz interativo.
 - mantenha o botão de avanço indisponível até uma alternativa ser escolhida;
 - ao continuar, substitua integralmente a pergunta atual pela seguinte;
 - mostre progresso, quantidade de acertos, resultado final, melhor marca e revisão dos erros;
+- no resultado final, use `Próxima aula` como ação principal; quando não houver outra aula publicada, ofereça retorno ao início;
 - permita fechar o quiz pelo botão visível ou pela tecla `Esc` e retornar à aula de origem;
 - preserve funcionamento em modo claro, modo escuro, desktop, celular, navegação por teclado e PWA offline.
 

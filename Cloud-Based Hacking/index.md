@@ -22,7 +22,6 @@ hide:
 <div class="book-cover__actions" markdown>
 
 [Começar a leitura :material-arrow-right:](01-introduction-to-cloud-computing-for-hackers/01-teaser.md){ .md-button .md-button--primary }
-[Fazer o quiz](quiz.md){ .md-button .book-cover__quiz }
 
 </div>
 

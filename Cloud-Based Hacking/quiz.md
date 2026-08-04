@@ -2,11 +2,13 @@
 hide:
   - toc
   - path
+search:
+  exclude: true
 ---
 
-# Quiz de cibersegurança
+# Quiz da aula
 
-<p class="quiz-page__lead">Teste o que você aprendeu, escolha o nível e entenda cada resposta antes de avançar.</p>
+<p class="quiz-page__lead">Responda às perguntas do capítulo e consulte a explicação de cada alternativa antes de avançar.</p>
 
 <section class="quiz-shell" data-quiz-app aria-labelledby="quiz-title">
   <div class="quiz-loading" role="status" aria-live="polite">

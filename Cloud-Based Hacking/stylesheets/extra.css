@@ -448,18 +448,6 @@ body {
   transform: translateY(-1px);
 }
 
-.md-typeset .book-cover .md-button.book-cover__quiz {
-  border: 1px solid rgb(184 193 204 / 0.38);
-  background: rgb(19 29 45 / 0.72);
-  box-shadow: none;
-}
-
-.md-typeset .book-cover .md-button.book-cover__quiz:hover {
-  border-color: rgb(124 157 255 / 0.72);
-  background: rgb(32 44 65 / 0.9);
-  box-shadow: none;
-}
-
 .md-typeset .book-cover .md-button:active {
   transform: translateY(1px);
   box-shadow: none;

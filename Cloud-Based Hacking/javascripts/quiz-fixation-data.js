@@ -1,3 +1,4 @@
+window.CYBER_QUIZ_QUESTIONS = [];
 window.CYBER_QUIZ_QUESTIONS.push(
   ...[
   {
