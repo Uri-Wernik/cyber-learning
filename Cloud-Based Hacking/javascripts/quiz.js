@@ -2,7 +2,6 @@
   const QUIZ_SELECTOR = "[data-quiz-app], [data-lesson-quiz]";
   const STORAGE_KEY = "cyber-learning-quiz-v1";
   const GENERAL_SESSION_LENGTH = 10;
-  const LESSON_SESSION_LENGTH = 5;
   const LEVELS = {
     easy: {
       label: "Fácil",
@@ -65,13 +64,19 @@
     }
   };
 
-  const getLessonUrl = (source) => {
+  const getAppRoot = () => {
     const manifest = document.querySelector('link[rel="manifest"]');
-    const appRoot = manifest
+    return manifest
       ? new URL("./", manifest.href)
       : new URL("/cyber-learning/", window.location.origin);
+  };
 
-    return new URL(source, appRoot).href;
+  const getLessonUrl = (source) => new URL(source, getAppRoot()).href;
+
+  const getLessonQuizUrl = (source) => {
+    const url = new URL("quiz/", getAppRoot());
+    url.searchParams.set("lesson", source);
+    return url.href;
   };
 
   const prepareQuestion = (question) => {
@@ -93,10 +98,23 @@
     constructor(root, questions) {
       this.root = root;
       this.questions = questions;
-      this.isLessonQuiz = root.hasAttribute("data-lesson-quiz");
-      this.lessonPath = root.dataset.lessonPath || "";
+      const requestedLessonPath = new URLSearchParams(window.location.search).get(
+        "lesson"
+      );
+      this.isStandaloneLessonQuiz =
+        root.hasAttribute("data-quiz-app") &&
+        questions.some(
+          (question) =>
+            question.scope === "lesson-fixation" &&
+            question.source === requestedLessonPath
+        );
+      this.isLessonQuiz =
+        root.hasAttribute("data-lesson-quiz") || this.isStandaloneLessonQuiz;
+      this.lessonPath = root.dataset.lessonPath || requestedLessonPath || "";
       this.lessonQuestions = questions.filter(
-        (question) => question.source === this.lessonPath
+        (question) =>
+          question.source === this.lessonPath &&
+          question.scope === "lesson-fixation"
       );
       this.progress = readProgress();
       this.selectedLevel = this.progress.lastLevel || "easy";
@@ -114,7 +132,19 @@
       );
       this.root.addEventListener("click", (event) => this.handleClick(event));
       this.root.addEventListener("change", (event) => this.handleChange(event));
-      if (this.isLessonQuiz) {
+      this.root.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && this.root.classList.contains("is-session-open")) {
+          this.closeSession();
+        } else if (
+          event.key === "Tab" &&
+          this.root.classList.contains("is-session-open")
+        ) {
+          this.trapFocus(event);
+        }
+      });
+      if (this.isStandaloneLessonQuiz) {
+        this.startGame();
+      } else if (this.isLessonQuiz) {
         this.renderLessonStart();
       } else {
         this.renderStart();
@@ -144,6 +174,13 @@
         case "levels":
           this.renderStart();
           break;
+        case "close":
+          this.closeSession();
+          break;
+        case "open-lesson-quiz":
+          event.preventDefault();
+          window.location.assign(action.href);
+          break;
       }
     }
 
@@ -156,10 +193,68 @@
       this.updateStartSummary();
     }
 
+    setSessionOpen(isOpen) {
+      this.root.classList.toggle("is-session-open", isOpen);
+      document.documentElement.classList.toggle("quiz-session-open", isOpen);
+
+      if (isOpen) {
+        this.root.setAttribute("role", "dialog");
+        this.root.setAttribute("aria-modal", "true");
+      } else {
+        this.root.removeAttribute("role");
+        this.root.removeAttribute("aria-modal");
+      }
+    }
+
+    trapFocus(event) {
+      const focusable = Array.from(
+        this.root.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((element) => element.getClientRects().length > 0);
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    closeSession() {
+      if (this.isStandaloneLessonQuiz) {
+        this.setSessionOpen(false);
+        window.location.assign(getLessonUrl(this.lessonPath));
+        return;
+      }
+
+      if (this.isLessonQuiz) {
+        this.renderLessonStart();
+      } else {
+        this.renderStart();
+      }
+
+      this.root
+        .querySelector('[data-quiz-action="start"]')
+        ?.focus({ preventScroll: true });
+    }
+
+    renderCloseButton() {
+      return `
+        <button class="quiz-close" type="button" data-quiz-action="close" aria-label="Fechar quiz" title="Fechar quiz">
+          <span aria-hidden="true">×</span>
+        </button>`;
+    }
+
     renderLessonStart() {
+      this.setSessionOpen(false);
       const lesson = this.lessonQuestions[0]?.lesson || "Esta aula";
       const questionCount = this.lessonQuestions.length;
-      const best = this.progress.lessonBest?.[this.lessonPath];
+      const best = this.progress.fixationBest?.[this.lessonPath];
       const bestLabel = Number.isInteger(best)
         ? `Melhor resultado: ${best}/${questionCount}`
         : "Primeira tentativa";
@@ -173,14 +268,17 @@
           </div>
           <div class="lesson-quiz-intro__action">
             <span>${bestLabel}</span>
-            <button class="quiz-button quiz-button--primary" type="button" data-quiz-action="start">
+            <a class="quiz-button quiz-button--primary" href="${escapeHtml(
+              getLessonQuizUrl(this.lessonPath)
+            )}" data-quiz-action="open-lesson-quiz">
               Começar <span aria-hidden="true">→</span>
-            </button>
+            </a>
           </div>
         </div>`;
     }
 
     renderStart() {
+      this.setSessionOpen(false);
       const levelOptions = Object.entries(LEVELS)
         .map(([value, level]) => {
           const isChecked = value === this.selectedLevel;
@@ -247,10 +345,12 @@
       const questionPool = this.isLessonQuiz
         ? this.lessonQuestions
         : this.questions.filter(
-            (question) => question.difficulty === this.selectedLevel
+            (question) =>
+              question.scope !== "lesson-fixation" &&
+              question.difficulty === this.selectedLevel
           );
       const sessionLength = this.isLessonQuiz
-        ? LESSON_SESSION_LENGTH
+        ? questionPool.length
         : GENERAL_SESSION_LENGTH;
       this.sessionQuestions = shuffle(questionPool)
         .slice(0, sessionLength)
@@ -261,6 +361,7 @@
       this.hasAnswered = false;
       if (!this.isLessonQuiz) this.progress.lastLevel = this.selectedLevel;
       saveProgress(this.progress);
+      this.setSessionOpen(true);
       this.renderQuestion();
     }
 
@@ -285,6 +386,7 @@
 
       this.root.innerHTML = `
         <div class="quiz-play quiz-view">
+          ${this.renderCloseButton()}
           <header class="quiz-progress">
             <div class="quiz-progress__meta">
               <span class="quiz-badge">${quizLabel}</span>
@@ -304,17 +406,19 @@
             <div class="quiz-options" role="group" aria-labelledby="quiz-question-title">
               ${choices}
             </div>
+            <p class="quiz-question__hint">Selecione uma alternativa para liberar a explicação.</p>
+          </section>
 
-            <div class="quiz-feedback" data-quiz-feedback role="status" aria-live="polite" hidden></div>
-
-            <footer class="quiz-question__footer">
-              <span>Selecione uma resposta para continuar.</span>
+          <aside class="quiz-answer-dock" data-quiz-answer-dock hidden>
+            <div class="quiz-feedback" data-quiz-feedback role="status" aria-live="polite"></div>
+            <div class="quiz-answer-dock__action">
+              <span data-quiz-answer-hint></span>
               <button class="quiz-button quiz-button--primary" type="button" data-quiz-action="next" hidden>
-                ${currentNumber === total ? "Ver resultado" : "Próxima pergunta"}
+                ${currentNumber === total ? "Ver resultado" : "Continuar"}
                 <span aria-hidden="true">→</span>
               </button>
-            </footer>
-          </section>
+            </div>
+          </aside>
         </div>`;
 
       this.root
@@ -360,6 +464,7 @@
       )}%`;
 
       const feedback = this.root.querySelector("[data-quiz-feedback]");
+      const answerDock = this.root.querySelector("[data-quiz-answer-dock]");
       const correctChoice = question.choices[question.correct];
       const feedbackTitle = isCorrect
         ? "Resposta correta"
@@ -380,10 +485,10 @@
             } <span aria-hidden="true">→</span>
           </a>
         </div>`;
-      feedback.hidden = false;
+      answerDock.hidden = false;
 
-      const footerHint = this.root.querySelector(".quiz-question__footer > span");
-      footerHint.textContent = isCorrect
+      const answerHint = this.root.querySelector("[data-quiz-answer-hint]");
+      answerHint.textContent = isCorrect
         ? "Explicação liberada."
         : "Revise a explicação antes de avançar.";
 
@@ -409,12 +514,12 @@
       const total = this.sessionQuestions.length;
       const percentage = Math.round((this.score / total) * 100);
       const previousBest = this.isLessonQuiz
-        ? this.progress.lessonBest?.[this.lessonPath] || 0
+        ? this.progress.fixationBest?.[this.lessonPath] || 0
         : this.progress.best?.[this.selectedLevel] || 0;
       const best = Math.max(previousBest, this.score);
       if (this.isLessonQuiz) {
-        this.progress.lessonBest = {
-          ...this.progress.lessonBest,
+        this.progress.fixationBest = {
+          ...this.progress.fixationBest,
           [this.lessonPath]: best,
         };
       } else {
@@ -468,6 +573,7 @@
 
       this.root.innerHTML = `
         <div class="quiz-result quiz-view">
+          ${this.renderCloseButton()}
           <div class="quiz-result__main">
             <span class="quiz-kicker">Rodada concluída</span>
             <div class="quiz-result__score" aria-label="${this.score} acertos em ${total} perguntas">

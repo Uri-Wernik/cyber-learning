@@ -25,12 +25,3 @@ Uma página pode imitar visualmente um serviço legítimo, mas domínio, conteú
 Da mesma forma, capturar uma sessão autenticada não significa quebrar universalmente qualquer forma de MFA. Acesso a uma conta on-line, execução dentro de um navegador e controle do sistema operacional são resultados diferentes. Cada demonstração do curso representa uma combinação específica de condições, não uma capacidade universal.
 
 Usar a nuvem também não oferece anonimato, não elimina controles técnicos e não concede permissão para alcançar terceiros. Esse vocabulário e essas diferenças são desenvolvidos na [Aula 2: Hacking ético e testes autorizados](02-introduction-to-hacking-using-the-cloud.md).
-
-## Perguntas de fixação
-
-1. Quais informações uma autorização precisa definir antes de qualquer teste e quem pode concedê-la?
-2. O que HTTPS protege tecnicamente e o que ele não informa sobre a intenção de uma página?
-3. Quais condições de software, configuração, permissões e interação podem alterar o resultado de uma demonstração?
-4. Por que obter uma sessão autenticada não equivale a quebrar criptograficamente qualquer MFA?
-5. Qual é a diferença técnica entre acesso a uma conta, execução no navegador e controle do sistema operacional?
-6. Por que possuir uma máquina virtual na nuvem não autoriza testar a infraestrutura do provedor ou serviços de terceiros?

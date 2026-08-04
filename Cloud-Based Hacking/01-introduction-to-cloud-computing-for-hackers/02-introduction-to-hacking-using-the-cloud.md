@@ -71,16 +71,3 @@ A nuvem fornecerá infraestrutura remota para os laboratórios. Ela poderá hosp
 Os fundamentos técnicos estão na [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md). A razão para utilizá-la em testes autorizados será aprofundada na [Aula 4: Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md).
 
 A nuvem não torna uma atividade ética, privada ou anônima. Também não existe técnica universal capaz de comprometer qualquer conta, navegador ou sistema. Quando alguém afirma ter “controle total”, ainda é necessário verificar privilégios, alcance, persistência e restrições. Descrever o resultado com precisão faz parte do trabalho técnico.
-
-## Perguntas de fixação
-
-1. Quais quatro elementos transformam uma habilidade de hacking em uma atividade ética e autorizada?
-2. Como o objetivo e o escopo de um pentest diferem dos de uma operação Red Team?
-3. Qual é a diferença entre ativo, alvo, escopo, autorização e regras de engajamento?
-4. Quais limites técnicos e operacionais devem aparecer nas regras de engajamento antes do teste?
-5. Como um token de sessão permite ações em uma aplicação sem revelar necessariamente a senha?
-6. Quais controles podem limitar a reutilização de um token de sessão obtido após MFA?
-7. Como a política de mesma origem e a sandbox limitam o código executado por uma página no navegador?
-8. Por que acesso à câmera, ao microfone ou à localização não surge automaticamente ao carregar uma página?
-9. Se um processo obtiver execução no sistema, o que determina suas permissões iniciais e por que isso não garante privilégio administrativo?
-10. Que condições adicionais precisam ser comprovadas para passar de conta comprometida para navegador e depois para sistema operacional?

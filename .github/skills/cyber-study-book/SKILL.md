@@ -26,12 +26,13 @@ Não trate uma nota isolada como verdade definitiva. Atualize a compreensão con
 
 1. Explique primeiro em português simples e depois apresente os termos técnicos.
 2. Seja direto, didático e progressivo; não presuma conhecimentos que ainda não foram demonstrados.
-3. Explique o motivo de cada etapa antes do procedimento.
-4. Diferencie claramente observação do instrutor, correção técnica, inferência e resultado validado em laboratório.
-5. Preserve edições já feitas pelo estudante. Leia o arquivo atual antes de modificá-lo.
-6. Não invente resultados, versões, comandos, caminhos, saídas ou mapeamentos de frameworks.
-7. Quando houver dúvida factual, sinalize-a e prefira documentação oficial ou validação no laboratório.
-8. Responda em português do Brasil, mantendo em inglês os nomes oficiais que facilitam pesquisa e certificações.
+3. Trate conceitos, relações e causas como o conteúdo principal. Comandos e trechos de código são aplicações desses conceitos, não o objetivo final do aprendizado.
+4. Explique o motivo de cada etapa antes do procedimento. O leitor deve compreender o problema e o efeito esperado antes de ver o que digitar.
+5. Diferencie claramente observação do instrutor, correção técnica, inferência e resultado validado em laboratório.
+6. Preserve edições já feitas pelo estudante. Leia o arquivo atual antes de modificá-lo.
+7. Não invente resultados, versões, comandos, caminhos, saídas ou mapeamentos de frameworks.
+8. Quando houver dúvida factual, sinalize-a e prefira documentação oficial ou validação no laboratório.
+9. Responda em português do Brasil, mantendo em inglês os nomes oficiais que facilitam pesquisa e certificações.
 
 ## Estilo narrativo dos capítulos
 
@@ -41,15 +42,32 @@ As notas finais devem funcionar como capítulos para leitura contínua, e não c
 - Use títulos que nomeiem acontecimentos ou ideias, como `Abrindo o diretório remoto`, `Por que o envio foi recusado` e `Confirmando a mudança`. Não use títulos artificiais como `Passo 1`, `Passo 2` ou `Etapa 3` quando a mesma progressão puder ser transmitida pela narrativa.
 - Escreva predominantemente em parágrafos. Use listas somente quando o conteúdo for realmente enumerável e a lista melhorar a compreensão.
 - Não force seções de `Objetivos`, `Pré-requisitos`, `Resumo`, `Checklist`, `Correções da transcrição` ou `Problemas comuns`. Inclua uma delas apenas quando tiver função didática real naquele capítulo.
-- Finalize cada aula com `## Perguntas de fixação`: perguntas numeradas, específicas ao conteúdo realmente ensinado e formuladas para o leitor explicar relações e causas com suas próprias palavras. Não inclua respostas, não transforme a seção em checklist e não repita perguntas genéricas entre capítulos.
-- Faça as perguntas testarem compreensão técnica, não apenas memorização de definições. Quando houver comandos, pergunte em qual máquina são executados, o que fazem programa, opções e argumentos, qual efeito produzem, como confirmar o resultado e como interpretar falhas. Quando a aula usar Console ou interface gráfica, pergunte o papel dos campos, valores e controles observados. Em aulas conceituais, cobre componentes, fluxo, dependências, limites e diferenças entre termos próximos.
-- Use normalmente de 6 a 12 perguntas, conforme a densidade da aula. Combine assuntos diretamente relacionados em uma pergunta para evitar uma lista cansativa, mas não misture mecanismos sem relação apenas para reduzir a quantidade.
+- Não adicione uma seção textual `## Perguntas de fixação` ao Markdown publicado. Ao concluir uma aula, crie de 6 a 12 questões específicas no banco do quiz interativo, conforme a densidade do conteúdo realmente ensinado.
+- Faça as questões testarem compreensão técnica, não apenas memorização. Quando houver comandos, cobre em qual máquina são executados, o que fazem programa, opções e argumentos, qual efeito produzem, como confirmar o resultado e como interpretar falhas. Quando a aula usar Console ou interface gráfica, cobre o papel dos campos, valores e controles observados. Em aulas conceituais, cobre componentes, fluxo, dependências, limites e diferenças entre termos próximos.
+- Cada questão do quiz deve ter quatro alternativas plausíveis e mutuamente exclusivas, exatamente uma resposta correta e uma explicação didática apresentada depois da escolha. Combine assuntos diretamente relacionados quando isso melhorar a avaliação, mas não misture mecanismos sem relação apenas para reduzir a quantidade.
 - Incorpore correções da tradução diretamente na explicação. Crie uma seção separada somente quando várias correções relevantes não couberem naturalmente no texto.
 - Explique primeiro o que acontece e por que acontece. Não repita a mesma informação em introdução, quadro, resumo e perguntas.
 - Restrinja o capítulo ao que a aula realmente ensinou. Conceitos laterais ou mais avançados devem ser omitidos ou ligados à nota canônica correspondente, não adicionados para tornar o capítulo artificialmente completo.
 - Uma aula prática deve parecer acompanhada: o instrutor realiza uma ação, observa um resultado, interpreta esse resultado e decide a próxima ação. Preserve esse encadeamento sem copiar a fala original.
 - Uma aula conceitual deve desenvolver uma pergunta central em prosa, avançando do significado simples ao funcionamento técnico e às implicações do conceito.
 - Conecte aulas e módulos com uma transição curta quando a relação não for evidente. Explique qual conhecimento anterior será reutilizado e por que o tema seguinte depende dele, sem recapitular o capítulo inteiro.
+
+### Padrão de construção didática
+
+Use estas qualidades em todas as próximas aulas, notas e capítulos, adaptando-as ao conteúdo real em vez de repetir uma estrutura fixa:
+
+- identifique a pergunta central e o entendimento que o leitor deve construir;
+- situe o contexto, o estado inicial e o objetivo antes de apresentar ações, comandos ou conclusões;
+- defina os conceitos e pré-requisitos no momento em que passam a ser necessários;
+- diferencie claramente os componentes, ambientes, identidades, camadas e responsabilidades envolvidos no caso estudado;
+- em conteúdo prático, aproxime cada ação da saída, captura, log, mudança de estado ou outra evidência que ela produz;
+- em conteúdo conceitual, avance da explicação simples para o mecanismo, as relações com conceitos próximos, o exemplo e os limites;
+- trate tanto erros quanto resultados esperados como observações técnicas: explique o que funcionou, o que não funcionou e por quê;
+- faça a próxima ação nascer do diagnóstico ou do conceito explicado, nunca de uma receita sem contexto;
+- depois de uma mudança, mostre a verificação adequada e explique exatamente o que ela comprova e o que ainda não comprova;
+- encerre conectando as etapas e explicitando o aprendizado, as funções de cada elemento e as consequências técnicas.
+
+O encadeamento geral é **pergunta central → contexto → conceito → aplicação ou observação → explicação causal → verificação → consequência**. Quando houver falha e correção, use **ação → evidência → diagnóstico → correção → nova evidência** dentro desse fluxo. Omita o que não se aplicar e preserve a progressão natural de cada assunto.
 
 ## Nível iniciante e profundidade obrigatória
 
@@ -169,7 +187,18 @@ Para uma ferramenta, explique:
 
 ## Como explicar comandos
 
-Mostre em bloco de código apenas o comando literal que o leitor pode precisar reconhecer ou executar. Em seguida, explique suas partes em prosa, na ordem em que aparecem, ligando cada parte ao efeito do comando naquele contexto.
+O conceito e a mudança de estado são mais importantes do que memorizar a linha digitada. Antes do bloco, explique qual problema o comando resolve, em qual máquina e contexto ele será executado e por que esse mecanismo é adequado. Mostre em bloco de código apenas o comando literal que o leitor pode precisar reconhecer ou executar.
+
+Em seguida, explique suas partes em prosa, na ordem em que aparecem, ligando programa, opções e argumentos ao efeito real naquele contexto. Deixe explícito:
+
+- qual componente interpreta ou executa a instrução;
+- quais entradas, arquivos, usuários, processos ou recursos ela utiliza;
+- qual estado ou propriedade ela lê ou modifica;
+- quais privilégios e pré-condições são necessários;
+- o que ela **não** faz, quando houver uma confusão provável;
+- qual evidência confirma o resultado e como interpretar uma falha.
+
+Para trechos de programação, priorize o comportamento antes da sintaxe: entradas, fluxo de dados e controle, chamadas relevantes, saída, efeitos colaterais, permissões, erros e impacto no sistema. Não faça uma paráfrase mecânica de cada linha quando isso não ajudar a compreender o mecanismo.
 
 Não transforme automaticamente todo comando em árvore com `├─` e `└─`. Esse formato fragmenta a leitura e só deve ser usado quando o estudante solicitar explicitamente uma decomposição esquemática.
 
@@ -274,8 +303,9 @@ Antes de encerrar uma tarefa, confirme conforme aplicável:
 - Markdown válido e links existentes;
 - termos técnicos e tradução revisados;
 - pré-requisitos e termos de infraestrutura explicados para um iniciante;
+- conceitos, relações e causas ensinados antes de comandos ou procedimentos;
 - origem, destino, protocolos, portas e fluxo dos dados identificados quando relevantes;
-- comandos explicados e não apenas listados;
+- comandos e códigos explicados pelo contexto, partes, efeito, limites e forma de verificação, não apenas listados;
 - separação entre uso autorizado e uso contra terceiros;
 - relação Red Team/Blue Team incluída apenas quando apoiada por material defensivo já estudado;
 - segredos e dados pessoais ausentes ou desfocados;

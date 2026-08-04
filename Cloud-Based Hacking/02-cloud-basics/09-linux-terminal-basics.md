@@ -242,18 +242,3 @@ Consulte imediatamente, pois o comando seguinte substitui o valor.
 Não adicione `sudo` automaticamente ao encontrar erro. Primeiro confirme comando, caminho, usuário e permissões.
 
 Lembre que `/` é a raiz, enquanto `/root` é o diretório pessoal do usuário `root`. Caminhos Linux usam `/`, e `ls -l` normalmente mostra a última modificação, não a criação. Um comando sem saída também não está automaticamente validado.
-
-## Perguntas de fixação
-
-1. No prompt `kali@servidor:~$`, o que representam usuário, máquina, `~` e `$`, e por que o prompt não deve ser digitado?
-2. Qual é a diferença entre terminal, shell, CLI, prompt e comando?
-3. Por que `/`, `/root` e `/home/kali` representam locais diferentes?
-4. O que torna `/var/www/html/index.html` absoluto, de que depende `www/html` e como espaços e maiúsculas afetam caminhos?
-5. Em `ls -la /var/www/html`, qual é o comando, quais opções foram combinadas e qual é o argumento?
-6. O que muda entre `ls`, `ls /var`, `ls -l`, `ls -a` e `ls -la`, e como `drwxr-xr-x` deve ser interpretado?
-7. O que fazem `cd /var`, `cd ..`, `cd ~` e `cd -`, e qual comando confirma o diretório resultante?
-8. Quando usar `man ls`, `help cd` e `ls --help`, e como sair da página de manual?
-9. O que `history` armazena e por que comandos recuperados pelas setas precisam ser revisados?
-10. O que o preenchimento com Tab faz e o que ele não faz?
-11. O que `echo $?` mostra, o que normalmente significam `0` e outros valores e por que a consulta deve ser imediata?
-12. Como `pwd`, `ls` e `ls -ld <CAMINHO>` ajudam a distinguir caminho incorreto de falta de permissão?

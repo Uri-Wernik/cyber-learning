@@ -89,16 +89,3 @@ Na configuração mostrada na aula, quando alguém abre somente o IP ou o domín
 ## O que esta sequência ensina
 
 O erro não significava que o FileZilla havia perdido a conexão. Ele mostrava que o usuário autenticado não tinha autorização para gravar naquele diretório. A mudança de `root root` para `kali kali` alinhou a propriedade de `/var/www/html` com o usuário empregado na sessão SFTP. Só então o FileZilla pôde repetir o envio. O nome `index.html` resolveu a etapa seguinte: indicar ao Apache qual página deveria ser apresentada quando a raiz do site fosse aberta.
-
-## Perguntas de fixação
-
-1. Qual diretório foi aberto no painel remoto do FileZilla?
-2. Por que o primeiro upload foi negado?
-3. Onde o comando `chown` foi executado?
-4. Para que `sudo` foi necessário?
-5. O que `chown` alterou?
-6. O que a opção `-R` fez?
-7. O que representa cada parte de `kali:kali`?
-8. O que mudou de `root root` para `kali kali` no FileZilla?
-9. Qual foi a função do FileZilla e qual foi a função do `chown`?
-10. Por que o arquivo recebeu o nome `index.html`?

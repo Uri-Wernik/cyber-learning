@@ -31,14 +31,3 @@ Alertas de orçamento também não são um bloqueio instantâneo: dados de cobra
 Encerrar a sessão SSH com `exit` fecha apenas o acesso remoto; fechar o terminal também não desliga a instância. Se o laboratório será retomado em breve, a instância pode ser parada. Quando o trabalho acabou, ela deve ser terminada e os volumes EBS adicionais, snapshots, endereços reservados, regras de entrada e Security Groups temporários precisam ser conferidos.
 
 As chaves privadas continuam fora de repositórios, diretórios web e pastas compartilhadas. Depois que os dados de cobrança forem atualizados, faturamento, créditos e orçamento são consultados. O fluxo termina quando o acesso foi fechado, os recursos desnecessários desapareceram e a cobrança foi verificada.
-
-## Perguntas de fixação
-
-1. Em que ordem objetivo, limites, proteção da conta, criação, verificação, uso e limpeza aparecem no ciclo do laboratório?
-2. Por que executar `exit` ou fechar o terminal encerra apenas a sessão SSH, mas não a instância EC2?
-3. Qual é a diferença operacional entre parar e terminar uma instância?
-4. Quais recursos podem continuar existindo ou gerando custo depois que a computação é interrompida?
-5. Por que créditos promocionais e o selo de oferta gratuita não garantem custo zero?
-6. Por que um alerta de orçamento não funciona como bloqueio instantâneo de gastos?
-7. Quais elementos de imagem, rede, chave e exposição precisam ser verificados antes de usar a instância?
-8. Que evidências mostram que o laboratório foi realmente encerrado, e não apenas que o terminal foi fechado?

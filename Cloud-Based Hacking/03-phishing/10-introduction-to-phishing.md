@@ -154,18 +154,3 @@ Se a página explorasse vulnerabilidade, haveria exploração de navegador. Se e
 ## Próxima aula
 
 Hospedagem, Apache e acesso HTTP serão estudados na [aula 11](11-file-hosting-and-firewall-settings.md) usando conteúdo inofensivo.
-
-## Perguntas de fixação
-
-1. Como engenharia social pode produzir uma ação mesmo quando nenhum software apresenta vulnerabilidade?
-2. Como pretexto e isca cumprem funções diferentes dentro do encadeamento entre objetivo, entrega e ação esperada?
-3. Por que a entrega bem-sucedida de uma mensagem não comprova leitura, convencimento, clique ou ação?
-4. O que torna uma mensagem phishing: o canal usado ou a combinação de representação enganosa e influência?
-5. Qual é a diferença entre aparência, domínio, servidor que entrega os arquivos e código que define o comportamento?
-6. Por que uma landing page pode ser legítima e não precisa conter formulário de login?
-7. Qual é a diferença técnica entre phishing, exploração de navegador, malware e coleta de credenciais?
-8. Por que carregar uma página comum não comprova exploração do navegador?
-9. Quais dependências impedem afirmar que um exploit ou malware funciona em qualquer dispositivo?
-10. O que HTTPS protege, e por que um domínio enganoso também pode usar certificado válido?
-11. No cenário com domínio `.invalid`, quais elementos correspondem a autorização, pretexto, isca, entrega, destino, ação e evidência?
-12. Como comprovar a ação esperada sem solicitar ou armazenar dados pessoais ou senhas?

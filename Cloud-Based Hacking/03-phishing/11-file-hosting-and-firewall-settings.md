@@ -301,18 +301,3 @@ sudo systemctl stop apache2
 Depois, verifique o estado e a porta, remova a regra temporária TCP/80 e confirme que a exposição terminou. Pare ou termine a instância e verifique os custos.
 
 O termo correto é **document root**, e o caminho usado nesta aula é `/var/www/html`. `0.0.0.0/0` significa qualquer origem IPv4, não o IP da instância. Liberar TCP/80 não inicia Apache, iniciar Apache não garante acesso público, PHP não é necessário para um `index.html` estático e um `404` comprova que houve resposta HTTP, embora o recurso não tenha sido encontrado.
-
-## Perguntas de fixação
-
-1. Qual é a diferença entre máquina servidora, software Apache instalado, processo em execução e serviço `apache2`?
-2. Como HTTP, TCP, IP e a porta `80` participam de camadas diferentes da mesma requisição?
-3. Na requisição `GET /files/one.jpg HTTP/1.1`, o que representam as partes, e o que `200`, `404` e `403` informam?
-4. Como `/files/one.jpg` é mapeado para `/var/www/html/files/one.jpg` sem expor livremente o sistema de arquivos?
-5. Qual é a diferença entre `sudo apt update` e `sudo apt install apache2`, e o que cada parte desses comandos faz?
-6. O que `sudo systemctl start apache2` altera, e como `is-active` e `status` verificam resultados diferentes?
-7. Em `sudo ss -ltnp 'sport = :80'`, o que fazem o programa, as opções e o filtro?
-8. Qual é a diferença entre o listener `0.0.0.0:80` e a origem `0.0.0.0/0` no Security Group?
-9. O que `curl -I http://127.0.0.1/` testa, o que `-I` solicita e por que a conexão não atravessa a AWS?
-10. Em `ls -la /var/www/html`, o que fazem o comando, as opções e o caminho?
-11. O que `/0` e `/32` significam em CIDR, e por que liberar TCP/80 não inicia o Apache?
-12. Se o teste local funciona e o público falha, como investigar uma camada por vez e encerrar serviço, regra e instância ao final?

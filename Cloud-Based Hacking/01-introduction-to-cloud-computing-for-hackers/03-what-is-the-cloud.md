@@ -118,17 +118,3 @@ Escala não acontece magicamente. A aplicação precisa suportar distribuição 
 Disponibilidade e escala dependem da arquitetura; não surgem apenas porque um recurso está na nuvem. Da mesma forma, uma instância não corresponde necessariamente a um servidor físico exclusivo, e o provedor não assume toda a manutenção e segurança das aplicações.
 
 Na [Aula 4: Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md), esses fundamentos serão aplicados aos laboratórios autorizados.
-
-## Perguntas de fixação
-
-1. Quais características diferenciam computação em nuvem de um servidor remoto convencional?
-2. Como um hipervisor permite que várias instâncias compartilhem um servidor físico mantendo isolamento lógico?
-3. Qual é a diferença entre plano de controle, máquina virtual e processo servidor executado dentro dela?
-4. Em quais três sentidos diferentes a palavra “servidor” pode ser usada?
-5. Como LAN, Internet, Web e nuvem se relacionam sem serem sinônimos?
-6. Na URL `https://exemplo.test/area`, quais partes representam protocolo, host e caminho, e qual porta é normalmente usada?
-7. Descreva o fluxo desde a resolução DNS até a entrega da requisição ao processo que escuta na porta de destino.
-8. Por que atribuir um IP público e liberar uma porta não bastam para tornar um serviço acessível?
-9. Como “público” e “privado” mudam de significado quando falamos de modelo de nuvem, endereço IP e exposição do serviço?
-10. Qual é a diferença entre escala vertical, escala horizontal e elasticidade, e por que nenhuma delas garante disponibilidade sozinha?
-11. Em uma máquina virtual, quais camadas normalmente pertencem ao provedor e quais continuam sob responsabilidade do cliente?

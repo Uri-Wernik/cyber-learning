@@ -89,16 +89,3 @@ Antes de criar recursos, é necessário obter autorização escrita, confirmar o
 O encerramento faz parte do exercício. Primeiro terminam processos e sessões; depois são removidos serviços, regras e credenciais temporárias. Dados são eliminados conforme o acordo, e instâncias, discos, endereços e outros recursos cobrados precisam ser excluídos. A verificação final confirma que nenhum serviço público permaneceu ativo e que apenas evidências autorizadas foram preservadas.
 
 Nem toda aplicação conectada à Internet usa nuvem, callback não atravessa universalmente controles de rede e C2 não cria privilégios administrativos. A nuvem oferece conveniência operacional, mas continua exigindo autorização, limites, controle de custos e limpeza completa.
-
-## Perguntas de fixação
-
-1. O que faz um processo assumir o papel de cliente ou servidor em uma comunicação?
-2. Por que um mesmo dispositivo pode ser cliente em uma conexão e servidor em outra?
-3. Como uma conexão direta difere de um callback iniciado pelo agente de laboratório?
-4. Quais condições de execução, permissão, DNS, rota e firewall precisam existir para um callback funcionar?
-5. Como operador, serviço de controle e agente participam do fluxo conceitual de C2?
-6. Por que um agente conectado a C2 continua limitado pelos privilégios do processo e do usuário que o executa?
-7. Qual é a diferença técnica entre Amazon EC2 e Command and Control, apesar das siglas parecidas?
-8. Como aumentar instâncias ou concorrência pode elevar custo, impacto e risco de atingir destinos fora do escopo?
-9. Quais registros do provedor, do alvo e do DNS podem relacionar uma atividade à conta usada no laboratório?
-10. Quais recursos precisam ser conferidos depois de excluir a instância para comprovar que o laboratório e a cobrança foram encerrados?

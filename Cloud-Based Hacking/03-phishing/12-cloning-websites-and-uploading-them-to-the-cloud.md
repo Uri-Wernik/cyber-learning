@@ -145,18 +145,3 @@ A tradução “FTP sobre SSH” é imprecisa: SFTP é um protocolo próprio exe
 Esta atividade pode deixar um perfil salvo no FileZilla, registro da chave de host conhecida, autenticação SSH, operações no log e arquivos novos no sistema remoto, além de eventual cópia posterior no document root.
 
 Registre apenas evidências necessárias e remova os arquivos de teste quando terminar.
-
-## Perguntas de fixação
-
-1. Quais arquivos uma cópia estática pode salvar, quais componentes do servidor não são copiados e por que abrir o HTML local não o publica?
-2. Qual é a diferença técnica entre FTP, FTPS e SFTP?
-3. Por que o FileZilla reutiliza o SSH, a porta TCP `22`, o usuário `kali` e a mesma chave privada?
-4. Quais valores devem ser informados nos campos protocolo, host, porta, tipo de logon, usuário e arquivo de chave?
-5. O que a confirmação da chave de host protege e por que a fingerprint deve ser comparada?
-6. O que representam os painéis esquerdo e direito, o log superior e a fila inferior do FileZilla?
-7. Qual é a diferença entre arrastar um arquivo da esquerda para a direita e da direita para a esquerda?
-8. Por que HTML, CSS, JavaScript e imagens precisam manter caminhos e estrutura compatíveis no upload?
-9. Qual é a diferença entre armazenar o arquivo em `/home/kali` e publicá-lo a partir de `/var/www/html`?
-10. O que a mensagem de listagem bem-sucedida comprova e o que ainda não comprova?
-11. Quais evidências confirmam que a transferência terminou e como distinguir timeout, autenticação e permissão negada?
-12. Por que a chave privada deve permanecer fora da pasta da página, do document root e do repositório?

@@ -1,20 +1,21 @@
 const APP_ROOT = "/cyber-learning/";
 const CACHE_PREFIX = "cyber-learning-";
-const CACHE_NAME = `${CACHE_PREFIX}pwa-20260803-v8`;
+const CACHE_NAME = `${CACHE_PREFIX}pwa-20260804-v10`;
 
 const PRECACHE_URLS = [
   APP_ROOT,
   `${APP_ROOT}manifest.webmanifest`,
-  `${APP_ROOT}stylesheets/extra.css?v=pwa-20260803-7`,
+  `${APP_ROOT}stylesheets/extra.css?v=pwa-20260804-1`,
   `${APP_ROOT}assets/stylesheets/main.ec1eaa64.min.css`,
   `${APP_ROOT}assets/stylesheets/palette.ab4e12ef.min.css`,
   `${APP_ROOT}assets/javascripts/bundle.d7400e89.min.js`,
   `${APP_ROOT}assets/javascripts/workers/search.2c215733.min.js`,
   `${APP_ROOT}javascripts/pwa.js?v=20260803`,
-  `${APP_ROOT}javascripts/quiz-loader.js?v=20260803-2`,
+  `${APP_ROOT}javascripts/quiz-loader.js?v=20260804-1`,
   `${APP_ROOT}javascripts/quiz-data.js?v=20260803-1`,
   `${APP_ROOT}javascripts/quiz-lesson-data.js?v=20260803-1`,
-  `${APP_ROOT}javascripts/quiz.js?v=20260803-2`,
+  `${APP_ROOT}javascripts/quiz-fixation-data.js?v=20260803-1`,
+  `${APP_ROOT}javascripts/quiz.js?v=20260804-1`,
   `${APP_ROOT}search/search_index.json`,
   `${APP_ROOT}assets/site/apple-touch-icon.png`,
   `${APP_ROOT}assets/site/app-icon-192.png`,
@@ -90,7 +91,12 @@ self.addEventListener("fetch", (event) => {
       .catch(async () => {
         const cached = await caches.match(request);
         if (cached) return cached;
-        if (request.mode === "navigate") return caches.match(APP_ROOT);
+        if (request.mode === "navigate") {
+          if (url.pathname === `${APP_ROOT}quiz/`) {
+            return caches.match(`${APP_ROOT}quiz/`);
+          }
+          return caches.match(APP_ROOT);
+        }
         return Response.error();
       })
   );

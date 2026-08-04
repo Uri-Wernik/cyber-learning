@@ -47,7 +47,7 @@
     root.innerHTML = `
       <div class="quiz-loading" role="status" aria-live="polite">
         <strong>Preparando o quiz da aula</strong>
-        <span>Carregando cinco perguntas sobre este capítulo.</span>
+        <span>Carregando as perguntas deste capítulo.</span>
       </div>`;
     content.append(root);
     return root;
@@ -81,13 +81,15 @@
   };
 
   const loadQuiz = () => {
+    document.documentElement.classList.remove("quiz-session-open");
     const root = document.querySelector("[data-quiz-app]") || ensureLessonQuiz();
     if (!root) return;
 
     if (!loadPromise) {
       loadPromise = loadScript("quiz-data.js?v=20260803-1")
         .then(() => loadScript("quiz-lesson-data.js?v=20260803-1"))
-        .then(() => loadScript("quiz.js?v=20260803-2"));
+        .then(() => loadScript("quiz-fixation-data.js?v=20260803-1"))
+        .then(() => loadScript("quiz.js?v=20260804-1"));
     }
 
     loadPromise.catch(showLoadError);
