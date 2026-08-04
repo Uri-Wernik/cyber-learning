@@ -60,6 +60,10 @@ Toda aula publicada deve terminar com um acesso ao seu próprio quiz interativo.
 - abra o quiz em uma URL dedicada que identifique a aula de origem;
 - apresente uma pergunta por tela, com quatro alternativas e exatamente uma correta;
 - embaralhe a ordem das perguntas e das alternativas sem alterar a resposta correta;
+- construa os distratores a partir de confusões técnicas plausíveis e conceitos próximos realmente abordados no curso; evite opções absurdas, genéricas ou obviamente falsas;
+- mantenha as quatro alternativas com estrutura gramatical, extensão, nível de detalhe e vocabulário técnico comparáveis;
+- não permita que a resposta correta seja sistematicamente a mais longa, a única qualificada, a única que explica causas ou a única que usa termos e formatação técnica;
+- varie a posição relativa da resposta correta entre alternativas mais curtas, intermediárias e mais longas e audite o conjunto para remover padrões que permitam acertar sem conhecer o conteúdo;
 - depois da escolha, marque a alternativa correta e, quando houver erro, identifique também a opção selecionada;
 - mostre a explicação didática e o botão `Continuar` juntos no painel inferior da tela, sem exigir que o leitor role a página para avançar;
 - mantenha o botão de avanço indisponível até uma alternativa ser escolhida;
@@ -331,5 +335,5 @@ Antes de encerrar uma tarefa, confirme conforme aplicável:
 - afirmações não validadas claramente identificadas;
 - dúvidas úteis incorporadas no ponto didático mais adequado, sem formato de conversa;
 - conteúdo autoral reescrito e transcrição bruta removida;
-- quiz da aula atualizado, sem lista textual duplicada, com alternativas, explicações, navegação e responsividade validadas;
+- quiz da aula atualizado, sem lista textual duplicada, com alternativas plausíveis e equilibradas, ausência de pistas pela extensão, explicações, navegação e responsividade validadas;
 - nota pronta para ser reutilizada em sínteses e capítulos futuros.

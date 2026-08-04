@@ -2283,9 +2283,9 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "question": "Qual diretório foi aberto no painel remoto do FileZilla?",
     "choices": [
       "/var/www/html",
-      "/home/kali",
-      "/tmp",
-      "/root"
+      "/etc/apache2/sites",
+      "/home/kali/site",
+      "/var/log/apache2"
     ],
     "correct": 0,
     "explanation": "A aula mostra que o diretório `/var/www/html` foi aberto no painel remoto do FileZilla. Este é o document root comum do Apache na configuração apresentada, onde arquivos podem ser servidos por HTTP."
@@ -2300,10 +2300,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "Por que o primeiro upload foi negado?",
     "choices": [
-      "O diretório `/var/www/html` pertencia ao usuário root; a sessão SFTP usava kali que não tinha permissão de escrita",
-      "O arquivo estava corrompido",
-      "A conexão SFTP não estava funcionando",
-      "O FileZilla não suporta upload para Apache"
+      "A sessão SFTP usava `kali`, mas `/var/www/html` pertencia a `root` e não permitia escrita àquele usuário",
+      "A sessão SFTP usava `root`, mas o Apache bloqueava alterações enquanto o serviço permanecesse em execução",
+      "A autenticação SFTP estava válida, mas o Security Group permitia leitura e bloqueava operações remotas de escrita",
+      "O arquivo local estava acessível, mas o FileZilla exigia HTTP ativo antes de gravar no document root"
     ],
     "correct": 0,
     "explanation": "A aula explica que o upload foi recusado com `SSH_FX_PERMISSION_DENIED`. A conexão funcionava, mas o diretório `/var/www/html` pertencia a `root root`, enquanto a sessão SFTP usava o usuário `kali`. O usuário da sessão não podia criar arquivo naquele diretório."
@@ -2318,10 +2318,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "Onde o comando `chown` foi executado?",
     "choices": [
-      "No terminal conectado à instância Kali via SSH",
-      "No FileZilla",
-      "No cmd local do Windows",
-      "Na AWS Console"
+      "No shell do Kali remoto, acessado por uma sessão SSH",
+      "No terminal local do Windows, antes de abrir a sessão SSH",
+      "No campo de comandos do FileZilla, conectado por SFTP",
+      "No AWS Management Console, nas opções da instância"
     ],
     "correct": 0,
     "explanation": "A aula esclarece que o comando foi executado **no Kali remoto** dentro da sessão SSH. Não foi digitado no campo de endereço do FileZilla nem no CMD local sem conexão com a instância. O terminal SSH fornecia acesso ao sistema de arquivos remoto."
@@ -2336,10 +2336,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "Para que `sudo` foi necessário?",
     "choices": [
-      "O diretório ainda pertencia a root; alterar propriedade exige privilégio administrativo",
-      "sudo não era necessário",
-      "sudo era para copiar a página",
-      "sudo faz o upload automaticamente"
+      "Ele elevou o privilégio do `chown` para alterar um diretório que ainda pertencia a `root`",
+      "Ele abriu a porta 22 no Security Group para o FileZilla concluir a gravação por SFTP",
+      "Ele iniciou o Apache antes de substituir o arquivo existente no document root",
+      "Ele converteu a chave privada para o formato de autenticação aceito pelo SFTP"
     ],
     "correct": 0,
     "explanation": "A aula explica que `sudo` fornecia privilégio administrativo necessário. O diretório pertencia a `root`, e apenas root (ou sudo) podia alterar sua propriedade. Sem `sudo`, o comando `chown` seria recusado."
@@ -2354,10 +2354,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "O que `chown` alterou?",
     "choices": [
-      "O proprietário e grupo do diretório `/var/www/html` de root root para kali kali",
-      "O conteúdo do arquivo HTML",
-      "A página foi clonada",
-      "O upload foi executado"
+      "O usuário e o grupo proprietários de `/var/www/html` e, com `-R`, do conteúdo existente",
+      "Os bits `rwx` de `/var/www/html`, concedendo escrita ao grupo e aos demais usuários do sistema",
+      "O usuário da sessão SFTP, trocando a autenticação remota de `root` para `kali`",
+      "O document root do Apache, mudando o caminho publicado para o diretório `/home/kali`"
     ],
     "correct": 0,
     "explanation": "A aula mostra que `chown` altera proprietário. Especificamente, mudou o proprietário e grupo do diretório `/var/www/html` de `root root` para `kali kali`. Isso permitiu que o usuário `kali` tivesse permissão de escrita no diretório."
@@ -2372,10 +2372,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "O que a opção `-R` fez?",
     "choices": [
-      "Aplicou a mudança recursivamente: ao diretório, seus arquivos e subdiretórios",
-      "Removeu o diretório",
-      "-R não tem significado em chown",
-      "Restaurou permissões originais"
+      "Estendeu a troca de propriedade ao diretório e aos itens existentes abaixo dele",
+      "Limitou a troca de propriedade ao diretório, sem alcançar os itens existentes abaixo dele",
+      "Reaplicou os bits de permissão originais aos arquivos e subdiretórios existentes",
+      "Removeu do grupo `root` o direito de atravessar os itens existentes abaixo do diretório"
     ],
     "correct": 0,
     "explanation": "A aula explica que `-R` significa **recursive**. Isso faz a mudança alcançar o próprio diretório e os arquivos e subdiretórios que já estejam dentro dele. Sem `-R`, apenas o diretório seria alterado."
@@ -2390,10 +2390,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "O que representa cada parte de `kali:kali`?",
     "choices": [
-      "Primeiro kali é usuário proprietário, segundo é grupo proprietário, separados por dois-pontos",
-      "Ambas as partes significam a mesma coisa",
-      "O segundo kali é a senha",
-      "A ordem entre usuário e grupo pode ser trocada"
+      "O valor antes de `:` define o usuário proprietário; o posterior define o grupo proprietário",
+      "O valor antes de `:` define o usuário da sessão; o posterior informa sua senha de acesso",
+      "O valor antes de `:` define o grupo proprietário; o valor posterior define o usuário proprietário",
+      "O valor antes de `:` indica a origem local; o posterior identifica o destino remoto"
     ],
     "correct": 0,
     "explanation": "A aula detalha a sintaxe: `kali:kali` = primeiro `kali` é usuário proprietário, segundo `kali` é grupo proprietário. Os dois campos são separados pelo sinal `:`. Isso estabelece ambos os responsáveis pelo diretório."
@@ -2408,10 +2408,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "O que mudou de `root root` para `kali kali` no FileZilla?",
     "choices": [
-      "As colunas finais exibindo proprietário e grupo; permissões continuaram `drwxr-xr-x`",
-      "Nada mudou no FileZilla",
-      "Todas as colunas foram alteradas",
-      "O caminho do diretório mudou"
+      "As colunas de usuário e grupo passaram a mostrar `kali`; os bits `drwxr-xr-x` permaneceram",
+      "Os bits passaram a `drwxrwxrwx`; as colunas de usuário e grupo continuaram mostrando `root`",
+      "O caminho remoto passou a `/home/kali`; as colunas de propriedade permaneceram sem alteração",
+      "A entrada mudou de diretório para arquivo; o proprietário e o grupo permaneceram iguais"
     ],
     "correct": 0,
     "explanation": "A aula mostra que após `chown` e atualização do FileZilla, as duas colunas finais mudaram de `root root` para `kali kali`. As permissões exibidas (`drwxr-xr-x`) continuaram iguais. O que mudou foi a propriedade."
@@ -2426,10 +2426,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "Qual foi a função do FileZilla e qual foi a função do `chown`?",
     "choices": [
-      "FileZilla: transferir arquivos; chown: alterar proprietário do diretório para permitir escrita",
-      "Ambas as ferramentas fazem a mesma coisa",
-      "chown envia a página",
-      "FileZilla altera permissões"
+      "O FileZilla transferiu arquivos por SFTP; o `chown` ajustou a propriedade do diretório de destino",
+      "O FileZilla ajustou a propriedade do destino remoto; o `chown` transferiu o arquivo pelo SFTP",
+      "O FileZilla iniciou o serviço Apache; o `chown` criou a regra TCP/80 no Security Group",
+      "O FileZilla ajustou os bits `rwx` do destino; o `chown` renomeou a página enviada para `index.html`"
     ],
     "correct": 0,
     "explanation": "A aula clarifica a distinção: FileZilla é cliente SFTP para transferir arquivos. `chown` altera proprietário do diretório. O comando `chown` não enviou a página; apenas mudou a propriedade de `/var/www/html` para permitir que `kali` fizesse upload."
@@ -2444,10 +2444,10 @@ window.CYBER_QUIZ_QUESTIONS.push(
     "source": "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "question": "Por que o arquivo recebeu o nome `index.html`?",
     "choices": [
-      "Quando alguém abre apenas o IP sem indicar arquivo, Apache procura a página padrão `index.html` em `/var/www/html`",
-      "Todos os arquivos devem ter nome `index.html`",
-      "FileZilla renomeia automaticamente",
-      "O nome da página não importa para Apache"
+      "Porque o Apache usa `index.html` como arquivo padrão ao receber uma requisição para a raiz do site",
+      "Porque o SFTP exige `index.html` como nome padrão para registrar e concluir qualquer upload no servidor remoto",
+      "Porque o FileZilla mantém arquivos HTML no painel remoto somente quando seus nomes começam por `index`",
+      "Porque o Security Group verifica `index.html` antes de liberar requisições recebidas na porta 80"
     ],
     "correct": 0,
     "explanation": "A aula explica que na configuração apresentada, quando alguém abre somente o IP ou domínio sem indicar arquivo, o Apache procura a página padrão `index.html` dentro de `/var/www/html`. Por isso, o arquivo enviado recebeu esse nome, tornando-se a página inicial do site."
