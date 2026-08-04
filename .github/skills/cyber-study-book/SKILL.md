@@ -52,6 +52,24 @@ As notas finais devem funcionar como capítulos para leitura contínua, e não c
 - Uma aula conceitual deve desenvolver uma pergunta central em prosa, avançando do significado simples ao funcionamento técnico e às implicações do conceito.
 - Conecte aulas e módulos com uma transição curta quando a relação não for evidente. Explique qual conhecimento anterior será reutilizado e por que o tema seguinte depende dele, sem recapitular o capítulo inteiro.
 
+### Padrão do quiz por aula
+
+Toda aula publicada deve terminar com um acesso ao seu próprio quiz interativo. Preserve este comportamento nas aulas existentes e implemente-o ao adicionar uma nova aula:
+
+- mantenha as questões no banco de dados do quiz; não repita uma lista `## Perguntas de fixação` no Markdown;
+- abra o quiz em uma URL dedicada que identifique a aula de origem;
+- apresente uma pergunta por tela, com quatro alternativas e exatamente uma correta;
+- embaralhe a ordem das perguntas e das alternativas sem alterar a resposta correta;
+- depois da escolha, marque a alternativa correta e, quando houver erro, identifique também a opção selecionada;
+- mostre a explicação didática e o botão `Continuar` juntos no painel inferior da tela, sem exigir que o leitor role a página para avançar;
+- mantenha o botão de avanço indisponível até uma alternativa ser escolhida;
+- ao continuar, substitua integralmente a pergunta atual pela seguinte;
+- mostre progresso, quantidade de acertos, resultado final, melhor marca e revisão dos erros;
+- permita fechar o quiz pelo botão visível ou pela tecla `Esc` e retornar à aula de origem;
+- preserve funcionamento em modo claro, modo escuro, desktop, celular, navegação por teclado e PWA offline.
+
+As perguntas devem cobrir os conceitos realmente ensinados na aula, incluindo relações, causas, limites, interpretação de evidências e efeito dos comandos. O quiz complementa a leitura; não deve introduzir conteúdo que o capítulo ainda não explicou.
+
 ### Padrão de construção didática
 
 Use estas qualidades em todas as próximas aulas, notas e capítulos, adaptando-as ao conteúdo real em vez de repetir uma estrutura fixa:
@@ -313,4 +331,5 @@ Antes de encerrar uma tarefa, confirme conforme aplicável:
 - afirmações não validadas claramente identificadas;
 - dúvidas úteis incorporadas no ponto didático mais adequado, sem formato de conversa;
 - conteúdo autoral reescrito e transcrição bruta removida;
+- quiz da aula atualizado, sem lista textual duplicada, com alternativas, explicações, navegação e responsividade validadas;
 - nota pronta para ser reutilizada em sínteses e capítulos futuros.
