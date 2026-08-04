@@ -76,6 +76,19 @@ Toda aula publicada deve terminar com um acesso ao seu próprio quiz interativo.
 
 As perguntas devem cobrir os conceitos realmente ensinados na aula, incluindo relações, causas, limites, interpretação de evidências e efeito dos comandos. O quiz complementa a leitura; não deve introduzir conteúdo que o capítulo ainda não explicou.
 
+#### Validação obrigatória do quiz
+
+Antes de considerar uma aula concluída ou publicá-la:
+
+1. compare lado a lado as quatro alternativas de todas as questões e rejeite qualquer item em que a correta possa ser descoberta apenas por tamanho, detalhe, formatação, tom ou precisão gramatical;
+2. meça a extensão das alternativas e confirme no conjunto que respostas corretas aparecem como curtas, intermediárias e longas, sem padrão repetitivo;
+3. confirme tecnicamente que existe uma única resposta defensável e que cada distrator corresponde a uma confusão plausível, mas inequivocamente errada segundo a aula;
+4. verifique que o banco contém somente questões vinculadas a aulas publicadas, sem quiz geral no menu, na página inicial ou na busca;
+5. teste no navegador pelo menos uma resposta correta e uma incorreta, confirmando marcação, explicação, painel inferior e botão `Continuar` sem rolagem da página;
+6. conclua uma rodada e confirme `Próxima aula`; na última aula publicada, confirme o retorno ao início;
+7. repita o teste em desktop e celular, nos modos claro e escuro, e valide teclado, `Esc`, ausência de overflow e cache atualizado do PWA;
+8. execute a validação de sintaxe dos dados e scripts e o build estrito do MkDocs antes do commit.
+
 ### Padrão de construção didática
 
 Use estas qualidades em todas as próximas aulas, notas e capítulos, adaptando-as ao conteúdo real em vez de repetir uma estrutura fixa:
