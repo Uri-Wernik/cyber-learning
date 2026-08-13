@@ -77,7 +77,7 @@ extra_css:
 
 extra_javascript:
   - javascripts/pwa.js?v=20260803
-  - javascripts/quiz-loader.js?v=20260813-1
+  - javascripts/quiz-loader.js?v=20260813-2
 
 extra:
   social:
@@ -104,9 +104,10 @@ nav:
       - 12. Cópia de páginas e SFTP: 03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud.md
       - 13. Publicando uma página no Apache: 03-phishing/13-creating-a-fake-login-page-on-the-cloud.md
       - 14. Entendendo o envio de formulários: 03-phishing/14-modifying-the-page-to-steal-login-information.md
+      - 15. Arquivos, permissões e PHP: 03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page.md
 
 draft_docs: |
-  03-phishing/1[5-9]-*.md
+  03-phishing/1[6-9]-*.md
   04-phishing-bypassing-2fa-mfa/**
   05-accessing-cloud-server-desktop/**
   06-bitb-browser-in-browser-attack/**

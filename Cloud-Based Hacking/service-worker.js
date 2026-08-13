@@ -1,6 +1,6 @@
 const APP_ROOT = "/cyber-learning/";
 const CACHE_PREFIX = "cyber-learning-";
-const CACHE_NAME = `${CACHE_PREFIX}pwa-20260813-v1`;
+const CACHE_NAME = `${CACHE_PREFIX}pwa-20260813-v2`;
 
 const PRECACHE_URLS = [
   APP_ROOT,
@@ -11,9 +11,9 @@ const PRECACHE_URLS = [
   `${APP_ROOT}assets/javascripts/bundle.d7400e89.min.js`,
   `${APP_ROOT}assets/javascripts/workers/search.2c215733.min.js`,
   `${APP_ROOT}javascripts/pwa.js?v=20260803`,
-  `${APP_ROOT}javascripts/quiz-loader.js?v=20260813-1`,
-  `${APP_ROOT}javascripts/quiz-fixation-data.js?v=20260813-1`,
-  `${APP_ROOT}javascripts/quiz.js?v=20260813-1`,
+  `${APP_ROOT}javascripts/quiz-loader.js?v=20260813-2`,
+  `${APP_ROOT}javascripts/quiz-fixation-data.js?v=20260813-2`,
+  `${APP_ROOT}javascripts/quiz.js?v=20260813-2`,
   `${APP_ROOT}search/search_index.json`,
   `${APP_ROOT}assets/site/apple-touch-icon.png`,
   `${APP_ROOT}assets/site/app-icon-192.png`,
@@ -39,6 +39,7 @@ const PRECACHE_URLS = [
   `${APP_ROOT}03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud/`,
   `${APP_ROOT}03-phishing/13-creating-a-fake-login-page-on-the-cloud/`,
   `${APP_ROOT}03-phishing/14-modifying-the-page-to-steal-login-information/`,
+  `${APP_ROOT}03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/`,
   `${APP_ROOT}03-phishing/assets/aula-12/01-configuracao-sftp-filezilla.png`,
   `${APP_ROOT}03-phishing/assets/aula-12/02-conexao-sftp-bem-sucedida.png`,
   `${APP_ROOT}03-phishing/assets/aula-13/01-diretorio-remoto-var-www-html.png`,

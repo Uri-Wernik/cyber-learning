@@ -16,6 +16,7 @@
     "03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud/",
     "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
   ]);
   let loadPromise;
 
@@ -87,8 +88,8 @@
     if (!root) return;
 
     if (!loadPromise) {
-      loadPromise = loadScript("quiz-fixation-data.js?v=20260813-1")
-        .then(() => loadScript("quiz.js?v=20260813-1"));
+      loadPromise = loadScript("quiz-fixation-data.js?v=20260813-2")
+        .then(() => loadScript("quiz.js?v=20260813-2"));
     }
 
     loadPromise.catch(showLoadError);

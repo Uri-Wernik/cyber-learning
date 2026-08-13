@@ -2632,6 +2632,186 @@ window.CYBER_QUIZ_QUESTIONS.push(
     ],
     "correct": 2,
     "explanation": "Uma cópia visual enganosa não deve permanecer exposta. O encerramento inclui remover ou substituir o artefato e reduzir a exposição da infraestrutura, fechando a regra de entrada ou encerrando a instância."
+  },
+  {
+    "id": "fix-03-57",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "medium",
+    "topic": "Superglobal POST e entrada não confiável",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "Como uma aplicação PHP deve interpretar os valores disponíveis em `$_POST`?",
+    "choices": [
+      "Como dados já validados pelo navegador, disponíveis somente quando o formulário pertence ao mesmo servidor",
+      "Como variáveis criadas pelo Apache, cujo conteúdo pode ser usado diretamente quando o método HTTP é `POST`",
+      "Como entrada do cliente; método, presença das chaves e formato precisam ser validados",
+      "Como parâmetros criptografados pelo PHP, que deixam de ser controlados pelo cliente depois da chegada ao servidor"
+    ],
+    "correct": 2,
+    "explanation": "`$_POST` é uma superglobal organizada como array associativo, mas seus valores continuam sendo entrada controlada pelo cliente. Método, presença, formato e finalidade precisam ser verificados antes do uso."
+  },
+  {
+    "id": "fix-03-58",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "medium",
+    "topic": "Modos de abertura de arquivo",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "Qual comparação entre os modos `w`, `a` e `a+` de `fopen` está correta?",
+    "choices": [
+      "`w` trunca para escrever; `a` acrescenta apenas com escrita; `a+` permite leitura e escrita, mantendo novas escritas no final",
+      "`w` acrescenta no final; `a` substitui o conteúdo; `a+` permite leitura, mas impede qualquer nova escrita",
+      "`w` abre somente para leitura; `a` cria um arquivo temporário; `a+` move o arquivo para o document root",
+      "`w` e `a` possuem o mesmo efeito; o sinal `+` apenas concede permissão de execução ao processo do Apache"
+    ],
+    "correct": 0,
+    "explanation": "`w` abre para escrita e trunca o conteúdo existente. `a` abre para escrita em append. `a+` também preserva o conteúdo e escreve no final, mas acrescenta capacidade de leitura."
+  },
+  {
+    "id": "fix-03-59",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "easy",
+    "topic": "Falha de fopen",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "O que uma falha de `fopen` permite concluir inicialmente?",
+    "choices": [
+      "Que o navegador recusou o redirecionamento porque o destino não utiliza o mesmo nome de domínio",
+      "Que o método `POST` não transportou os campos e, por isso, o Apache removeu o arquivo de destino",
+      "Que o modo append sempre exige permissão `777`, independentemente do proprietário e do grupo do diretório",
+      "Que o handle não foi criado; caminho, diretório e permissões precisam ser investigados"
+    ],
+    "correct": 3,
+    "explanation": "`fopen` retorna `false` quando não consegue abrir o recurso. A mensagem isolada não identifica a causa; é necessário verificar caminho, existência, identidade efetiva do processo e permissões do sistema de arquivos."
+  },
+  {
+    "id": "fix-03-60",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "medium",
+    "topic": "Escrita e fechamento de arquivo",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "Qual afirmação descreve corretamente `fwrite` e `fclose`?",
+    "choices": [
+      "`fwrite` altera as permissões do diretório e `fclose` reinicia o processo PHP para aplicar a nova propriedade",
+      "`fwrite` tenta gravar bytes e informa quantidade ou falha; `fclose` encerra a referência do processo ao arquivo",
+      "`fwrite` cria uma resposta HTTP e `fclose` envia o cabeçalho `Location` que direciona o navegador",
+      "`fwrite` garante escrita atômica entre processos e `fclose` impede definitivamente outras requisições de abrir o arquivo"
+    ],
+    "correct": 1,
+    "explanation": "`fwrite` opera sobre o handle e retorna bytes gravados ou `false`. `fclose` fecha o recurso mantido pelo processo. Concorrência e atomicidade exigem controles adicionais, como locking."
+  },
+  {
+    "id": "fix-03-61",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "easy",
+    "topic": "Concatenação e quebra de linha",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "Qual é o papel de `.` e `\n` na construção de uma linha textual em PHP?",
+    "choices": [
+      "`.` encerra o programa e `\n` inicia uma nova resposta HTTP antes que os cabeçalhos sejam enviados",
+      "`.` seleciona uma chave de `$_POST` e `\n` remove caracteres não permitidos antes da escrita",
+      "`.` concatena partes da string e `\n`, em aspas duplas, representa um caractere de nova linha",
+      "`.` abre o arquivo no modo append e `\n` solicita ao sistema operacional um bloqueio exclusivo"
+    ],
+    "correct": 2,
+    "explanation": "O ponto é o operador de concatenação do PHP. Dentro de string com aspas duplas, `\n` representa uma quebra de linha. Isso não valida nem sanitiza valores recebidos."
+  },
+  {
+    "id": "fix-03-62",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "hard",
+    "topic": "Identidades e permissões do processo web",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "Por que um upload bem-sucedido pelo FileZilla não prova que o PHP poderá criar um arquivo no mesmo diretório?",
+    "choices": [
+      "O SFTP pode usar `kali`, enquanto Apache/PHP executa com outra conta; a decisão de escrita considera a identidade do processo e as permissões",
+      "O FileZilla escreve por HTTP na porta 80, enquanto o PHP precisa obter permissão adicional do Security Group para acessar o disco",
+      "O SFTP transforma o proprietário em `root`, enquanto o PHP sempre executa como o usuário conectado mais recentemente por SSH",
+      "O FileZilla mantém a escrita somente em memória, enquanto o PHP acessa um sistema de arquivos diferente dentro do navegador"
+    ],
+    "correct": 0,
+    "explanation": "A transferência SFTP e a requisição web podem usar identidades distintas. No Kali baseado em Debian, o processo web costuma usar uma conta restrita como `www-data`; proprietário, grupo e bits de permissão determinam o acesso."
+  },
+  {
+    "id": "fix-03-63",
+    "scope": "lesson-fixation",
+    "fixationNumber": 7,
+    "difficulty": "hard",
+    "topic": "Permissões 777 e menor privilégio",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "Por que aplicar permissão `777` a um diretório gravável não é uma correção adequada para uma aplicação real?",
+    "choices": [
+      "Porque `777` permite somente leitura e impede que o processo web atravesse o diretório para encontrar o arquivo",
+      "Porque `777` funciona apenas em arquivos; diretórios sempre ignoram os bits de escrita e execução definidos em octal",
+      "Porque `777` transfere a propriedade para o Apache e remove o acesso administrativo do usuário responsável pelo servidor",
+      "Porque concede acesso amplo; menor privilégio limita a escrita ao local e às identidades necessárias"
+    ],
+    "correct": 3,
+    "explanation": "`777` concede todos os bits a proprietário, grupo e demais usuários. Uma aplicação deve usar um local específico, fora do document root, e conceder ao processo somente o acesso indispensável."
+  },
+  {
+    "id": "fix-03-64",
+    "scope": "lesson-fixation",
+    "fixationNumber": 8,
+    "difficulty": "hard",
+    "topic": "Redirecionamento após POST",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "Como uma aplicação legítima pode redirecionar de forma explícita depois de processar um `POST`?",
+    "choices": [
+      "Escrevendo primeiro a página de destino no corpo e chamando `header` depois, para que o navegador descubra a URL pelo HTML",
+      "Enviando `Location` antes do corpo, usando `303` para a próxima requisição ser `GET` e encerrando o script com `exit`",
+      "Fechando o arquivo com `fclose`, pois essa função cria automaticamente um redirecionamento para a URL anterior",
+      "Alterando o método para SFTP, que devolve ao navegador a página indicada pelo nome do último arquivo enviado"
+    ],
+    "correct": 1,
+    "explanation": "O cabeçalho precisa ser definido antes de qualquer corpo. `303 See Other` orienta uma nova requisição GET após o POST, e `exit` impede que código posterior continue executando."
+  },
+  {
+    "id": "fix-03-65",
+    "scope": "lesson-fixation",
+    "fixationNumber": 9,
+    "difficulty": "medium",
+    "topic": "Registro seguro de evento",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "O que torna o exemplo alternativo do capítulo mais seguro para estudar escrita em arquivo?",
+    "choices": [
+      "Ele copia os campos para variáveis temporárias e confia que serão apagados automaticamente quando o processo PHP terminar",
+      "Ele mantém o arquivo dentro do document root, mas usa um nome incomum para impedir que visitantes descubram seu endereço",
+      "Ele não lê valores submetidos, registra somente um evento fixo fora do document root e usa bloqueio durante a escrita",
+      "Ele substitui `POST` por `GET`, evitando que dados enviados apareçam no servidor e dispensando validação de entrada"
+    ],
+    "correct": 2,
+    "explanation": "O exemplo seguro preserva o mecanismo sem armazenar entrada do visitante: grava apenas horário e rótulo estático, usa um caminho não publicado e solicita locking para reduzir interferência entre escritas concorrentes."
+  },
+  {
+    "id": "fix-03-66",
+    "scope": "lesson-fixation",
+    "fixationNumber": 10,
+    "difficulty": "medium",
+    "topic": "Sanitização e limpeza do laboratório",
+    "lesson": "Aula 15: Arquivos, permissões e redirecionamento em PHP",
+    "source": "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "question": "O que deve ser feito se uma captura ou arquivo do laboratório contiver uma senha verdadeira?",
+    "choices": [
+      "Remover as cópias, trocar a senha, encerrar sessões e não publicar a evidência",
+      "Publicar somente a captura, pois transformar o arquivo em imagem impede que terceiros leiam ou reutilizem a senha",
+      "Renomear o arquivo de texto e manter a senha, pois um caminho diferente elimina o risco de exposição no servidor",
+      "Mover o arquivo para outro diretório com `777`, permitindo que o usuário legítimo apague o conteúdo quando desejar"
+    ],
+    "correct": 0,
+    "explanation": "Uma senha usada no laboratório deve ser tratada como exposta. A evidência pública precisa ser omitida ou sanitizada, as cópias removidas, a senha alterada e sessões existentes encerradas."
   }
 ]
 );
