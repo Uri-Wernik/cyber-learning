@@ -169,16 +169,3 @@ Também ficou claro que uma aplicação moderna não precisa usar somente elemen
 No lado do servidor, PHP ou outra tecnologia de back-end seria responsável por processar dados recebidos. `POST` não armazena informações automaticamente e não fornece criptografia. Persistência, validação, proteção e resposta dependem da aplicação e da configuração do servidor.
 
 Por fim, o encerramento seguro do laboratório é parte do exercício. Uma cópia visual de uma marca não deve permanecer publicamente acessível. Depois da observação, substitua-a por uma página neutra de conscientização, restrinja a porta `80` no Security Group ou encerre a instância quando ela não for mais necessária.
-
-## Perguntas de fixação
-
-1. Por que salvar a cópia temporária aberta pelo FileZilla não significa, por si só, que o arquivo do Apache já foi substituído?
-2. Qual é a diferença entre o código-fonte armazenado no arquivo e o DOM mostrado pelo painel **Elements** depois que o JavaScript foi executado?
-3. Qual é a função do elemento `<form>` e como `action`, `method` e `name` participam da criação de uma requisição HTTP?
-4. Por que `id` e `name` não são intercambiáveis, e quais comportamentos podem ser quebrados pela remoção indiscriminada de um `id`?
-5. O que um controle com `type="submit"` solicita ao navegador e em que momento o evento `submit` pode ser cancelado?
-6. Por que usar `POST` não significa que os dados estão criptografados, e qual tecnologia protege o conteúdo durante o transporte pela Web?
-7. Por que um arquivo `.php` não é executado apenas por possuir essa extensão, e qual relação precisa existir entre Apache e o interpretador PHP?
-8. Como a Content Security Policy, o cancelamento de eventos e a limpeza dos campos atuaram em camadas diferentes na simulação segura?
-9. O que a comparação de hash comprovou e o que precisou ser verificado separadamente no navegador?
-10. Quais medidas encerram corretamente esse laboratório e evitam que uma cópia visual enganosa permaneça exposta na Internet?

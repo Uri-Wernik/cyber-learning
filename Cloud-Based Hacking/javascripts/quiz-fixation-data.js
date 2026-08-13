@@ -2452,6 +2452,186 @@ window.CYBER_QUIZ_QUESTIONS.push(
     ],
     "correct": 0,
     "explanation": "A aula explica que na configuração apresentada, quando alguém abre somente o IP ou domínio sem indicar arquivo, o Apache procura a página padrão `index.html` dentro de `/var/www/html`. Por isso, o arquivo enviado recebeu esse nome, tornando-se a página inicial do site."
+  },
+  {
+    "id": "fix-03-47",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "easy",
+    "topic": "Edição remota com FileZilla",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Depois de salvar no editor a cópia temporária aberta pelo FileZilla, o que ainda precisa acontecer para alterar a página servida pelo Apache?",
+    "choices": [
+      "O Apache precisa localizar o arquivo temporário no Windows e copiá-lo para o document root durante a próxima requisição",
+      "O FileZilla precisa detectar a alteração e enviar a cópia local para substituir o arquivo remoto em `/var/www/html`",
+      "O navegador precisa atualizar a página e transferir sua cópia em cache para o servidor por meio de HTTP",
+      "A sessão SSH precisa reiniciar o Apache para sincronizar automaticamente o conteúdo aberto no editor local"
+    ],
+    "correct": 1,
+    "explanation": "O editor modifica primeiro uma cópia temporária no Windows. A página publicada só muda quando o FileZilla detecta essa alteração e conclui o upload que substitui `/var/www/html/index.html` no servidor remoto."
+  },
+  {
+    "id": "fix-03-48",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "medium",
+    "topic": "Código-fonte e DOM",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Por que o HTML mostrado no painel Elements pode ser diferente do texto encontrado no arquivo `index.html`?",
+    "choices": [
+      "O painel Elements mostra somente o CSS baixado, enquanto o arquivo contém exclusivamente elementos HTML sem estilos",
+      "O painel Elements reconstrói o código do servidor, enquanto o arquivo guarda apenas a resposta produzida pelo PHP",
+      "O painel mostra o DOM atual, possivelmente alterado por JavaScript; o arquivo mantém o código-fonte armazenado",
+      "O painel Elements converte todo formulário em imagem, enquanto o arquivo mantém os controles que o Apache não consegue servir"
+    ],
+    "correct": 2,
+    "explanation": "O inspetor apresenta o DOM existente naquele momento. JavaScript pode criar, remover ou modificar elementos depois do carregamento, enquanto o editor continua mostrando o conteúdo armazenado no arquivo."
+  },
+  {
+    "id": "fix-03-49",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "medium",
+    "topic": "Atributos de formulário",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Qual relação entre `form`, `action`, `method` e `name` descreve corretamente a preparação de uma requisição de formulário?",
+    "choices": [
+      "`form` agrupa controles; `action` indica o destino; `method` escolhe o método HTTP; `name` define a chave do valor",
+      "`form` define a porta, `action` escolhe o protocolo de transporte, `method` identifica o servidor e `name` criptografa o valor",
+      "`form` executa o back-end, `action` valida os campos, `method` grava os valores e `name` seleciona o arquivo de resposta",
+      "`form` abre a conexão, `action` define o usuário, `method` resolve o domínio e `name` escolhe o processo do Apache"
+    ],
+    "correct": 0,
+    "explanation": "O formulário delimita os controles participantes. `action` fornece a URL de destino, `method` seleciona o método HTTP e cada `name` se torna a chave que acompanha o valor do respectivo controle."
+  },
+  {
+    "id": "fix-03-50",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "medium",
+    "topic": "Diferença entre id e name",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Qual é a diferença técnica entre os atributos `id` e `name` em um campo de formulário?",
+    "choices": [
+      "`id` define a chave enviada ao servidor, enquanto `name` existe somente para selecionar o campo por CSS",
+      "`id` informa o método HTTP do campo, enquanto `name` determina a URL que receberá todo o formulário",
+      "`id` e `name` são equivalentes, portanto remover qualquer um deles sempre produz exatamente o mesmo resultado",
+      "`id` identifica o elemento no DOM e pode ligá-lo ao label; `name` define a chave usada para representar seu valor no envio"
+    ],
+    "correct": 3,
+    "explanation": "O `id` identifica unicamente o elemento no documento e participa de relações com labels, CSS e JavaScript. O `name` é usado como chave quando o controle contribui com um valor para o formulário."
+  },
+  {
+    "id": "fix-03-51",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "medium",
+    "topic": "Evento de envio",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "O que ocorre quando um controle `type=\"submit\"` é acionado e um listener chama `preventDefault()` no evento `submit`?",
+    "choices": [
+      "O controle grava os valores localmente e o listener apenas impede que o Apache devolva uma resposta ao navegador",
+      "`submit` solicita o envio, mas o listener cancela a ação padrão antes da requisição nativa do formulário",
+      "O controle inicia uma conexão SSH e o listener impede que o FileZilla substitua o arquivo no diretório remoto",
+      "O controle envia os valores por HTTP e o listener cancela somente a atualização visual que ocorreria depois da resposta"
+    ],
+    "correct": 1,
+    "explanation": "O acionamento de um controle submit inicia o processo de envio e dispara o evento `submit`. Quando esse evento é cancelado com `preventDefault()`, a navegação ou requisição nativa do formulário não acontece."
+  },
+  {
+    "id": "fix-03-52",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "hard",
+    "topic": "Componentes modernos de interface",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Por que procurar apenas por `submit` não era suficiente para identificar o controle visível de entrada na página estudada?",
+    "choices": [
+      "O Apache remove o atributo `submit` de todos os botões durante o processamento de cada solicitação recebida",
+      "O FileZilla converte botões visíveis em campos ocultos sempre que baixa um arquivo do document root",
+      "A interface usava um elemento com `role=\"button\"` controlado por JavaScript e mantinha separadamente um envio oculto",
+      "O método `POST` impede que controles visíveis apareçam no DOM e permite encontrá-los somente na requisição de rede"
+    ],
+    "correct": 2,
+    "explanation": "A aparência e o comportamento eram compostos por elementos diferentes: o controle visível tinha função ARIA de botão, enquanto um controle de envio permanecia oculto. Era necessário relacionar DOM, formulário e eventos."
+  },
+  {
+    "id": "fix-03-53",
+    "scope": "lesson-fixation",
+    "fixationNumber": 7,
+    "difficulty": "easy",
+    "topic": "POST e proteção do transporte",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Por que escolher o método `POST` não significa que os dados do formulário estão criptografados?",
+    "choices": [
+      "`POST` coloca os valores no corpo; a criptografia durante o transporte depende de HTTPS com TLS",
+      "`POST` protege somente o nome dos campos; a criptografia dos valores depende da extensão usada pelo arquivo de destino",
+      "`POST` criptografa a requisição no navegador; o Apache remove essa proteção antes de entregar os dados à aplicação",
+      "`POST` usa a porta 22 para proteger o corpo; a página depende do SFTP apenas para criptografar a resposta HTTP"
+    ],
+    "correct": 0,
+    "explanation": "`POST` define a semântica e a posição usual dos dados na mensagem HTTP, não a criptografia. HTTPS acrescenta TLS para proteger confidencialidade e integridade entre navegador e servidor."
+  },
+  {
+    "id": "fix-03-54",
+    "scope": "lesson-fixation",
+    "fixationNumber": 8,
+    "difficulty": "hard",
+    "topic": "Execução de PHP no servidor",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Por que criar um arquivo com extensão `.php` não garante que seu código será executado?",
+    "choices": [
+      "O navegador precisa instalar PHP localmente e autorizar cada programa antes de enviar ao Apache todas as requisições desse recurso",
+      "O FileZilla precisa converter o arquivo PHP para HTML durante o upload e registrar a conversão no Security Group",
+      "O sistema operacional executa PHP somente quando o arquivo está fora do document root e pertence ao usuário root",
+      "O Apache precisa estar integrado a um interpretador PHP capaz de processar o recurso e devolver a resposta produzida"
+    ],
+    "correct": 3,
+    "explanation": "A extensão é apenas parte do nome. Para executar PHP, o servidor web precisa encaminhar esse recurso a um interpretador configurado. O navegador recebe a resposta gerada, não o código PHP original."
+  },
+  {
+    "id": "fix-03-55",
+    "scope": "lesson-fixation",
+    "fixationNumber": 9,
+    "difficulty": "hard",
+    "topic": "Validação da simulação segura",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Qual conjunto de evidências confirmou o comportamento da simulação segura no navegador?",
+    "choices": [
+      "O arquivo remoto tinha o mesmo nome do original, o Apache estava ativo e a porta 80 permanecia liberada no Security Group",
+      "A URL não mudou, os campos foram apagados, surgiu a confirmação local e nenhuma requisição `POST` foi observada",
+      "O screenshot permaneceu igual, o código continha uma CSP e o FileZilla exibiu a data mais recente no painel remoto",
+      "O hash dos arquivos coincidiu, o formulário manteve `method=\"POST\"` e o controle visível continuou respondendo ao ponteiro"
+    ],
+    "correct": 1,
+    "explanation": "Essas observações verificam o comportamento em execução: ausência de navegação e de POST, limpeza dos campos e mensagem local. O hash prova igualdade de arquivos, mas sozinho não demonstra o que o navegador fez."
+  },
+  {
+    "id": "fix-03-56",
+    "scope": "lesson-fixation",
+    "fixationNumber": 10,
+    "difficulty": "easy",
+    "topic": "Encerramento seguro do laboratório",
+    "lesson": "Aula 14: Entendendo e controlando o envio de um formulário",
+    "source": "03-phishing/14-modifying-the-page-to-steal-login-information/",
+    "question": "Qual ação encerra adequadamente o laboratório depois que a observação técnica termina?",
+    "choices": [
+      "Manter a cópia visual publicamente acessível, desde que o formulário não mostre erros durante o preenchimento",
+      "Conservar a porta 80 aberta e apenas fechar o FileZilla, pois isso remove automaticamente a página do Apache",
+      "Substituir a cópia por uma página neutra e restringir a porta 80 ou encerrar a instância quando ela não for necessária",
+      "Renomear o arquivo publicado e manter a instância ativa, pois um nome diferente impede acesso por endereço IP"
+    ],
+    "correct": 2,
+    "explanation": "Uma cópia visual enganosa não deve permanecer exposta. O encerramento inclui remover ou substituir o artefato e reduzir a exposição da infraestrutura, fechando a regra de entrada ou encerrando a instância."
   }
 ]
 );
