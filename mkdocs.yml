@@ -73,7 +73,7 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
-  - stylesheets/extra.css?v=20260924
+  - stylesheets/extra.css?v=20260924-2
 
 extra_javascript:
   - javascripts/pwa.js?v=20260803
@@ -87,6 +87,12 @@ extra:
 
 nav:
   - Início: index.md
+  - Preparação para a prova:
+      - Guia de estudo: 04-preparacao-para-prova/01-guia-de-estudo.md
+      - Conceitos fundamentais: 04-preparacao-para-prova/02-conceitos-fundamentais.md
+      - Ferramentas e comandos: 04-preparacao-para-prova/03-ferramentas-e-comandos.md
+      - Como tudo funciona: 04-preparacao-para-prova/04-como-tudo-funciona.md
+      - Simulado configurável: quiz.md
   - 1. Contexto e fundamentos:
       - 1. Visão geral do curso: 01-introduction-to-cloud-computing-for-hackers/01-teaser.md
       - 2. Hacking ético, pentest e Red Team: 01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud.md
@@ -105,13 +111,6 @@ nav:
       - 13. Publicando uma página no Apache: 03-phishing/13-creating-a-fake-login-page-on-the-cloud.md
       - 14. Entendendo o envio de formulários: 03-phishing/14-modifying-the-page-to-steal-login-information.md
       - 15. Arquivos, permissões e PHP: 03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page.md
-  - 4. Preparação para a prova:
-      - Guia de estudo: 04-preparacao-para-prova/01-guia-de-estudo.md
-      - Conceitos fundamentais: 04-preparacao-para-prova/02-conceitos-fundamentais.md
-      - Ferramentas e comandos: 04-preparacao-para-prova/03-ferramentas-e-comandos.md
-      - Como tudo funciona: 04-preparacao-para-prova/04-como-tudo-funciona.md
-      - Simulado configurável: quiz.md
-
 draft_docs: |
   03-phishing/1[6-9]-*.md
   04-phishing-bypassing-2fa-mfa/**

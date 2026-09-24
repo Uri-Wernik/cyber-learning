@@ -1,11 +1,11 @@
 const APP_ROOT = "/cyber-learning/";
 const CACHE_PREFIX = "cyber-learning-";
-const CACHE_NAME = `${CACHE_PREFIX}pwa-20260924-v1`;
+const CACHE_NAME = `${CACHE_PREFIX}pwa-20260924-v2`;
 
 const PRECACHE_URLS = [
   APP_ROOT,
   `${APP_ROOT}manifest.webmanifest`,
-  `${APP_ROOT}stylesheets/extra.css?v=20260924`,
+  `${APP_ROOT}stylesheets/extra.css?v=20260924-2`,
   `${APP_ROOT}assets/stylesheets/main.ec1eaa64.min.css`,
   `${APP_ROOT}assets/stylesheets/palette.ab4e12ef.min.css`,
   `${APP_ROOT}assets/javascripts/bundle.d7400e89.min.js`,

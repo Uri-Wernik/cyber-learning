@@ -565,6 +565,39 @@ body {
   font-size: 1rem;
 }
 
+.study-entry {
+  display: grid;
+  margin-top: 2.4rem;
+  padding: 1.4rem 1.5rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.5rem;
+  border: 1px solid var(--book-border);
+  border-left: 4px solid var(--book-accent);
+  border-radius: 10px;
+  background-color: var(--book-surface);
+}
+
+.md-typeset .study-entry h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1.25rem;
+}
+
+.study-entry p {
+  max-width: 42rem;
+  margin: 0.45rem 0 0;
+  color: var(--book-muted);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.study-entry .md-button {
+  margin: 0;
+  white-space: nowrap;
+}
+
 .edition-note {
   display: grid;
   margin-top: 3rem;
@@ -723,6 +756,18 @@ body {
   .module-row__arrow {
     grid-column: 3;
     grid-row: 1;
+  }
+
+  .study-entry {
+    padding: 1.2rem;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 1rem;
+  }
+
+  .study-entry .md-button {
+    width: 100%;
+    text-align: center;
   }
 
   .edition-note {

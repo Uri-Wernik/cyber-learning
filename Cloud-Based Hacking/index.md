@@ -22,7 +22,6 @@ hide:
 <div class="book-cover__actions" markdown>
 
 [Começar a leitura :material-arrow-right:](01-introduction-to-cloud-computing-for-hackers/01-teaser.md){ .md-button .md-button--primary }
-[Preparar para a prova](04-preparacao-para-prova/01-guia-de-estudo.md){ .md-button }
 
 </div>
 
@@ -40,7 +39,7 @@ hide:
 
 <div class="section-heading" markdown>
 
-## Quatro módulos para construir a base
+## Três módulos para construir a base
 
 Cada etapa introduz os conceitos necessários para a seguinte, sem presumir experiência anterior com redes, Linux ou nuvem.
 
@@ -71,15 +70,17 @@ Cada etapa introduz os conceitos necessários para a seguinte, sem presumir expe
         <span class="module-row__meta">6 aulas</span>
         <span class="module-row__arrow" aria-hidden="true">&rarr;</span>
     </a>
-    <a class="module-row" href="04-preparacao-para-prova/01-guia-de-estudo/">
-        <span class="module-row__copy">
-            <strong>Preparação para a prova</strong>
-            <span>Revisão integrada dos conceitos, ferramentas e fluxos, seguida por um simulado configurável.</span>
-        </span>
-        <span class="module-row__meta">4 guias + simulado</span>
-        <span class="module-row__arrow" aria-hidden="true">&rarr;</span>
-    </a>
 </div>
+
+<section class="study-entry" aria-labelledby="study-entry-title">
+    <div class="study-entry__copy">
+        <h2 id="study-entry-title">Preparação para a prova</h2>
+        <p>Uma área independente para revisar as 15 aulas publicadas, conectar conceitos e ferramentas e montar um simulado configurável.</p>
+    </div>
+    <a class="md-button md-button--primary" href="04-preparacao-para-prova/01-guia-de-estudo/">
+        Abrir guia <span aria-hidden="true">&rarr;</span>
+    </a>
+</section>
 
 <section class="edition-note">
     <div>
