@@ -1,1311 +1,1021 @@
 window.CYBER_QUIZ_QUESTIONS = window.CYBER_QUIZ_QUESTIONS || [];
-window.CYBER_QUIZ_QUESTIONS.push(
-  ...[
-    {
-      id: "exam-01-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Camadas de acesso",
-      lesson: "Aula 1: Visão geral do curso",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/01-teaser/",
-      question:
-        "Qual opção diferencia conta, navegador e sistema operacional?",
-      choices: [
-        "Conta acessa um serviço; navegador executa conteúdo web; sistema executa processos locais com seus privilégios",
-        "Conta controla o hardware; navegador cria usuários; sistema operacional apenas exibe páginas recebidas pela rede",
-        "Conta e navegador são a mesma camada; sistema operacional serve somente para armazenar os arquivos baixados",
-        "Conta define a porta de rede; navegador cria o endereço IP; sistema operacional registra o nome de domínio",
-      ],
-      correct: 0,
-      explanation:
-        "São três camadas diferentes. A conta existe dentro de um serviço, o navegador executa conteúdo web dentro de limites próprios e o sistema operacional executa processos locais com as permissões do usuário.",
-    },
-    {
-      id: "exam-01-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "HTTPS e legitimidade",
-      lesson: "Aula 1: Visão geral do curso",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/01-teaser/",
-      question:
-        "Ao ver HTTPS e um cadeado no navegador, qual conclusão é tecnicamente correta?",
-      choices: [
-        "O navegador confirmou que a organização por trás da página é honesta e que o conteúdo não pode imitar outro site",
-        "A conexão com o domínio exibido usa proteção criptográfica, mas isso não comprova a intenção de quem controla a página",
-        "O certificado impede páginas de phishing, embora não proteja outros tipos de conteúdo servido pelo mesmo domínio",
-        "A comunicação está protegida apenas para senhas, enquanto os demais campos continuam trafegando sem criptografia",
-      ],
-      correct: 1,
-      explanation:
-        "HTTPS protege confidencialidade e integridade no transporte e ajuda a autenticar o domínio apresentado. Ele não julga a finalidade da página nem garante que o responsável pelo domínio seja confiável.",
-    },
-    {
-      id: "exam-01-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Sessão autenticada e MFA",
-      lesson: "Aula 1: Visão geral do curso",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/01-teaser/",
-      question:
-        "Por que reutilizar um token de sessão não significa quebrar criptograficamente o MFA?",
-      choices: [
-        "Porque o token contém somente o nome público do usuário e exige que todos os fatores sejam digitados novamente a cada requisição",
-        "Porque o navegador remove o segundo fator do fluxo e passa a validar apenas a senha armazenada no servidor de identidade",
-        "Porque o token representa uma autenticação já concluída; reutilizá-lo tenta aproveitar essa sessão, sujeita aos controles do serviço",
-        "Porque o MFA protege exclusivamente o cadastro inicial da conta e deixa de participar das autenticações realizadas depois",
-      ],
-      correct: 2,
-      explanation:
-        "O serviço emite o token depois que a autenticação, inclusive o MFA, foi aceita. A reutilização tenta agir como aquela sessão, sem decifrar o segundo fator. Validade curta, vínculo ao dispositivo e nova autenticação podem impedir o uso.",
-    },
-    {
-      id: "exam-02-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Autenticação e autorização",
-      lesson: "Aula 2: Pentest e Red Team",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/",
-      question:
-        "Qual é a diferença entre autenticação e autorização?",
-      choices: [
-        "Autenticação cifra a rede; autorização escolhe qual endereço IP será usado pelo dispositivo conectado",
-        "Autenticação cria a conta; autorização guarda a senha em um cookie permanente dentro do navegador",
-        "Autenticação inicia o servidor; autorização abre automaticamente todas as portas necessárias no firewall",
-        "Autenticação confirma uma identidade; autorização define quais ações essa identidade pode executar",
-      ],
-      correct: 3,
-      explanation:
-        "Primeiro o sistema verifica a identidade por senha, chave ou outro fator. Depois consulta regras de autorização para decidir quais recursos e operações aquela identidade pode usar.",
-    },
-    {
-      id: "exam-02-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Pentest e Red Team",
-      lesson: "Aula 2: Pentest e Red Team",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/",
-      question:
-        "Qual comparação descreve melhor a diferença de objetivo entre pentest e Red Team?",
-      choices: [
-        "O pentest busca encontrar e comprovar falhas dentro de um escopo; o Red Team avalia objetivos e controles em um cenário adversário",
-        "O pentest testa somente redes internas; o Red Team testa somente aplicações que estejam publicadas diretamente na Internet",
-        "O pentest mede somente disponibilidade; o Red Team mede apenas a velocidade usada para corrigir cada resultado",
-        "O pentest corrige cada falha encontrada; o Red Team administra permanentemente os controles defensivos da organização",
-      ],
-      correct: 0,
-      explanation:
-        "O pentest costuma identificar e demonstrar vulnerabilidades em um conjunto definido de sistemas. O Red Team trabalha por objetivos e observa como pessoas, processos e tecnologia respondem juntos.",
-    },
-    {
-      id: "exam-02-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Camadas de comprometimento",
-      lesson: "Aula 2: Pentest e Red Team",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/",
-      question:
-        "Uma conta web foi acessada com uma sessão válida. O que ainda precisa ser demonstrado antes de afirmar controle do sistema operacional?",
-      choices: [
-        "Que a conta possui um endereço de e-mail verificado e que o navegador manteve a sessão aberta por mais de uma requisição válida",
-        "Que houve execução fora dos limites da conta e do navegador, com um processo local e privilégios identificados no sistema",
-        "Que a página usou HTTPS e que o token de sessão pôde consultar dados pertencentes ao serviço autenticado sem qualquer limitação",
-        "Que o navegador carregou scripts da aplicação e que a política de mesma origem permitiu acesso permanente ao próprio domínio",
-      ],
-      correct: 1,
-      explanation:
-        "Acesso à conta, execução no navegador e execução no sistema são camadas diferentes. Para alegar controle do sistema é preciso comprovar código executando como processo local, identificar o usuário e os privilégios obtidos e não apenas mostrar ações dentro da aplicação web.",
-    },
-    {
-      id: "exam-03-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Computação em nuvem",
-      lesson: "Aula 3: O que é computação em nuvem?",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud/",
-      question:
-        "O que a expressão computação em nuvem descreve neste livro?",
-      choices: [
-        "Uma rede separada da Internet, formada apenas por servidores virtuais sem hardware físico no provedor",
-        "Um site que armazena arquivos remotos e substitui todos os sistemas operacionais instalados nas máquinas",
-        "Recursos computacionais reais oferecidos como serviço, provisionados e administrados por meio de abstrações",
-        "Um protocolo de transporte usado para conectar navegadores diretamente a máquinas virtuais de qualquer provedor",
-      ],
-      correct: 2,
-      explanation:
-        "A nuvem usa datacenters, servidores, redes e armazenamento reais. O provedor apresenta esses recursos por meio de serviços e planos de controle que permitem provisionar, alterar e remover capacidade sob demanda.",
-    },
-    {
-      id: "exam-03-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "IP, domínio, URL e porta",
-      lesson: "Aula 3: O que é computação em nuvem?",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud/",
-      question:
-        "Qual descrição relaciona corretamente endereço IP, domínio, URL e porta?",
-      choices: [
-        "O IP nomeia o serviço, o domínio identifica um processo, a URL escolhe a interface e a porta define o caminho do arquivo",
-        "O IP identifica o protocolo, o domínio substitui o roteador, a URL inicia o serviço e a porta escolhe o servidor físico",
-        "O IP identifica o usuário, o domínio registra a sessão, a URL cifra o conteúdo e a porta autentica o navegador",
-        "O IP identifica uma interface, o domínio resolve para endereço, a URL inclui protocolo e caminho, e a porta aponta o serviço",
-      ],
-      correct: 3,
-      explanation:
-        "O endereço IP identifica uma interface na rede. O domínio é um nome resolvido para um endereço. A URL informa como acessar um recurso, inclusive esquema e caminho. A porta é um identificador lógico usado para entregar o tráfego ao processo adequado.",
-    },
-    {
-      id: "exam-03-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Fluxo de uma requisição web",
-      lesson: "Aula 3: O que é computação em nuvem?",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud/",
-      question:
-        "Qual sequência representa o caminho de uma requisição HTTP feita a um domínio público?",
-      choices: [
-        "DNS obtém um IP, a rede roteia os pacotes, filtros permitem a porta e o sistema entrega a conexão ao processo em escuta",
-        "HTTP encontra o endereço MAC remoto, o navegador abre o firewall e o DNS seleciona o arquivo dentro do document root",
-        "A URL inicia o servidor, o roteador cria o domínio e o processo web escolhe um IP público para devolver a resposta",
-        "O certificado resolve o domínio, o Security Group inicia o Apache e o TCP transfere diretamente o arquivo ao navegador",
-      ],
-      correct: 0,
-      explanation:
-        "Primeiro o nome é resolvido para um endereço. Depois o tráfego é roteado, atravessa os controles de rede permitidos, chega à porta de destino e é entregue ao processo que está em escuta. Esse processo interpreta a requisição e produz a resposta.",
-    },
-    {
-      id: "exam-04-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Cliente e servidor",
-      lesson: "Aula 4: Nuvem em testes autorizados",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/04-why-learn-cloud-computing-as-a-hacker/",
-      question:
-        "O que define os papéis de cliente e servidor em uma comunicação de rede?",
-      choices: [
-        "O cliente sempre é o computador local, enquanto o servidor sempre precisa estar em uma nuvem pública",
-        "O cliente inicia a interação com um serviço, e o servidor escuta e responde naquele fluxo específico",
-        "O cliente possui IP privado, enquanto o servidor obrigatoriamente possui um endereço IP público permanente",
-        "O cliente usa uma porta fixa, enquanto o servidor escolhe qualquer porta nova para cada pacote recebido",
-      ],
-      correct: 1,
-      explanation:
-        "Cliente e servidor descrevem papéis no fluxo, não tipos permanentes de máquina. O cliente inicia uma solicitação e o processo servidor aguarda conexões em uma porta. A mesma máquina pode exercer papéis diferentes em comunicações diferentes.",
-    },
-    {
-      id: "exam-04-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Conexão direta e callback",
-      lesson: "Aula 4: Nuvem em testes autorizados",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/04-why-learn-cloud-computing-as-a-hacker/",
-      question:
-        "Qual é a diferença de direção entre uma conexão direta e um callback?",
-      choices: [
-        "Na conexão direta o servidor resolve DNS; no callback o cliente ignora endereços e comunica apenas por nomes locais",
-        "Na conexão direta o tráfego usa TCP; no callback o retorno precisa usar UDP para atravessar qualquer firewall",
-        "Na conexão direta o operador inicia o acesso ao destino; no callback um componente no destino inicia o retorno ao receptor",
-        "Na conexão direta existe autenticação; no callback não pode haver criptografia, identidade ou controle de sessão",
-      ],
-      correct: 2,
-      explanation:
-        "Na conexão direta, o lado do operador abre a comunicação com o serviço no destino. Em um callback, um componente executado no destino inicia uma conexão de saída para um receptor preparado. Os dois fluxos ainda dependem de endereço, rota, porta, processo e regras de rede.",
-    },
-    {
-      id: "exam-04-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "EC2, C2 e encerramento do laboratório",
-      lesson: "Aula 4: Nuvem em testes autorizados",
-      source:
-        "01-introduction-to-cloud-computing-for-hackers/04-why-learn-cloud-computing-as-a-hacker/",
-      question:
-        "Por que uma instância EC2 não é automaticamente um servidor C2, e o que deve ocorrer ao encerrar o laboratório?",
-      choices: [
-        "EC2 é um protocolo de comando; vira C2 ao receber IP privado, e basta fechar o terminal para eliminar recursos e registros em uso",
-        "EC2 é um sistema operacional; vira C2 ao instalar Kali, e basta parar o navegador para remover armazenamento e regras em qualquer rede",
-        "EC2 é uma regra de rede; vira C2 quando libera portas, e basta desconectar o SSH para interromper toda cobrança futura da sessão",
-        "EC2 fornece computação; só atua como C2 com software e fluxo próprios, e recursos, exposição e custos devem ser encerrados",
-      ],
-      correct: 3,
-      explanation:
-        "EC2 é o serviço de máquinas virtuais da AWS. C2 descreve uma função de comando e controle que depende de software, comunicação e operação específicos. Ao terminar, é necessário remover ou encerrar recursos, revisar regras expostas e confirmar que não restaram custos.",
-    },
-    {
-      id: "exam-05-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Estados da instância EC2",
-      lesson: "Aula 5: Roteiro e laboratório seguro",
-      source: "02-cloud-basics/05-introduction-to-cloud-basics/",
-      question:
-        "Qual é a diferença principal entre parar e encerrar uma instância EC2?",
-      choices: [
-        "Parar desliga a computação preservando o recurso; encerrar remove a instância e pode eliminar volumes configurados para exclusão",
-        "Parar exclui imediatamente a instância; encerrar apenas bloqueia novas conexões até que o usuário faça login novamente",
-        "Parar remove o armazenamento e mantém o processador; encerrar conserva todos os componentes sem gerar qualquer custo",
-        "Parar altera o sistema operacional para modo seguro; encerrar restaura automaticamente a imagem usada na criação",
-      ],
-      correct: 0,
-      explanation:
-        "Uma instância parada pode ser iniciada novamente e seus recursos persistentes continuam existindo. Encerrar é a ação de remover a instância. Volumes com exclusão configurada também podem ser apagados, por isso a consequência precisa ser conferida.",
-    },
-    {
-      id: "exam-05-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Custos residuais na nuvem",
-      lesson: "Aula 5: Roteiro e laboratório seguro",
-      source: "02-cloud-basics/05-introduction-to-cloud-basics/",
-      question:
-        "Por que uma instância parada não garante que o laboratório deixou de gerar custos?",
-      choices: [
-        "Porque o sistema operacional continua executando todos os processos, mesmo quando o estado exibido é stopped",
-        "Porque a AWS converte automaticamente a instância parada em outro serviço pago sem registrar a mudança no console",
-        "Porque volumes, endereços e outros recursos associados podem continuar provisionados e cobrados separadamente",
-        "Porque o Security Group cobra por cada regra enquanto a instância não recebe uma nova chave de acesso",
-      ],
-      correct: 2,
-      explanation:
-        "Parar normalmente interrompe a cobrança de computação da instância, mas não remove recursos independentes. Armazenamento, snapshots, endereços e outros componentes podem permanecer ativos e ter cobrança própria.",
-    },
-    {
-      id: "exam-05-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Verificação antes e depois do uso",
-      lesson: "Aula 5: Roteiro e laboratório seguro",
-      source: "02-cloud-basics/05-introduction-to-cloud-basics/",
-      question:
-        "Qual rotina reduz melhor o risco operacional e financeiro de um laboratório em nuvem?",
-      choices: [
-        "Criar a instância, confiar no Free Tier, abrir todas as portas necessárias e verificar a fatura detalhada apenas no fim do mês",
-        "Confirmar região, estado, regras e orçamento antes do uso; ao final, encerrar recursos e revisar o console de cobrança",
-        "Manter a instância sempre ligada, reutilizar as mesmas credenciais e remover apenas os arquivos criados no sistema que permanecerem ativos",
-        "Parar a instância, excluir o histórico do terminal e assumir que volumes, endereços e regras da conta desapareceram juntos",
-      ],
-      correct: 1,
-      explanation:
-        "O ciclo seguro começa antes da execução: confirmar conta, região, recurso correto, exposição e alertas de orçamento. O encerramento exige remover o que não será reutilizado e verificar tanto o inventário quanto a área de custos.",
-    },
-  ]
-);
 
-window.CYBER_QUIZ_QUESTIONS.push(
-  ...[
+(() => {
+  const levels = ["easy", "medium", "hard"];
+  const guide = "04-preparacao-para-prova/01-guia-de-estudo/";
+  const concepts = [
     {
-      id: "exam-16-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Função do DNS",
-      lesson: "Aula 16: Domínio e DNS",
-      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
-      question: "Para que serve o DNS?",
-      choices: [
-        "Responder consultas sobre nomes, fornecendo dados como o endereço IP associado a um domínio",
-        "Transportar páginas HTML entre navegadores sem precisar de endereço IP, rota ou porta de destino",
-        "Criptografar todo o tráfego de rede e validar automaticamente o conteúdo publicado em cada servidor",
-        "Criar contas no sistema operacional e escolher quais arquivos cada processo poderá ler ou modificar",
-      ],
-      correct: 0,
-      explanation:
-        "DNS é um sistema de nomes. Ele fornece registros como endereços IP, mas não transporta a página e não abre a conexão com o servidor web.",
+      id: "iam",
+      topic: "IAM",
+      lesson: "Conceito essencial: IAM",
+      source: `${guide}#iam`,
+      questions: {
+        easy: {
+          question: "Para que serve o IAM na AWS?",
+          choices: [
+            "Controlar identidades e definir quais ações cada uma pode executar",
+            "Criar discos virtuais e conectá-los automaticamente às instâncias",
+            "Traduzir nomes de domínio para endereços IP públicos ou privados",
+            "Entregar páginas HTTP armazenadas no sistema operacional da instância",
+          ],
+          correct: 0,
+          explanation:
+            "IAM significa Identity and Access Management. Ele administra identidades, funções e políticas de permissão dentro da AWS.",
+        },
+        medium: {
+          question:
+            "Um usuário consegue listar instâncias EC2, mas não consegue encerrá-las. Qual componente provavelmente definiu esse limite?",
+          choices: [
+            "A AMI usada para criar as instâncias que aparecem na listagem",
+            "Uma política do IAM associada ao usuário ou à função utilizada",
+            "O volume EBS conectado ao sistema operacional de cada instância",
+            "O registro DNS usado para localizar o endereço público da conta",
+          ],
+          correct: 1,
+          explanation:
+            "As políticas do IAM dizem quais ações uma identidade pode executar. Visualizar e encerrar instâncias são permissões diferentes.",
+        },
+        hard: {
+          question:
+            "Uma identidade usa MFA, mas possui permissão administrativa total. O que essa situação demonstra?",
+          choices: [
+            "O MFA reduz automaticamente as permissões concedidas pela política do IAM",
+            "O Security Group substitui o IAM sempre que a identidade usa um segundo fator",
+            "O MFA fortalece o login, enquanto o IAM ainda decide o que a identidade pode fazer",
+            "A AMI redefine as permissões da conta depois que a autenticação é concluída",
+          ],
+          correct: 2,
+          explanation:
+            "MFA reforça a autenticação. A autorização continua sendo definida pelas políticas do IAM, que podem ser amplas ou restritas.",
+        },
+      },
     },
     {
-      id: "exam-16-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Registros A, AAAA e CNAME",
-      lesson: "Aula 16: Domínio e DNS",
-      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
-      question: "Qual relação entre registros DNS está correta?",
-      choices: [
-        "A aponta para IPv6, AAAA cria um alias e CNAME guarda diretamente o endereço IPv4 do servidor",
-        "A aponta para IPv4, AAAA aponta para IPv6 e CNAME declara que um nome é alias de outro nome",
-        "A escolhe a porta HTTP, AAAA instala o certificado e CNAME inicia o processo servidor na máquina",
-        "A transporta a página, AAAA cifra a resposta e CNAME autentica o usuário antes da conexão TCP",
-      ],
-      correct: 1,
-      explanation:
-        "A e AAAA são registros de endereço para IPv4 e IPv6. CNAME aponta um nome alternativo para outro nome, que depois precisa ser resolvido.",
+      id: "ec2",
+      topic: "EC2",
+      lesson: "Conceito essencial: EC2",
+      source: `${guide}#ec2`,
+      questions: {
+        easy: {
+          question: "O que o serviço EC2 fornece?",
+          choices: [
+            "Registros DNS usados para associar nomes a endereços de rede",
+            "Máquinas virtuais na AWS, chamadas de instâncias",
+            "Certificados TLS usados para proteger conexões HTTPS",
+            "Políticas de acesso associadas a usuários e funções do IAM",
+          ],
+          correct: 1,
+          explanation:
+            "EC2 significa Elastic Compute Cloud. O serviço permite criar e executar máquinas virtuais na AWS.",
+        },
+        medium: {
+          question:
+            "Qual é a diferença principal entre parar e encerrar uma instância EC2?",
+          choices: [
+            "Parar remove o disco; encerrar preserva toda a máquina para reinício",
+            "Parar altera a AMI; encerrar apenas fecha a conexão SSH atual",
+            "Parar preserva a instância; encerrar remove a instância definitivamente",
+            "Parar bloqueia o IAM; encerrar remove todas as identidades da conta",
+          ],
+          correct: 2,
+          explanation:
+            "Uma instância parada pode ser iniciada novamente. Uma instância encerrada é removida e não pode ser reiniciada.",
+        },
+        hard: {
+          question:
+            "Uma instância aparece como running, mas nenhum serviço responde. O que o estado running realmente comprova?",
+          choices: [
+            "Que todas as portas estão abertas e qualquer processo aceita conexões",
+            "Que o Apache e o SSH foram configurados corretamente dentro do sistema",
+            "Que o DNS e os certificados do domínio estão funcionando sem erros",
+            "Que a máquina virtual está ligada, não que rede e serviços estejam prontos",
+          ],
+          correct: 3,
+          explanation:
+            "Running confirma que a computação está ativa. Security Group, portas e processos precisam ser verificados separadamente.",
+        },
+      },
     },
     {
-      id: "exam-16-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Caminho da resolução DNS",
-      lesson: "Aula 16: Domínio e DNS",
-      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
-      question:
-        "O que acontece quando o computador não possui em cache o IP de um domínio?",
-      choices: [
-        "O navegador escolhe um IP aleatório, abre a porta 443 e espera que o certificado indique o servidor correto",
-        "O sistema envia HTTP ao registrador, que devolve o arquivo solicitado e grava o resultado no Security Group",
-        "Um resolvedor busca a resposta na hierarquia DNS, consulta a fonte autoritativa e devolve o registro ao cliente",
-        "O Apache consulta a chave privada, transforma o domínio em rota e envia a resposta diretamente ao navegador",
-      ],
-      correct: 2,
-      explanation:
-        "O resolvedor verifica seu cache e, quando necessário, percorre a hierarquia até encontrar o servidor autoritativo. Depois devolve a resposta ao computador, que inicia uma conexão separada.",
+      id: "ami",
+      topic: "AMI",
+      lesson: "Conceito essencial: AMI",
+      source: `${guide}#ami`,
+      questions: {
+        easy: {
+          question: "O que é uma AMI na AWS?",
+          choices: [
+            "Uma política que determina quais ações um usuário pode executar",
+            "Um disco externo usado apenas para guardar cópias de segurança",
+            "Um modelo usado como base para criar uma instância EC2",
+            "Uma regra que libera portas de entrada para uma máquina virtual",
+          ],
+          correct: 2,
+          explanation:
+            "AMI significa Amazon Machine Image. Ela fornece a base de sistema e configuração inicial usada na criação da instância.",
+        },
+        medium: {
+          question: "Como AMI e instância EC2 se relacionam?",
+          choices: [
+            "A instância é o modelo, enquanto a AMI é a máquina em execução",
+            "A AMI substitui o volume EBS durante toda a execução da máquina",
+            "A instância controla usuários, enquanto a AMI controla permissões do IAM",
+            "A AMI é o modelo; a instância é a máquina criada a partir dele",
+          ],
+          correct: 3,
+          explanation:
+            "A AMI é uma imagem reutilizável. A instância é o recurso computacional criado e executado a partir dessa imagem.",
+        },
+        hard: {
+          question:
+            "Uma instância foi atualizada depois de ser criada. Outra instância nasce da mesma AMI original. Qual estado ela recebe?",
+          choices: [
+            "O estado salvo na AMI, sem copiar automaticamente as mudanças da primeira instância",
+            "Todas as mudanças da primeira instância, porque a AMI acompanha máquinas em execução",
+            "A configuração do IAM, porque políticas substituem os arquivos guardados na imagem",
+            "Somente o conteúdo do Security Group, sem sistema operacional ou pacotes instalados",
+          ],
+          correct: 0,
+          explanation:
+            "Alterar uma instância não atualiza automaticamente a AMI que a originou. A nova instância começa com o estado da imagem.",
+        },
+      },
     },
     {
-      id: "exam-17-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Registro A",
-      lesson: "Aula 17: Ligando domínio ao servidor",
-      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
-      question: "O que um registro DNS do tipo A informa?",
-      choices: [
-        "Qual processo deve iniciar no servidor depois que o navegador enviar uma requisição para o domínio",
-        "Qual certificado TLS precisa ser instalado para que qualquer subdomínio seja aceito pelo navegador",
-        "Qual arquivo do document root deve ser devolvido para todas as URLs recebidas pelo servidor Apache",
-        "Qual endereço IPv4 está associado ao nome consultado pelo cliente naquele momento",
-      ],
-      correct: 3,
-      explanation:
-        "O registro A associa um nome a um IPv4. Depois de receber esse endereço, o cliente ainda precisa alcançar a porta e conversar com o serviço.",
+      id: "ebs",
+      topic: "EBS",
+      lesson: "Conceito essencial: EBS",
+      source: `${guide}#ebs`,
+      questions: {
+        easy: {
+          question: "Qual é a função principal do EBS?",
+          choices: [
+            "Controlar quem pode iniciar ou encerrar recursos dentro da conta",
+            "Resolver nomes de domínio antes que o cliente abra uma conexão",
+            "Filtrar pacotes de entrada conforme protocolo, porta e origem",
+            "Fornecer armazenamento em bloco usado como disco virtual da instância",
+          ],
+          correct: 3,
+          explanation:
+            "EBS significa Elastic Block Store. Seus volumes funcionam como discos virtuais conectados às instâncias EC2.",
+        },
+        medium: {
+          question:
+            "Por que arquivos podem continuar disponíveis depois que uma instância EC2 é parada e iniciada novamente?",
+          choices: [
+            "Porque o volume EBS persiste mesmo quando a computação está parada",
+            "Porque o Security Group copia os arquivos antes de desligar a máquina",
+            "Porque o IAM guarda o sistema operacional dentro de cada política",
+            "Porque o DNS mantém uma cópia dos dados enquanto o IP não muda",
+          ],
+          correct: 0,
+          explanation:
+            "Parar a instância interrompe a computação, mas o volume EBS persistente continua armazenando os dados.",
+        },
+        hard: {
+          question:
+            "Ao encerrar uma instância, o que determina se o volume EBS principal também será removido?",
+          choices: [
+            "O TTL do domínio associado ao endereço público da instância",
+            "A configuração de exclusão do volume definida para o encerramento",
+            "A quantidade de regras existentes no Security Group associado",
+            "A política de MFA usada no último login realizado na conta AWS",
+          ],
+          correct: 1,
+          explanation:
+            "Volumes podem ser configurados para exclusão junto com a instância ou para permanecer depois do encerramento.",
+        },
+      },
     },
     {
-      id: "exam-17-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "CNAME e TTL",
-      lesson: "Aula 17: Ligando domínio ao servidor",
-      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
-      question:
-        "Como CNAME e TTL influenciam uma alteração de nome no DNS?",
-      choices: [
-        "CNAME cria um alias para outro nome; TTL define por quanto tempo uma resposta anterior pode permanecer em cache",
-        "CNAME cria uma nova porta no servidor; TTL define quantas conexões HTTP o Apache pode manter abertas",
-        "CNAME copia um certificado TLS; TTL define por quanto tempo a chave privada pode ser usada pelo navegador",
-        "CNAME redireciona o navegador por HTTP; TTL define quantas vezes o cliente seguirá o novo endereço",
-      ],
-      correct: 0,
-      explanation:
-        "CNAME relaciona um alias a um nome canônico. O TTL controla o cache, por isso alguns resolvedores podem continuar devolvendo uma resposta antiga até esse tempo terminar.",
+      id: "security-group",
+      topic: "Security Group",
+      lesson: "Conceito essencial: Security Group",
+      source: `${guide}#security-group`,
+      questions: {
+        easy: {
+          question: "O que faz um Security Group?",
+          choices: [
+            "Filtra o tráfego permitido para recursos da AWS usando regras de rede",
+            "Instala os programas necessários dentro do sistema operacional remoto",
+            "Cria certificados TLS para todos os nomes ligados ao endereço público",
+            "Define quais arquivos cada usuário Linux pode modificar na instância",
+          ],
+          correct: 0,
+          explanation:
+            "O Security Group funciona como um firewall virtual. Suas regras consideram protocolo, porta e origem ou destino.",
+        },
+        medium: {
+          question:
+            "Qual regra é necessária para permitir SSH somente a partir do IP do estudante?",
+          choices: [
+            "Liberar HTTP na porta 80 para qualquer origem disponível",
+            "Liberar TCP na porta 22 usando o IP do estudante como origem",
+            "Liberar HTTPS na porta 443 apenas para o endereço da instância",
+            "Liberar DNS na porta 53 para todos os usuários existentes no IAM",
+          ],
+          correct: 1,
+          explanation:
+            "SSH normalmente escuta em TCP 22. Restringir a origem ao IP necessário reduz a exposição da porta.",
+        },
+        hard: {
+          question:
+            "A porta 80 está liberada no Security Group, mas a página não responde. Qual conclusão é correta?",
+          choices: [
+            "A regra garante que o Apache foi instalado e está executando corretamente",
+            "O DNS deve estar errado, pois a regra também controla a resolução de nomes",
+            "A rede permite a tentativa, mas ainda pode não existir processo em escuta",
+            "O EBS precisa ser encerrado antes que o sistema aceite conexões HTTP",
+          ],
+          correct: 2,
+          explanation:
+            "O Security Group permite o tráfego chegar. Ele não instala, inicia nem verifica o processo que deve atender na porta.",
+        },
+      },
     },
     {
-      id: "exam-17-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "DNS correto e serviço indisponível",
-      lesson: "Aula 17: Ligando domínio ao servidor",
-      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
-      question:
-        "O domínio resolve para o IP esperado, mas a página não abre. Qual conclusão é correta?",
-      choices: [
-        "O registro DNS está necessariamente errado, pois uma resposta A correta também comprova HTTP e Apache",
-        "A resolução funcionou; rota, filtro de rede, porta e processo web ainda precisam ser verificados separadamente",
-        "O CNAME precisa substituir o registro A, pois somente aliases conseguem abrir serviços publicados na Internet",
-        "O TTL deve ser definido como zero, pois qualquer cache impede o navegador de iniciar uma conexão TCP",
-      ],
-      correct: 1,
-      explanation:
-        "DNS apenas forneceu o endereço. A conexão ainda depende de rota, Security Group, firewall, porta e servidor web em execução.",
+      id: "ip-e-porta",
+      topic: "IP e porta",
+      lesson: "Conceito essencial: IP e porta",
+      source: `${guide}#ip-e-porta`,
+      questions: {
+        easy: {
+          question: "Qual é a diferença entre endereço IP e porta?",
+          choices: [
+            "O IP escolhe o arquivo e a porta identifica o usuário autenticado",
+            "O IP identifica a interface; a porta direciona a conexão ao programa",
+            "O IP cifra o tráfego e a porta valida o certificado apresentado",
+            "O IP define a permissão e a porta escolhe a política usada no IAM",
+          ],
+          correct: 1,
+          explanation:
+            "O IP localiza uma interface na rede. A porta permite ao sistema entregar a conexão ao processo correto.",
+        },
+        medium: {
+          question:
+            "Como SSH e HTTPS podem funcionar no mesmo endereço IP?",
+          choices: [
+            "Cada protocolo precisa receber um segundo endereço IP do provedor",
+            "O DNS cria uma interface exclusiva sempre que um protocolo é usado",
+            "Eles usam portas diferentes, normalmente 22 para SSH e 443 para HTTPS",
+            "O IAM troca o endereço da máquina conforme a identidade conectada",
+          ],
+          correct: 2,
+          explanation:
+            "Um único IP pode atender vários serviços. As portas ajudam o sistema a distinguir a conexão destinada a cada processo.",
+        },
+        hard: {
+          question:
+            "Uma conexão recebe Connection refused em uma porta. O que isso normalmente indica?",
+          choices: [
+            "O nome não existe no DNS e nenhum pacote chegou ao endereço informado",
+            "A chave privada foi aceita, mas o usuário não possui permissão no IAM",
+            "O certificado TLS expirou antes que o cliente tentasse abrir uma conexão",
+            "O endereço respondeu, mas não havia serviço aceitando naquela porta",
+          ],
+          correct: 3,
+          explanation:
+            "Connection refused costuma indicar que o host foi alcançado, mas nenhum processo aceitou a conexão na porta escolhida.",
+        },
+      },
     },
     {
-      id: "exam-18-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "HTTPS e TLS",
-      lesson: "Aula 18: Introdução ao HTTPS",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#https",
-      question: "O que significa HTTPS?",
-      choices: [
-        "Um tipo de DNS que esconde o endereço IP e escolhe automaticamente a página inicial do servidor",
-        "Um formato de arquivo usado pelo Apache para guardar senhas e tokens recebidos em formulários",
-        "HTTP transmitido dentro de uma conexão protegida pelo protocolo TLS",
-        "Uma versão do SSH criada para transferir páginas web diretamente pelo terminal",
-      ],
-      correct: 2,
-      explanation:
-        "HTTPS mantém as regras do HTTP, mas usa TLS para proteger a comunicação entre cliente e servidor.",
+      id: "dns",
+      topic: "DNS",
+      lesson: "Conceito essencial: DNS",
+      source: `${guide}#dns`,
+      questions: {
+        easy: {
+          question: "Qual é a função principal do DNS?",
+          choices: [
+            "Executar o servidor web depois que o sistema recebe uma requisição",
+            "Cifrar os dados enviados entre o cliente e a aplicação remota",
+            "Responder consultas sobre nomes com dados como endereços IP",
+            "Definir quais ações uma identidade pode executar dentro da AWS",
+          ],
+          correct: 2,
+          explanation:
+            "DNS significa Domain Name System. Ele fornece registros sobre nomes, incluindo os endereços usados para localizar servidores.",
+        },
+        medium: {
+          question:
+            "O DNS devolveu o IP esperado, mas a página não abriu. O que já foi comprovado?",
+          choices: [
+            "Que o Apache respondeu e entregou corretamente o conteúdo solicitado",
+            "Que o certificado TLS foi aceito e protegeu toda a comunicação",
+            "Que a porta do serviço estava aberta e havia um processo em escuta",
+            "Que a resolução do nome funcionou, mas não as demais camadas",
+          ],
+          correct: 3,
+          explanation:
+            "Uma resposta DNS correta comprova a resolução naquele caminho. Rede, porta e servidor web ainda precisam funcionar.",
+        },
+        hard: {
+          question:
+            "Depois de alterar o IP no DNS, alguns usuários ainda recebem o endereço antigo. Qual é a causa mais provável?",
+          choices: [
+            "Respostas anteriores ainda permanecem em cache até o TTL expirar",
+            "O Apache substitui o registro DNS sempre que recebe uma requisição",
+            "O Security Group escolhe um IP diferente para cada usuário conectado",
+            "O IAM mantém uma cópia do endereço dentro da política da identidade",
+          ],
+          correct: 0,
+          explanation:
+            "Resolvedores podem usar a resposta armazenada até o TTL terminar. Por isso, mudanças não aparecem para todos ao mesmo tempo.",
+        },
+      },
     },
     {
-      id: "exam-18-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Certificado e chave privada",
-      lesson: "Aula 18: Introdução ao HTTPS",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#https",
-      question:
-        "Qual é a diferença entre um certificado TLS e sua chave privada?",
-      choices: [
-        "O certificado permanece secreto no servidor; a chave privada é enviada a todo cliente durante o handshake",
-        "O certificado escolhe a rota da Internet; a chave privada abre a porta 443 no firewall da instância",
-        "O certificado guarda cookies do usuário; a chave privada recupera sessões expiradas no banco de dados",
-        "O certificado associa nomes a uma chave pública; a chave privada fica no servidor e prova sua posse",
-      ],
-      correct: 3,
-      explanation:
-        "O servidor apresenta o certificado aos clientes. A chave privada correspondente não é enviada e participa da prova criptográfica de identidade.",
+      id: "registros-dns",
+      topic: "Registros DNS",
+      lesson: "Conceito essencial: A, CNAME e TTL",
+      source: `${guide}#registros-dns`,
+      questions: {
+        easy: {
+          question: "O que informa um registro DNS do tipo A?",
+          choices: [
+            "O certificado TLS que deverá ser apresentado pelo servidor",
+            "A política do IAM aplicada à conta usada para acessar o serviço",
+            "O nome alternativo que aponta para outro nome dentro do DNS",
+            "O endereço IPv4 associado ao nome consultado pelo cliente",
+          ],
+          correct: 3,
+          explanation:
+            "Um registro A relaciona um nome a um endereço IPv4. Ele não abre portas nem inicia serviços.",
+        },
+        medium: {
+          question: "Qual é a função de um registro CNAME?",
+          choices: [
+            "Fazer um nome funcionar como alias de outro nome",
+            "Associar diretamente um nome a um endereço IPv4",
+            "Determinar a porta usada pelo servidor HTTP ou HTTPS",
+            "Definir por quanto tempo uma sessão autenticada será aceita",
+          ],
+          correct: 0,
+          explanation:
+            "CNAME significa Canonical Name. Ele aponta um alias para outro nome, que depois precisa ser resolvido.",
+        },
+        hard: {
+          question:
+            "Um registro foi corrigido, mas a resposta antiga continua aparecendo por alguns minutos. Qual campo explica isso?",
+          choices: [
+            "CNAME, porque todo alias mantém duas respostas ativas simultaneamente",
+            "TTL, porque ele define por quanto tempo a resposta pode ficar em cache",
+            "A, porque endereços IPv4 nunca podem ser substituídos depois de publicados",
+            "IAM, porque a política da conta guarda versões anteriores do registro",
+          ],
+          correct: 1,
+          explanation:
+            "TTL significa Time to Live. Enquanto ele não expira, um resolvedor pode continuar usando a resposta guardada.",
+        },
+      },
     },
     {
-      id: "exam-18-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Handshake TLS",
-      lesson: "Aula 18: Introdução ao HTTPS",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#https",
-      question:
-        "Por que o TLS moderno cria chaves de sessão em vez de cifrar todos os dados diretamente com a chave do certificado?",
-      choices: [
-        "A criptografia assimétrica autentica e estabelece segredos; chaves simétricas derivadas protegem os dados com mais eficiência",
-        "A chave do certificado funciona apenas com DNS, enquanto as chaves de sessão liberam as portas TCP no servidor",
-        "O certificado deixa de ser válido após o primeiro pacote, então o navegador precisa solicitar outro a cada resposta",
-        "As chaves de sessão removem a necessidade de validar nome, prazo e cadeia de confiança durante o handshake",
-      ],
-      correct: 0,
-      explanation:
-        "O handshake usa mecanismos assimétricos para autenticação e acordo de segredos. A partir deles, os dois lados derivam chaves simétricas rápidas para proteger a sessão.",
+      id: "http",
+      topic: "HTTP",
+      lesson: "Conceito essencial: HTTP",
+      source: `${guide}#http`,
+      questions: {
+        easy: {
+          question: "O que o HTTP define?",
+          choices: [
+            "Como clientes fazem requisições e servidores enviam respostas na Web",
+            "Como identidades recebem permissões para alterar recursos da AWS",
+            "Como discos virtuais são conectados a máquinas criadas por uma AMI",
+            "Como arquivos são transferidos dentro de uma conexão SSH protegida",
+          ],
+          correct: 0,
+          explanation:
+            "HTTP organiza a comunicação da Web em requisições do cliente e respostas do servidor.",
+        },
+        medium: {
+          question:
+            "Qual afirmação diferencia corretamente HTTP e HTTPS?",
+          choices: [
+            "HTTP usa DNS, enquanto HTTPS encontra o servidor sem consultar nomes",
+            "HTTPS transporta HTTP dentro de uma conexão protegida por TLS",
+            "HTTP funciona com Apache, enquanto HTTPS exige outro servidor web",
+            "HTTPS substitui portas por políticas de acesso configuradas no IAM",
+          ],
+          correct: 1,
+          explanation:
+            "A estrutura de requisições e respostas continua sendo HTTP. HTTPS acrescenta a proteção do TLS ao transporte.",
+        },
+        hard: {
+          question:
+            "Um servidor devolveu uma resposta HTTP. O que essa evidência permite concluir?",
+          choices: [
+            "Que todo o conteúdo recebido é legítimo e não pode conter erros",
+            "Que o usuário foi autenticado e possui todas as permissões da aplicação",
+            "Que a requisição chegou a um servidor HTTP, que produziu uma resposta",
+            "Que o DNS nunca usou cache e sempre consultou a fonte autoritativa",
+          ],
+          correct: 2,
+          explanation:
+            "Uma resposta HTTP comprova que o fluxo alcançou um serviço capaz de responder. Ela não valida a intenção ou a correção do conteúdo.",
+        },
+      },
     },
     {
-      id: "exam-19-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Let's Encrypt, ACME e Certbot",
-      lesson: "Aula 19: Habilitando HTTPS",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#certbot",
-      question:
-        "Como Let's Encrypt, ACME e Certbot se relacionam?",
-      choices: [
-        "Let's Encrypt é o servidor web, ACME é o certificado e Certbot é a porta usada para receber HTTPS",
-        "Let's Encrypt emite certificados, ACME define a automação e Certbot é um cliente desse protocolo",
-        "Let's Encrypt resolve DNS, ACME cria usuários Linux e Certbot transfere arquivos para o document root",
-        "Let's Encrypt é a chave privada, ACME é o domínio e Certbot é a autoridade raiz instalada no navegador",
-      ],
-      correct: 1,
-      explanation:
-        "Let's Encrypt é uma autoridade certificadora. ACME é o protocolo de validação e emissão automatizada. Certbot é um programa que conversa por ACME.",
+      id: "https",
+      topic: "HTTPS",
+      lesson: "Conceito essencial: HTTPS",
+      source: `${guide}#https`,
+      questions: {
+        easy: {
+          question: "O que é HTTPS?",
+          choices: [
+            "Um tipo de registro DNS usado para localizar servidores web",
+            "O protocolo SSH adaptado para transferir páginas pelo navegador",
+            "Uma política do IAM usada para permitir conexões na porta 443",
+            "O protocolo HTTP transportado dentro de uma conexão TLS",
+          ],
+          correct: 3,
+          explanation:
+            "HTTPS mantém o funcionamento do HTTP e usa TLS para proteger os dados durante o transporte.",
+        },
+        medium: {
+          question: "O que HTTPS protege diretamente?",
+          choices: [
+            "A confidencialidade e a integridade da comunicação com o servidor",
+            "A configuração interna do sistema operacional e de todos os arquivos",
+            "As permissões concedidas ao usuário depois que ele entra na aplicação",
+            "A disponibilidade do servidor mesmo quando o processo está parado",
+          ],
+          correct: 0,
+          explanation:
+            "HTTPS protege os dados em trânsito e permite autenticar o servidor pelo certificado. Ele não controla arquivos ou permissões da aplicação.",
+        },
+        hard: {
+          question:
+            "Um servidor apresenta certificado válido para outro nome. Por que o navegador deve rejeitar a conexão?",
+          choices: [
+            "Porque todo certificado precisa usar o mesmo endereço IP do cliente",
+            "Porque o nome solicitado não corresponde à identidade coberta pelo certificado",
+            "Porque certificados TLS só podem ser usados em conexões feitas pela porta 22",
+            "Porque o Security Group precisa assinar o certificado antes de liberar HTTPS",
+          ],
+          correct: 1,
+          explanation:
+            "O navegador verifica se o nome acessado está incluído no certificado. Um certificado de outro host não autentica o servidor solicitado.",
+        },
+      },
     },
     {
-      id: "exam-19-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Desafio HTTP-01",
-      lesson: "Aula 19: Habilitando HTTPS",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#certbot",
-      question:
-        "Como o desafio ACME HTTP-01 confirma o controle de um domínio?",
-      choices: [
-        "A autoridade pede a senha da conta AWS e verifica se ela também funciona no usuário root do Linux",
-        "O navegador envia a chave privada por HTTPS e a autoridade compara seu conteúdo com o registro CNAME",
-        "O cliente publica uma resposta temporária e a autoridade tenta buscá-la pelo domínio usando HTTP na porta 80",
-        "O Apache envia todos os arquivos do site e a autoridade confirma se o conteúdo combina com o nome registrado",
-      ],
-      correct: 2,
-      explanation:
-        "No HTTP-01, o cliente ACME disponibiliza um token em um caminho conhecido. A autoridade consulta o domínio e tenta obter a resposta pela porta 80.",
+      id: "tls",
+      topic: "TLS",
+      lesson: "Conceito essencial: TLS",
+      source: `${guide}#tls`,
+      questions: {
+        easy: {
+          question: "Quais proteções o TLS oferece?",
+          choices: [
+            "Criação de instâncias, discos persistentes e políticas de identidade",
+            "Resolução de nomes, controle de cache e escolha do endereço IPv4",
+            "Criptografia, integridade dos dados e autenticação do servidor",
+            "Transferência de arquivos, execução de comandos e acesso ao terminal",
+          ],
+          correct: 2,
+          explanation:
+            "TLS protege os dados em trânsito, detecta alterações e usa certificados para verificar a identidade do servidor.",
+        },
+        medium: {
+          question: "Qual é a diferença entre certificado TLS e chave privada?",
+          choices: [
+            "O certificado fica secreto, enquanto a chave privada é enviada aos clientes",
+            "O certificado abre a porta, enquanto a chave privada configura o DNS",
+            "O certificado guarda a sessão, enquanto a chave privada contém a senha",
+            "O certificado é apresentado; a chave privada permanece secreta no servidor",
+          ],
+          correct: 3,
+          explanation:
+            "O servidor envia o certificado, mas mantém a chave privada protegida para provar que controla a identidade apresentada.",
+        },
+        hard: {
+          question:
+            "Por que o TLS cria chaves de sessão durante o handshake?",
+          choices: [
+            "Para proteger os dados com criptografia simétrica eficiente após negociar a conexão",
+            "Para substituir permanentemente a chave privada associada ao certificado",
+            "Para alterar o endereço IP do servidor depois que o DNS foi consultado",
+            "Para conceder ao cliente permissões administrativas dentro da aplicação",
+          ],
+          correct: 0,
+          explanation:
+            "O handshake autentica o servidor e estabelece segredos. Chaves simétricas derivadas protegem os dados da sessão com eficiência.",
+        },
+      },
     },
     {
-      id: "exam-19-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Diagnóstico de emissão TLS",
-      lesson: "Aula 19: Habilitando HTTPS",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#certbot",
-      question:
-        "O DNS aponta corretamente, mas o HTTP-01 falha. O que ainda pode impedir a validação?",
-      choices: [
-        "O navegador não possui cookie de sessão, embora o desafio ACME seja executado pelo servidor e pela autoridade",
-        "A chave SSH usa outro formato, embora o desafio HTTP não dependa da autenticação do terminal local",
-        "O volume EBS tem espaço livre, embora o endereço público seja suficiente para responder qualquer requisição",
-        "A porta 80 pode estar bloqueada, o Apache pode estar parado ou o caminho do desafio pode ir a outro host",
-      ],
-      correct: 3,
-      explanation:
-        "DNS correto comprova somente a resolução. A autoridade ainda precisa alcançar TCP 80 e receber do servidor correto a resposta temporária preparada pelo cliente ACME.",
+      id: "ssh",
+      topic: "SSH",
+      lesson: "Conceito essencial: SSH",
+      source: `${guide}#ssh`,
+      questions: {
+        easy: {
+          question: "Para que serve o SSH?",
+          choices: [
+            "Associar um nome de domínio a um endereço IPv4 publicado",
+            "Controlar uma máquina remota por uma conexão criptografada",
+            "Emitir certificados TLS e configurar automaticamente o Apache",
+            "Criar políticas de permissão para usuários e funções da AWS",
+          ],
+          correct: 1,
+          explanation:
+            "SSH significa Secure Shell. Ele fornece um canal criptografado para autenticação e acesso remoto.",
+        },
+        medium: {
+          question: "Onde executam o cliente SSH e o processo sshd?",
+          choices: [
+            "Os dois executam dentro do Security Group associado à instância",
+            "O cliente executa no servidor e o sshd executa no computador local",
+            "O cliente executa localmente e o sshd fica em escuta na máquina remota",
+            "Os dois executam no serviço DNS antes que a conexão TCP seja criada",
+          ],
+          correct: 2,
+          explanation:
+            "O cliente inicia a conexão no computador local. O daemon sshd aguarda e atende a conexão no sistema remoto.",
+        },
+        hard: {
+          question:
+            "A porta 22 responde, mas o SSH informa Permission denied. Qual etapa falhou?",
+          choices: [
+            "A resolução DNS, antes que qualquer pacote chegasse ao endereço",
+            "A criação da instância, que ainda não alcançou o estado running",
+            "A regra de rede, pois a porta não recebeu nenhuma conexão do cliente",
+            "A autenticação, porque a rede e o serviço já responderam ao cliente",
+          ],
+          correct: 3,
+          explanation:
+            "Permission denied mostra que a comunicação chegou ao SSH, mas usuário, chave ou autorização não foram aceitos.",
+        },
+      },
     },
     {
-      id: "exam-20-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Definição de Evilginx",
-      lesson: "Aula 20: Introdução ao Evilginx",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
-      question: "O que é Evilginx?",
-      choices: [
-        "Um framework de proxy reverso AiTM que intermedeia fluxos de autenticação web",
-        "Um cliente SSH usado para administrar instâncias por meio de uma chave privada local",
-        "Um servidor DNS recursivo que converte automaticamente qualquer URL em endereço IPv4",
-        "Um plugin do Apache que renova certificados TLS sem conversar com uma autoridade certificadora",
-      ],
-      correct: 0,
-      explanation:
-        "Evilginx atua como intermediário entre navegador e aplicação. Ele mantém duas conexões e encaminha o tráfego nos dois sentidos.",
-    },
-    {
-      id: "exam-20-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Duas conexões do proxy",
-      lesson: "Aula 20: Introdução ao Evilginx",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
-      question:
-        "Como um proxy AiTM intermedeia uma autenticação protegida por TLS?",
-      choices: [
-        "Ele quebra a chave privada da aplicação e usa a mesma conexão criptográfica nos dois lados do fluxo",
-        "Ele encerra TLS em seu domínio e abre outra conexão TLS separada com a aplicação de destino",
-        "Ele remove TCP da comunicação e encaminha os campos do formulário diretamente por registros DNS",
-        "Ele converte o certificado do destino em uma chave SSH e entrega essa chave ao navegador conectado",
-      ],
-      correct: 1,
-      explanation:
-        "O navegador estabelece TLS com o proxy, e o proxy estabelece outro TLS com a aplicação. O intermediário vê os dados entre a decifragem de uma conexão e a cifragem da outra.",
-    },
-    {
-      id: "exam-20-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Função de um phishlet",
-      lesson: "Aula 20: Introdução ao Evilginx",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
-      question:
-        "Por que um phishlet depende do comportamento da aplicação intermediada?",
-      choices: [
-        "Porque ele contém a AMI e precisa recriar a máquina virtual sempre que a página muda de aparência",
-        "Porque ele substitui o DNS público e precisa escolher uma nova porta para cada resposta recebida",
-        "Porque suas regras reconhecem hosts, caminhos e cookies, que podem mudar quando a aplicação altera o fluxo",
-        "Porque ele guarda a chave privada do usuário e precisa convertê-la quando o navegador atualiza o certificado",
-      ],
-      correct: 2,
-      explanation:
-        "Um phishlet descreve elementos específicos do fluxo web. Mudanças de domínio, caminho, cabeçalho ou cookie podem fazer essas regras deixarem de corresponder.",
-    },
-    {
-      id: "exam-21-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Componentes de compilação",
-      lesson: "Aula 21: Componentes do Evilginx",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
-      question:
-        "Qual é o papel geral de Git, Go e Make em um projeto como Evilginx?",
-      choices: [
-        "Git emite o certificado, Go configura o DNS e Make abre as portas necessárias no Security Group",
-        "Git hospeda a página, Go transfere os arquivos por SFTP e Make cria o usuário remoto no Linux",
-        "Git autentica o domínio, Go atua como proxy e Make substitui o servidor autoritativo da zona DNS",
-        "Git obtém o código, Go fornece a linguagem e Make coordena as etapas definidas para a compilação",
-      ],
-      correct: 3,
-      explanation:
-        "Git gerencia e obtém versões do código. Go é a linguagem e seu conjunto de ferramentas. Make executa uma sequência de tarefas descrita pelo projeto.",
-    },
-    {
-      id: "exam-21-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Domínio, DNS, IP e TLS",
-      lesson: "Aula 21: Componentes do Evilginx",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
-      question:
-        "Por que domínio, DNS, IP e certificado TLS precisam ser coerentes em um proxy web?",
-      choices: [
-        "O domínio precisa resolver para o proxy, a rede precisa alcançá-lo e o certificado precisa cobrir o nome solicitado",
-        "O domínio substitui a porta, o DNS inicia o processo e o certificado escolhe o endereço IP usado pelo cliente",
-        "O domínio compila o programa, o DNS cria cookies e o certificado instala automaticamente cada phishlet disponível",
-        "O domínio guarda a sessão, o DNS valida a senha e o certificado transfere os arquivos do navegador ao servidor",
-      ],
-      correct: 0,
-      explanation:
-        "O cliente resolve o nome pelo DNS, conecta ao IP e valida se o certificado apresentado cobre aquele host. Uma inconsistência interrompe o fluxo em sua respectiva camada.",
-    },
-    {
-      id: "exam-21-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Dependências de publicação",
-      lesson: "Aula 21: Componentes do Evilginx",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
-      question:
-        "O processo do proxy está ativo, mas o navegador não consegue abrir seu domínio. Qual sequência de verificação é mais útil?",
-      choices: [
-        "Trocar a linguagem Go, recriar o repositório Git e alterar o conteúdo do phishlet antes de verificar a rede",
-        "Confirmar resolução DNS, IP atual, filtros de rede, portas em escuta e certificado apresentado para o host",
-        "Apagar o token de sessão, mudar o usuário do Apache e recriar o volume EBS sem testar o endereço publicado",
-        "Alterar o TTL para zero, desativar TCP e usar somente CNAME para transportar a página até o navegador",
-      ],
-      correct: 1,
-      explanation:
-        "Um processo ativo não comprova publicação. O diagnóstico deve seguir o caminho real: nome, endereço, rede, listener e TLS.",
-    },
-    {
-      id: "exam-22-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Senha e token de sessão",
-      lesson: "Aula 22: Token de sessão e MFA",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#token-de-sessao",
-      question:
-        "Qual é a diferença principal entre senha e token de sessão?",
-      choices: [
-        "A senha identifica a porta do serviço; o token informa ao DNS qual endereço deve responder ao navegador",
-        "A senha cifra cada pacote da rede; o token contém a chave privada usada pelo certificado do servidor",
-        "A senha participa do login; o token representa a sessão criada depois que a autenticação foi aceita",
-        "A senha existe somente no navegador; o token é um comando executado pela shell do sistema remoto",
-      ],
-      correct: 2,
-      explanation:
-        "A senha é uma evidência usada durante a autenticação. O token é emitido depois do sucesso e permite reconhecer a sessão nas requisições seguintes.",
-    },
-    {
-      id: "exam-22-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "MFA e sessão autenticada",
-      lesson: "Aula 22: Token de sessão e MFA",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
-      question:
-        "Por que observar um token depois do MFA não significa que o segundo fator foi quebrado?",
-      choices: [
-        "Porque o segundo fator deixa de existir quando a conta é criada e nunca participa dos logins posteriores",
-        "Porque o proxy calcula sozinho o mesmo código temporário sem receber qualquer resposta do navegador",
-        "Porque o token contém apenas informações públicas e exige todos os fatores novamente em cada requisição",
-        "Porque o usuário concluiu o desafio verdadeiro e o token representa a sessão emitida depois dessa verificação",
-      ],
-      correct: 3,
-      explanation:
-        "O MFA funcionou e foi aceito pela aplicação. O risco aparece porque o token de uma sessão já autenticada também atravessa o intermediário.",
-    },
-    {
-      id: "exam-22-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Proteções contra session replay",
-      lesson: "Aula 22: Token de sessão e MFA",
-      source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#session-replay",
-      question:
-        "Qual conjunto de controles reduz melhor o risco de reutilização de uma sessão intermediada?",
-      choices: [
-        "WebAuthn ligado à origem, token protegido ou vinculado ao dispositivo, validade curta e nova autenticação sensível",
-        "Senha mais longa, página com HTTPS e um TTL DNS maior, mantendo a mesma sessão ativa por tempo indefinido",
-        "Troca da porta SSH, remoção do CNAME e aumento do volume EBS, sem mudar como a aplicação trata sessões",
-        "Uso de código TOTP sozinho, certificado válido e cookie sem expiração, aceito de qualquer dispositivo conectado",
-      ],
-      correct: 0,
-      explanation:
-        "WebAuthn verifica a origem, e controles de sessão limitam onde e por quanto tempo o token pode ser usado. Nova autenticação reduz o impacto em ações importantes.",
-    },
-  ]
-);
-
-window.CYBER_QUIZ_QUESTIONS.push(
-  ...[
-    {
-      id: "exam-11-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Apache e document root",
-      lesson: "Aula 11: Apache, HTTP e exposição web",
-      source: "03-phishing/11-file-hosting-and-firewall-settings/",
-      question:
-        "Qual é a função do Apache e do document root no laboratório web?",
-      choices: [
-        "O Apache recebe requisições HTTP; o document root é o diretório que ele usa para localizar conteúdo publicado",
-        "O Apache resolve nomes DNS; o document root armazena as chaves privadas usadas para autenticar conexões SSH",
-        "O Apache libera regras no Security Group; o document root define quais endereços IP podem acessar a instância",
-        "O Apache instala pacotes Linux; o document root registra os comandos digitados pelo usuário no terminal remoto",
-      ],
-      correct: 0,
-      explanation:
-        "Apache é o processo servidor web. Ao receber uma requisição, sua configuração relaciona o caminho solicitado a arquivos ou aplicações. O document root é a raiz de conteúdo usada nessa publicação, como /var/www/html em uma configuração comum.",
-    },
-    {
-      id: "exam-11-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "APT, systemctl e ss",
-      lesson: "Aula 11: Apache, HTTP e exposição web",
-      source: "03-phishing/11-file-hosting-and-firewall-settings/",
-      question:
-        "O que APT, systemctl e ss verificam ou modificam em etapas diferentes?",
-      choices: [
-        "APT abre portas, systemctl cria endereços públicos e ss instala os arquivos do servidor dentro do document root",
-        "APT gerencia pacotes, systemctl controla unidades de serviço e ss mostra sockets e processos em escuta",
-        "APT autentica usuários, systemctl transfere arquivos por SFTP e ss altera a propriedade dos diretórios publicados",
-        "APT resolve domínios, systemctl cria certificados HTTPS e ss configura regras de entrada no provedor de nuvem",
-      ],
-      correct: 1,
-      explanation:
-        "APT instala e atualiza pacotes. systemctl consulta e controla serviços administrados pelo systemd. ss inspeciona sockets, permitindo verificar se existe um processo escutando na porta esperada.",
-    },
-    {
-      id: "exam-11-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Diagnóstico web em camadas",
-      lesson: "Aula 11: Apache, HTTP e exposição web",
-      source: "03-phishing/11-file-hosting-and-firewall-settings/",
-      question:
-        "O Apache responde localmente, mas a página não abre de outro computador. Qual diagnóstico vem a seguir?",
-      choices: [
-        "Reinstalar o navegador remoto, pois uma resposta local comprova que rota, IP público e regras externas também funcionam",
-        "Alterar o document root, pois acesso externo depende apenas do nome do arquivo padrão encontrado pelo processo Apache",
-        "Verificar IP e rota, regra de entrada TCP, firewall local e alcance externo, pois o serviço local já foi comprovado",
-        "Trocar HTTP por SFTP, pois o protocolo de transferência é necessário para que o navegador receba qualquer página remota",
-      ],
-      correct: 2,
-      explanation:
-        "A resposta local comprova que o processo atende dentro da máquina, mas não testa o caminho externo. O próximo passo é verificar endereço de destino, roteamento e filtros da nuvem e do sistema, sem reinstalar o serviço que já respondeu.",
-    },
-    {
-      id: "exam-12-easy",
-      scope: "exam",
-      difficulty: "easy",
+      id: "transferencia-arquivos",
       topic: "FTP, FTPS e SFTP",
-      lesson: "Aula 12: Cópia de páginas e SFTP",
-      source:
-        "03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud/",
-      question:
-        "Qual alternativa diferencia corretamente SFTP, FTP e FTPS?",
-      choices: [
-        "SFTP é FTP na porta 22, FTP usa certificados SSH e FTPS é o subsistema padrão do processo sshd",
-        "SFTP e FTPS são nomes equivalentes, enquanto FTP descreve somente cópias feitas entre diretórios locais",
-        "SFTP usa HTTP, FTP usa TCP sem portas e FTPS funciona apenas dentro de uma sessão de terminal Linux",
-        "SFTP opera sobre SSH; FTP é um protocolo próprio; FTPS acrescenta TLS ao protocolo FTP",
-      ],
-      correct: 3,
-      explanation:
-        "SFTP é um subsistema de transferência dentro de SSH e normalmente usa a mesma porta 22. FTP possui funcionamento e canais próprios. FTPS protege FTP com TLS, por isso não deve ser confundido com SFTP.",
+      lesson: "Conceito essencial: transferência de arquivos",
+      source: `${guide}#transferencia-arquivos`,
+      questions: {
+        easy: {
+          question: "Qual protocolo transfere arquivos dentro do SSH?",
+          choices: [
+            "SFTP",
+            "FTP",
+            "FTPS",
+            "HTTP",
+          ],
+          correct: 0,
+          explanation:
+            "SFTP significa SSH File Transfer Protocol. Ele funciona dentro do canal SSH, normalmente na porta 22.",
+        },
+        medium: {
+          question: "Qual comparação entre FTP, FTPS e SFTP está correta?",
+          choices: [
+            "FTP e SFTP são o mesmo protocolo, mas usam nomes diferentes",
+            "FTPS protege FTP com TLS; SFTP é um protocolo executado sobre SSH",
+            "SFTP protege FTP com TLS; FTPS é um protocolo executado sobre SSH",
+            "Os três usam HTTP e diferem apenas pelo tipo de arquivo transferido",
+          ],
+          correct: 1,
+          explanation:
+            "FTPS mantém o protocolo FTP e adiciona TLS. SFTP é um protocolo diferente que usa a infraestrutura do SSH.",
+        },
+        hard: {
+          question:
+            "O SSH já funciona com usuário e chave na porta 22. Qual opção reaproveita diretamente essa infraestrutura para arquivos?",
+          choices: [
+            "FTP, porque toda conexão de arquivos usa automaticamente a chave do SSH",
+            "FTPS, porque um certificado TLS substitui o usuário configurado no SSH",
+            "SFTP, porque ele usa o canal e a autenticação oferecidos pelo SSH",
+            "HTTP, porque o Apache converte qualquer requisição em transferência SFTP",
+          ],
+          correct: 2,
+          explanation:
+            "SFTP pode reutilizar endereço, porta, usuário e autenticação do SSH. FileZilla pode atuar como cliente desse protocolo.",
+        },
+      },
     },
     {
-      id: "exam-12-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Perfil SFTP no FileZilla",
-      lesson: "Aula 12: Cópia de páginas e SFTP",
-      source:
-        "03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud/",
-      question:
-        "Quais dados permitem ao FileZilla iniciar uma conexão SFTP com a instância?",
-      choices: [
-        "Protocolo SFTP, host, porta do SSH, usuário remoto e arquivo de chave correspondente ao acesso autorizado",
-        "Protocolo HTTP, document root, usuário do Apache, senha do site copiado e regra de saída do navegador",
-        "Protocolo FTP, região da AWS, ID da AMI, chave pública do servidor e caminho do arquivo index local",
-        "Protocolo HTTPS, domínio fictício, certificado da página, usuário root da AWS e endereço MAC da instância",
-      ],
-      correct: 0,
-      explanation:
-        "O FileZilla atua como cliente SFTP. Ele precisa localizar o servidor, chegar à porta do SSH e autenticar a identidade Linux com a chave apropriada. A primeira conexão também apresenta a chave do host para verificação.",
+      id: "mfa",
+      topic: "2FA e MFA",
+      lesson: "Conceito essencial: 2FA e MFA",
+      source: `${guide}#mfa`,
+      questions: {
+        easy: {
+          question: "O que caracteriza a autenticação multifator?",
+          choices: [
+            "Usar duas senhas diferentes, que pertencem ao mesmo tipo de fator",
+            "Usar HTTPS e uma porta diferente para cada tentativa de login",
+            "Usar uma senha maior e guardá-la em dois navegadores separados",
+            "Exigir provas de categorias diferentes, como senha e aplicativo autenticador",
+          ],
+          correct: 3,
+          explanation:
+            "MFA combina fatores diferentes, como algo que o usuário sabe e algo que possui. Duas senhas continuam sendo um único tipo.",
+        },
+        medium: {
+          question: "Qual é a relação entre 2FA e MFA?",
+          choices: [
+            "2FA usa exatamente dois fatores; MFA é o termo para dois ou mais fatores",
+            "2FA protege sessões; MFA serve somente para criar usuários no IAM",
+            "2FA usa tokens; MFA funciona apenas com certificados instalados no servidor",
+            "2FA pertence ao SSH; MFA pertence exclusivamente a aplicações HTTP",
+          ],
+          correct: 0,
+          explanation:
+            "2FA é um caso específico de MFA com dois fatores. MFA abrange autenticação com dois ou mais fatores.",
+        },
+        hard: {
+          question:
+            "Depois que senha e segundo fator são aceitos, por que a aplicação normalmente emite um token?",
+          choices: [
+            "Para abrir automaticamente todas as portas usadas pelo usuário autenticado",
+            "Para representar a sessão sem repetir todos os fatores em cada requisição",
+            "Para substituir o endereço IP e impedir que o DNS guarde respostas em cache",
+            "Para alterar as permissões do IAM sempre que uma nova página for acessada",
+          ],
+          correct: 1,
+          explanation:
+            "O MFA protege a autenticação. Depois do sucesso, o token permite que a aplicação reconheça a sessão nas próximas requisições.",
+        },
+      },
     },
     {
-      id: "exam-12-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Comprovação de transferência",
-      lesson: "Aula 12: Cópia de páginas e SFTP",
-      source:
-        "03-phishing/12-cloning-websites-and-uploading-them-to-the-cloud/",
-      question:
-        "O painel de transferência indicou sucesso. O que confirma que o site foi enviado ao lugar esperado?",
-      choices: [
-        "A presença dos arquivos apenas no painel local, pois o FileZilla sempre replica a mesma estrutura no document root remoto",
-        "A listagem do diretório remoto correto e uma requisição ao servidor que encontre os arquivos publicados nessa estrutura esperada",
-        "A chave do host aceita na primeira conexão, pois ela comprova o conteúdo e o caminho de todos os uploads posteriores",
-        "O status running da instância, pois uma máquina ativa sempre publica automaticamente qualquer arquivo transferido por SFTP",
-      ],
-      correct: 1,
-      explanation:
-        "O status da fila indica transferência, mas é preciso verificar o caminho remoto e depois observar o comportamento do servidor web. Um arquivo enviado ao diretório errado pode existir na instância sem estar publicado pelo Apache.",
+      id: "cookie-e-sessao",
+      topic: "Cookie e sessão",
+      lesson: "Conceito essencial: cookie e sessão",
+      source: `${guide}#cookie-e-sessao`,
+      questions: {
+        easy: {
+          question: "Como cookie e sessão normalmente se relacionam?",
+          choices: [
+            "O cookie inicia o servidor e a sessão abre a porta usada pelo HTTP",
+            "O cookie substitui a senha e a sessão guarda a chave privada do TLS",
+            "O cookie carrega um identificador usado para localizar ou reconhecer a sessão",
+            "O cookie resolve o domínio e a sessão escolhe o endereço IP retornado",
+          ],
+          correct: 2,
+          explanation:
+            "A sessão mantém o estado do login. O navegador pode guardar em um cookie o identificador necessário para reconhecê-la.",
+        },
+        medium: {
+          question:
+            "Por que o usuário não precisa digitar a senha em cada página depois do login?",
+          choices: [
+            "Porque o DNS guarda a senha junto com o endereço IP do servidor",
+            "Porque o Security Group associa a identidade a todas as portas abertas",
+            "Porque o Apache transforma a senha em uma política permanente do IAM",
+            "Porque o navegador envia dados que permitem ao servidor reconhecer a sessão",
+          ],
+          correct: 3,
+          explanation:
+            "Depois da autenticação, cookies e tokens permitem que o servidor relacione novas requisições à sessão já criada.",
+        },
+        hard: {
+          question:
+            "Apagar o cookie do navegador garante que a sessão deixou de existir no servidor?",
+          choices: [
+            "Não; o cliente perde o identificador, mas a sessão pode continuar válida até expirar ou ser revogada",
+            "Sim; apagar qualquer cookie encerra imediatamente todas as sessões mantidas por qualquer aplicação",
+            "Não; o cookie fica armazenado no DNS e volta automaticamente na próxima resolução do nome",
+            "Sim; o Security Group detecta a exclusão local e remove a identidade correspondente no IAM",
+          ],
+          correct: 0,
+          explanation:
+            "Remover o cookie pode impedir aquele navegador de apresentar o identificador. O estado no servidor pode permanecer válido.",
+        },
+      },
     },
     {
-      id: "exam-13-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Propriedade e permissão",
-      lesson: "Aula 13: Publicando uma página no Apache",
-      source:
-        "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
-      question:
-        "Qual é a diferença entre propriedade e permissão de um arquivo no Linux?",
-      choices: [
-        "Propriedade define a porta usada pelo arquivo; permissão escolhe o endereço IP no qual ele será publicado",
-        "Propriedade indica o processo que criou a rede; permissão informa qual pacote instalou o programa no sistema",
-        "Propriedade associa usuário e grupo; permissão define operações de leitura, escrita e execução para categorias",
-        "Propriedade registra o caminho absoluto; permissão converte esse caminho em um domínio acessível pelo navegador",
-      ],
-      correct: 2,
-      explanation:
-        "Cada arquivo possui proprietário e grupo. As permissões dizem o que proprietário, grupo e demais usuários podem fazer. Alterar propriedade e alterar bits de permissão são operações relacionadas, mas diferentes.",
+      id: "token-de-sessao",
+      topic: "Token de sessão",
+      lesson: "Conceito essencial: token de sessão",
+      source: `${guide}#token-de-sessao`,
+      questions: {
+        easy: {
+          question: "O que representa um token de sessão?",
+          choices: [
+            "Uma regra de rede usada para liberar acesso ao endereço da instância",
+            "Um registro DNS que aponta o domínio para o serviço autenticado",
+            "Uma imagem usada para criar uma nova máquina virtual na AWS",
+            "Um segredo que identifica uma sessão depois que o login foi concluído",
+          ],
+          correct: 3,
+          explanation:
+            "O token representa o estado autenticado. Enquanto for aceito, permite reconhecer requisições como pertencentes àquela sessão.",
+        },
+        medium: {
+          question: "Qual é a diferença principal entre senha e token de sessão?",
+          choices: [
+            "A senha participa do login; o token representa a sessão criada após o login",
+            "A senha identifica a porta; o token identifica o endereço IP do servidor",
+            "A senha configura o DNS; o token instala o certificado usado pelo HTTPS",
+            "A senha pertence ao EBS; o token pertence ao Security Group da instância",
+          ],
+          correct: 0,
+          explanation:
+            "A senha é uma prova usada na autenticação. O token é emitido depois e mantém o estado da sessão.",
+        },
+        hard: {
+          question:
+            "Por que um token válido deve ser protegido como uma credencial?",
+          choices: [
+            "Porque ele revela obrigatoriamente a senha original em texto puro",
+            "Porque sua reutilização pode permitir agir como a sessão autenticada",
+            "Porque ele altera as políticas do IAM para conceder acesso administrativo",
+            "Porque ele controla o endereço IP publicado nos registros DNS do domínio",
+          ],
+          correct: 1,
+          explanation:
+            "Um token aceito pode autorizar requisições sem pedir novamente a senha e o MFA. Expiração e revogação limitam esse risco.",
+        },
+      },
     },
     {
-      id: "exam-13-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Anatomia do chown",
-      lesson: "Aula 13: Publicando uma página no Apache",
-      source:
-        "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
-      question:
-        "O que faz sudo chown -R kali:kali /var/www/html no contexto do laboratório?",
-      choices: [
-        "Inicia o Apache como kali, abre recursivamente a porta 80 e publica o diretório para qualquer origem da Internet",
-        "Concede leitura e escrita a todos, instala o usuário kali e remove a necessidade de autenticação no acesso SFTP",
-        "Move o document root para a home, troca o usuário do serviço web e reinicia os processos encontrados no diretório",
-        "Executa chown com privilégio, aplica recursivamente usuário e grupo kali aos itens abaixo do caminho informado",
-      ],
-      correct: 3,
-      explanation:
-        "sudo fornece o privilégio necessário, chown altera propriedade, -R percorre o conteúdo, kali:kali define usuário e grupo e /var/www/html é o alvo. O comando não abre porta, não inicia serviço e não equivale a permissão 777.",
+      id: "c2",
+      topic: "C2",
+      lesson: "Conceito essencial: C2",
+      source: `${guide}#c2`,
+      questions: {
+        easy: {
+          question: "O que significa C2 em segurança?",
+          choices: [
+            "Command and Control, ou Comando e Controle",
+            "Certificate and Connection, ou Certificado e Conexão",
+            "Client and Cloud, ou Cliente e Nuvem",
+            "Cookie and Cache, ou Cookie e Cache",
+          ],
+          correct: 0,
+          explanation:
+            "C2 significa Command and Control. É a estrutura usada para enviar tarefas a agentes remotos e receber resultados.",
+        },
+        medium: {
+          question: "Como callback e C2 podem se relacionar?",
+          choices: [
+            "O C2 resolve o domínio e o callback emite o certificado TLS",
+            "Um agente pode iniciar um callback para estabelecer comunicação com o C2",
+            "O callback cria uma AMI e o C2 conecta automaticamente o volume EBS",
+            "O C2 abre a porta no Security Group sem uma regra configurada na AWS",
+          ],
+          correct: 1,
+          explanation:
+            "Em um fluxo de callback, o agente remoto inicia a conexão de retorno para a infraestrutura de C2.",
+        },
+        hard: {
+          question: "Por que uma instância EC2 não é automaticamente um servidor C2?",
+          choices: [
+            "Porque EC2 não aceita conexões de rede nem permite instalar programas",
+            "Porque C2 funciona somente em hardware físico fora de provedores de nuvem",
+            "Porque EC2 fornece computação; a função de C2 depende do software e do fluxo implantados",
+            "Porque toda instância EC2 é apenas um registro DNS sem sistema operacional",
+          ],
+          correct: 2,
+          explanation:
+            "EC2 é infraestrutura de computação. Ela só exerce função de C2 quando executa software e comunicação destinados a comando e controle.",
+        },
+      },
     },
     {
-      id: "exam-13-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Erro de escrita por SFTP",
-      lesson: "Aula 13: Publicando uma página no Apache",
-      source:
-        "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
-      question:
-        "O login SFTP funciona, mas o upload para /var/www/html é recusado. Qual explicação é mais provável?",
-      choices: [
-        "A autenticação provou acesso à conta, mas o usuário remoto ainda não possui propriedade ou permissão de escrita no diretório",
-        "O Security Group permitiu somente leitura de arquivos, pois regras de rede controlam separadamente upload e download no SFTP",
-        "O Apache bloqueou a chave privada, pois todo upload ao document root precisa ser autenticado pelo processo servidor web",
-        "A AMI perdeu o endereço público, pois a ausência de IP permite login remoto, mas impede escrita em diretórios do sistema",
-      ],
-      correct: 0,
-      explanation:
-        "Autenticar no SSH não concede escrita em todos os caminhos. /var/www/html costuma pertencer a outra identidade. A propriedade e as permissões do sistema de arquivos determinam se o usuário do SFTP pode criar ou substituir itens ali.",
+      id: "proxy-reverso",
+      topic: "Proxy reverso e AiTM",
+      lesson: "Conceito essencial: proxy reverso e AiTM",
+      source: `${guide}#proxy-reverso`,
+      questions: {
+        easy: {
+          question: "O que faz um proxy reverso?",
+          choices: [
+            "Cria políticas do IAM para cada pessoa que acessa a aplicação",
+            "Emite certificados TLS sem consultar uma autoridade certificadora",
+            "Substitui o DNS e entrega endereços IP diretamente ao navegador",
+            "Recebe pedidos antes do servidor e os encaminha para o destino",
+          ],
+          correct: 3,
+          explanation:
+            "O proxy reverso fica na frente de uma aplicação. Ele recebe a conexão do cliente e cria outra conexão com o serviço.",
+        },
+        medium: {
+          question: "Por que um proxy AiTM mantém duas conexões?",
+          choices: [
+            "Uma liga o cliente ao proxy e outra liga o proxy à aplicação",
+            "Uma transporta DNS e outra substitui todas as políticas do IAM",
+            "Uma cria a instância e outra mantém o volume EBS permanentemente",
+            "Uma abre a porta SSH e outra converte automaticamente SFTP em FTP",
+          ],
+          correct: 0,
+          explanation:
+            "O cliente conversa com o proxy, e o proxy conversa separadamente com a aplicação. As mensagens são encaminhadas entre os lados.",
+        },
+        hard: {
+          question:
+            "Por que um proxy AiTM não precisa quebrar a criptografia TLS da aplicação?",
+          choices: [
+            "Porque TLS deixa de funcionar sempre que um proxy reverso recebe uma conexão",
+            "Porque o proxy encerra uma conexão TLS e abre outra conexão TLS independente",
+            "Porque o Security Group envia a chave privada da aplicação para todo cliente",
+            "Porque o DNS decifra os dados antes de entregar o endereço IP ao navegador",
+          ],
+          correct: 1,
+          explanation:
+            "São duas sessões TLS distintas. O proxy lê os dados entre a decifragem de uma conexão e a cifragem da outra.",
+        },
+      },
     },
     {
-      id: "exam-14-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Atributos id e name",
-      lesson: "Aula 14: Entendendo o envio de formulários",
-      source:
-        "03-phishing/14-modifying-the-page-to-steal-login-information/",
-      question:
-        "Qual papel o atributo name exerce em um campo de formulário enviado?",
-      choices: [
-        "Ele escolhe a folha de estilo e determina como o campo aparece visualmente no navegador do visitante",
-        "Ele fornece a chave usada para associar o valor do campo aos dados enviados na requisição",
-        "Ele define a identidade global do servidor e substitui o endereço do atributo action do formulário",
-        "Ele inicia o interpretador PHP e concede ao processo permissão para gravar arquivos no sistema operacional",
-      ],
-      correct: 1,
-      explanation:
-        "No envio tradicional de um formulário, name identifica a chave associada ao valor. id serve principalmente para identificar o elemento no documento e relacioná-lo a scripts, estilos ou rótulos. Os dois podem ter o mesmo texto, mas não possuem a mesma função.",
+      id: "apache",
+      topic: "Apache",
+      lesson: "Ferramenta essencial: Apache",
+      source: `${guide}#apache`,
+      questions: {
+        easy: {
+          question: "Qual é a função do Apache no curso?",
+          choices: [
+            "Controlar identidades e políticas de acesso dentro da conta AWS",
+            "Transferir arquivos pelo protocolo SFTP usando uma chave SSH",
+            "Receber requisições web e devolver arquivos ou conteúdo processado",
+            "Emitir certificados TLS e assinar a própria cadeia de confiança",
+          ],
+          correct: 2,
+          explanation:
+            "Apache é um servidor web. Ele escuta requisições HTTP ou HTTPS e produz a resposta correspondente.",
+        },
+        medium: {
+          question: "Como Security Group e Apache participam de uma requisição HTTP?",
+          choices: [
+            "Apache libera a porta na AWS e o Security Group escolhe o arquivo da página",
+            "Os dois executam a mesma função e qualquer um pode substituir o outro",
+            "O Security Group processa PHP e o Apache valida políticas associadas ao IAM",
+            "O Security Group permite a chegada; o Apache recebe e responde à requisição",
+          ],
+          correct: 3,
+          explanation:
+            "A regra de rede e o servidor web atuam em camadas diferentes. O tráfego precisa passar pelo filtro antes de chegar ao Apache.",
+        },
+        hard: {
+          question:
+            "O Apache responde localmente, mas não de outro computador. Onde investigar primeiro?",
+          choices: [
+            "No caminho externo: IP, rota, Security Group e possíveis filtros locais",
+            "Na AMI original, porque ela bloqueia toda conexão criada após a inicialização",
+            "No IAM, porque permissões de API controlam diretamente cada requisição HTTP",
+            "No EBS, porque o disco escolhe quais endereços podem acessar a porta 80",
+          ],
+          correct: 0,
+          explanation:
+            "A resposta local mostra que o serviço funciona dentro da máquina. A falha externa aponta para rede, endereço ou filtros.",
+        },
+      },
     },
     {
-      id: "exam-14-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "POST e execução no servidor",
-      lesson: "Aula 14: Entendendo o envio de formulários",
-      source:
-        "03-phishing/14-modifying-the-page-to-steal-login-information/",
-      question:
-        "O que acontece quando um formulário usa method POST e action aponta para um arquivo PHP?",
-      choices: [
-        "O navegador executa o PHP localmente, grava o resultado no DOM e envia somente o código de saída ao Apache",
-        "O Security Group interpreta os campos, valida o conteúdo e escolhe qual usuário Linux receberá a requisição",
-        "O navegador envia os dados no corpo HTTP; o servidor encaminha a requisição ao processamento PHP configurado",
-        "O DNS converte cada campo em parâmetro, enquanto o SSH grava os valores no arquivo indicado pelo atributo action",
-      ],
-      correct: 2,
-      explanation:
-        "O navegador constrói a requisição HTTP e inclui os campos no corpo do POST. No servidor, Apache e sua integração com PHP processam o recurso solicitado. O código PHP não é executado pelo navegador.",
+      id: "php",
+      topic: "PHP",
+      lesson: "Ferramenta essencial: PHP",
+      source: `${guide}#php`,
+      questions: {
+        easy: {
+          question: "Onde o código PHP é executado em uma aplicação web tradicional?",
+          choices: [
+            "No DNS, antes que o endereço IP seja enviado ao cliente",
+            "No Security Group, quando a regra libera a porta HTTP",
+            "No navegador, junto com todo o HTML recebido da aplicação",
+            "No servidor, que envia ao cliente apenas o resultado produzido",
+          ],
+          correct: 3,
+          explanation:
+            "PHP é executado no servidor. O navegador recebe a resposta gerada, não o código PHP original.",
+        },
+        medium: {
+          question: "Como Apache e PHP trabalham juntos?",
+          choices: [
+            "O Apache recebe a requisição e encaminha o recurso PHP para processamento",
+            "O PHP abre a porta no Security Group e depois inicia o processo Apache",
+            "O Apache resolve o domínio e o PHP cria o registro A correspondente",
+            "O PHP configura o IAM e o Apache escolhe as permissões da identidade",
+          ],
+          correct: 0,
+          explanation:
+            "Apache atende a requisição web e usa a integração configurada para executar o PHP e devolver seu resultado.",
+        },
+        hard: {
+          question:
+            "Um arquivo PHP é devolvido como texto em vez de ser executado. Qual é a explicação mais provável?",
+          choices: [
+            "O DNS guardou o arquivo no cache e removeu todas as instruções do programa",
+            "O servidor web não está configurado para processar PHP naquele recurso",
+            "O IAM negou ao navegador permissão para executar código dentro da conta AWS",
+            "O EBS converteu o arquivo para texto porque a instância estava em execução",
+          ],
+          correct: 1,
+          explanation:
+            "Sem integração de processamento, o servidor pode tratar o arquivo como conteúdo comum em vez de executar o código PHP.",
+        },
+      },
     },
     {
-      id: "exam-14-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Código-fonte, DOM e transporte",
-      lesson: "Aula 14: Entendendo o envio de formulários",
-      source:
-        "03-phishing/14-modifying-the-page-to-steal-login-information/",
-      question:
-        "Por que alterar apenas o HTML salvo pode não controlar o envio de uma interface web moderna?",
-      choices: [
-        "Porque navegadores modernos ignoram formulários em arquivos HTML e aceitam somente campos criados diretamente por PHP",
-        "Porque o atributo action funciona apenas em HTTP sem TLS e deixa de existir quando o servidor apresenta certificado",
-        "Porque o document root impede JavaScript, então todo evento precisa ser configurado pelo Security Group da instância",
-        "Porque scripts podem modificar o DOM e interceptar eventos; é preciso observar o comportamento final e a requisição gerada",
-      ],
-      correct: 3,
-      explanation:
-        "O código recebido é apenas o estado inicial. JavaScript pode criar elementos, mudar atributos e impedir o envio padrão. A verificação deve considerar o DOM em execução, os listeners de evento e a requisição observada na rede.",
+      id: "certbot",
+      topic: "Certbot, ACME e Let's Encrypt",
+      lesson: "Ferramenta essencial: Certbot",
+      source: `${guide}#certbot`,
+      questions: {
+        easy: {
+          question: "Como Certbot, ACME e Let's Encrypt se relacionam?",
+          choices: [
+            "Certbot usa ACME para solicitar um certificado à Let's Encrypt",
+            "ACME usa Certbot para criar uma AMI dentro da Let's Encrypt",
+            "Let's Encrypt usa IAM para instalar Certbot em toda instância EC2",
+            "Certbot usa SFTP para transformar Let's Encrypt em servidor DNS",
+          ],
+          correct: 0,
+          explanation:
+            "Certbot é o cliente, ACME é o protocolo de automação e Let's Encrypt é a autoridade que emite o certificado.",
+        },
+        medium: {
+          question: "O que o Certbot pode fazer ao usar seu plugin do Apache?",
+          choices: [
+            "Criar políticas do IAM e restringir usuários da conta AWS",
+            "Solicitar o certificado e ajustar a configuração TLS do Apache",
+            "Trocar o volume EBS e recriar a instância usando outra AMI",
+            "Converter o protocolo SFTP em FTPS durante uma transferência",
+          ],
+          correct: 1,
+          explanation:
+            "O plugin pode participar da validação do domínio, obter o certificado e configurar o Apache para apresentá-lo.",
+        },
+        hard: {
+          question:
+            "Por que instalar Certbot não garante que um certificado será emitido?",
+          choices: [
+            "Porque certificados só podem ser emitidos depois que o volume EBS é removido",
+            "Porque o IAM precisa transformar a identidade do usuário em servidor DNS",
+            "Porque a autoridade ainda precisa validar o controle do nome solicitado",
+            "Porque o Apache deve usar SSH em vez de HTTP durante toda validação",
+          ],
+          correct: 2,
+          explanation:
+            "A autoridade certificadora precisa comprovar que o solicitante controla o domínio. DNS e alcance do desafio precisam estar corretos.",
+        },
+      },
     },
     {
-      id: "exam-15-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Entrada POST no PHP",
-      lesson: "Aula 15: Arquivos, permissões e PHP",
-      source:
-        "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
-      question:
-        "Como os valores recebidos em $_POST devem ser tratados por uma aplicação PHP?",
-      choices: [
-        "Como entrada não confiável, validada conforme o uso e nunca presumida segura apenas por ter chegado via POST ou HTTPS",
-        "Como dados confiáveis, pois o navegador só inclui em $_POST campos que passaram por autenticação no lado do servidor",
-        "Como comandos do sistema, pois cada chave enviada corresponde automaticamente a um programa instalado no Linux",
-        "Como conteúdo já sanitizado, pois o Apache remove caracteres perigosos antes de entregar a requisição ao PHP",
-      ],
-      correct: 0,
-      explanation:
-        "$_POST reúne valores enviados pelo cliente. O método e o HTTPS não tornam esse conteúdo confiável. A aplicação precisa validar formato, finalidade e limites, além de evitar registrar segredos reais no laboratório.",
+      id: "evilginx",
+      topic: "Evilginx e session replay",
+      lesson: "Ferramenta essencial: Evilginx",
+      source: `${guide}#evilginx`,
+      questions: {
+        easy: {
+          question: "O que é Evilginx?",
+          choices: [
+            "Um gerenciador de discos EBS usado para copiar máquinas virtuais",
+            "Um resolvedor DNS que cria registros A e CNAME automaticamente",
+            "Um cliente SSH usado apenas para transferir arquivos por SFTP",
+            "Um framework de proxy reverso AiTM para fluxos de autenticação web",
+          ],
+          correct: 3,
+          explanation:
+            "Evilginx intermedeia a comunicação entre cliente e aplicação por meio de duas conexões separadas.",
+        },
+        medium: {
+          question:
+            "Por que o funcionamento do Evilginx não significa quebrar criptograficamente o MFA?",
+          choices: [
+            "Porque o usuário conclui o desafio verdadeiro e o proxy observa a sessão criada depois",
+            "Porque o MFA deixa de existir quando a aplicação usa um certificado TLS válido",
+            "Porque o proxy calcula o segundo fator sem receber qualquer mensagem do cliente",
+            "Porque o Security Group converte o token de sessão na senha original do usuário",
+          ],
+          correct: 0,
+          explanation:
+            "O MFA é validado pela aplicação. O risco surge porque o token da sessão autenticada também passa pelo intermediário.",
+        },
+        hard: {
+          question:
+            "Qual medida reduz diretamente a possibilidade de session replay?",
+          choices: [
+            "Aumentar o TTL do DNS para manter o mesmo endereço por mais tempo",
+            "Usar tokens curtos, revogáveis e vinculados ao contexto ou dispositivo",
+            "Liberar mais portas no Security Group para evitar falhas de conexão",
+            "Criar a instância a partir de uma AMI com mais programas instalados",
+          ],
+          correct: 1,
+          explanation:
+            "Expiração curta, revogação e vínculo ao contexto limitam onde e por quanto tempo um token capturado pode ser reutilizado.",
+        },
+      },
     },
-    {
-      id: "exam-15-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Processo web e gravação de arquivo",
-      lesson: "Aula 15: Arquivos, permissões e PHP",
-      source:
-        "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
-      question:
-        "O PHP chama fopen em modo de acréscimo, mas recebe falha de permissão. O que deve ser verificado?",
-      choices: [
-        "Se o navegador possui escrita no diretório remoto e se o Security Group permite o método HTTP usado pelo formulário",
-        "Qual identidade executa o processo web, quem possui o caminho e quais permissões alcançam o arquivo e o diretório",
-        "Se o cliente SFTP continua conectado e se a chave privada foi copiada para dentro do document root do Apache",
-        "Qual região resolveu o domínio e se o DNS autorizou a criação de uma nova linha no arquivo de destino",
-      ],
-      correct: 1,
-      explanation:
-        "A gravação ocorre no servidor com a identidade do processo web, não com o usuário do navegador ou do FileZilla. É necessário examinar propriedade e permissões do diretório e do arquivo, além de tratar explicitamente a falha retornada por fopen.",
-    },
-    {
-      id: "exam-15-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Menor privilégio e limpeza",
-      lesson: "Aula 15: Arquivos, permissões e PHP",
-      source:
-        "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
-      question:
-        "Qual solução preserva melhor a segurança de um registro fictício usado no laboratório?",
-      choices: [
-        "Aplicar permissão 777 ao document root inteiro e manter o arquivo depois da aula para facilitar testes futuros",
-        "Salvar senhas reais fora do document root, pois mudar o caminho elimina riscos de coleta e de exposição indevida",
-        "Registrar apenas evento fictício em arquivo restrito ao processo necessário, tratar erros e remover o artefato ao final",
-        "Executar o Apache como root, pois uma identidade administrativa evita falhas de escrita e simplifica a limpeza posterior",
-      ],
-      correct: 2,
-      explanation:
-        "O laboratório não precisa de credenciais reais. Um evento fictício é suficiente para comprovar o fluxo. O arquivo deve ter acesso mínimo, erros precisam ser tratados e os dados e recursos do exercício devem ser removidos depois.",
-    },
-  ]
-);
+  ];
 
-window.CYBER_QUIZ_QUESTIONS.push(
-  ...[
-    {
-      id: "exam-06-easy",
+  const questions = concepts.flatMap((concept, conceptIndex) =>
+    levels.map((difficulty) => ({
+      id: `exam-${String(conceptIndex + 1).padStart(2, "0")}-${difficulty}`,
       scope: "exam",
-      difficulty: "easy",
-      topic: "Identidades administrativas",
-      lesson: "Aula 6: Criando e protegendo uma conta AWS",
-      source: "02-cloud-basics/06-signing-up-with-aws/",
-      question:
-        "Qual é a diferença entre o usuário root da AWS e o usuário root do Linux?",
-      choices: [
-        "O root da AWS administra somente arquivos da instância, enquanto o root do Linux controla todas as contas do provedor",
-        "O root da AWS é criado dentro do Kali, enquanto o root do Linux existe apenas no painel web da conta de nuvem",
-        "O root da AWS controla a conta do provedor; o root do Linux possui privilégios máximos dentro de um sistema operacional",
-        "O root da AWS e o root do Linux são a mesma identidade, sincronizada automaticamente quando a instância é iniciada",
-      ],
-      correct: 2,
-      explanation:
-        "O usuário root da AWS pertence ao plano de controle da conta e pode administrar serviços e faturamento. O root do Linux é uma identidade local do sistema operacional. Uma não se transforma automaticamente na outra.",
-    },
-    {
-      id: "exam-06-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "IAM, MFA e menor privilégio",
-      lesson: "Aula 6: Criando e protegendo uma conta AWS",
-      source: "02-cloud-basics/06-signing-up-with-aws/",
-      question:
-        "Qual configuração segue melhor o princípio do menor privilégio em uma conta AWS?",
-      choices: [
-        "Usar diariamente o root com MFA, pois o segundo fator torna desnecessária a separação entre identidades e funções",
-        "Criar uma access key do root, armazená-la na instância e limitar o acesso apenas pela regra do Security Group",
-        "Compartilhar um usuário administrativo entre os estudantes, registrando em um arquivo quem utilizou cada credencial",
-        "Proteger o root para emergências e usar identidades IAM com MFA e apenas as permissões exigidas por cada atividade",
-      ],
-      correct: 3,
-      explanation:
-        "O root deve ser protegido e reservado para tarefas que realmente o exigem. O uso cotidiano deve ocorrer com identidades IAM individuais, MFA e políticas limitadas às ações necessárias.",
-    },
-    {
-      id: "exam-06-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Credenciais e controles de custo",
-      lesson: "Aula 6: Criando e protegendo uma conta AWS",
-      source: "02-cloud-basics/06-signing-up-with-aws/",
-      question:
-        "Qual afirmação relaciona corretamente credenciais temporárias, regiões e AWS Budgets?",
-      choices: [
-        "Credenciais temporárias reduzem exposição prolongada; recursos são regionais; Budgets alerta custos, mas não bloqueia toda cobrança",
-        "Credenciais temporárias eliminam a necessidade de MFA; regiões compartilham recursos; Budgets encerra instâncias ao atingir o limite",
-        "Credenciais permanentes expiram a cada sessão; regiões servem apenas para idioma; Budgets substitui todas as consultas de faturamento",
-        "Credenciais do root são temporárias por padrão; regiões não afetam inventário; Budgets impede criar qualquer recurso fora do Free Tier",
-      ],
-      correct: 0,
-      explanation:
-        "Credenciais temporárias têm validade limitada e reduzem o tempo de exposição. Muitos recursos precisam ser procurados na região em que foram criados. AWS Budgets envia alertas conforme a configuração, mas não deve ser tratado como um bloqueio automático de despesas.",
-    },
-    {
-      id: "exam-07-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "AMI e instância EC2",
-      lesson: "Aula 7: Provisionando Kali Linux no EC2",
-      source: "02-cloud-basics/07-installing-kali-linux-on-the-cloud/",
-      question:
-        "Como uma AMI se diferencia de uma instância EC2?",
-      choices: [
-        "A AMI é o modelo usado no provisionamento; a instância é a máquina virtual criada e executada a partir desse modelo",
-        "A AMI é a regra de entrada da rede; a instância é o endereço público associado ao sistema depois da inicialização",
-        "A AMI é a chave privada do usuário; a instância é a chave pública instalada automaticamente no computador local",
-        "A AMI é o volume temporário da sessão; a instância é o orçamento que acompanha os recursos durante o laboratório",
-      ],
-      correct: 0,
-      explanation:
-        "A Amazon Machine Image reúne uma base para o sistema e sua inicialização. O EC2 usa essa imagem, junto com tipo, armazenamento, rede e outras configurações, para criar uma instância executável.",
-    },
-    {
-      id: "exam-07-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Chave e Security Group",
-      lesson: "Aula 7: Provisionando Kali Linux no EC2",
-      source: "02-cloud-basics/07-installing-kali-linux-on-the-cloud/",
-      question:
-        "Quais funções pertencem, respectivamente, ao key pair e ao Security Group durante o acesso SSH?",
-      choices: [
-        "O key pair abre a porta na nuvem; o Security Group descriptografa a chave privada apresentada pelo cliente",
-        "O key pair participa da autenticação do usuário; o Security Group decide se o tráfego de rede pode chegar à porta",
-        "O key pair inicia o serviço sshd; o Security Group cria o usuário Linux informado no comando de conexão",
-        "O key pair escolhe a região da instância; o Security Group associa a AMI ao volume usado pelo sistema operacional",
-      ],
-      correct: 1,
-      explanation:
-        "O par de chaves é usado para provar a identidade do usuário no SSH. O Security Group é um filtro de rede da AWS. Permitir TCP 22 nele não inicia o sshd, assim como ter uma chave válida não abre a rota até a instância.",
-    },
-    {
-      id: "exam-07-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Condições para acesso remoto",
-      lesson: "Aula 7: Provisionando Kali Linux no EC2",
-      source: "02-cloud-basics/07-installing-kali-linux-on-the-cloud/",
-      question:
-        "Uma instância está running e possui IP público. O que ainda precisa estar correto para o SSH funcionar?",
-      choices: [
-        "Somente a AMI precisa ter sido criada na mesma região do computador que executará o cliente SSH",
-        "A chave privada precisa estar no servidor e o Security Group precisa liberar qualquer protocolo para a origem",
-        "Rota, regra TCP 22, sshd em escuta, usuário correto e chave privada correspondente precisam participar do fluxo",
-        "O Apache precisa responder na porta 80 antes que o sistema permita autenticação remota pela porta padrão do SSH configurado",
-      ],
-      correct: 2,
-      explanation:
-        "O estado running e o IP não bastam. A rede precisa ter rota e regra de entrada adequadas, o sistema deve executar o sshd na porta esperada e a autenticação deve usar usuário e chave correspondentes.",
-    },
-    {
-      id: "exam-08-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Arquitetura do SSH",
-      lesson: "Aula 8: Acesso remoto com SSH",
-      source:
-        "02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh/",
-      question:
-        "Onde ficam o cliente SSH e o processo sshd em um acesso à instância?",
-      choices: [
-        "Os dois ficam no Security Group, que executa os comandos depois de conferir o endereço IP de origem",
-        "O cliente fica no Apache, enquanto o sshd é iniciado pelo navegador ao abrir uma URL com porta 22",
-        "O cliente fica na instância, enquanto o sshd roda no computador local e solicita a chave pública ao usuário",
-        "O cliente roda no computador de origem, enquanto o sshd escuta conexões no sistema operacional da instância",
-      ],
-      correct: 3,
-      explanation:
-        "O programa cliente é executado na máquina que inicia a conexão. Na instância, o daemon sshd aguarda conexões, normalmente em TCP 22, negocia o canal seguro e conduz a autenticação.",
-    },
-    {
-      id: "exam-08-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Chaves do usuário e do host",
-      lesson: "Aula 8: Acesso remoto com SSH",
-      source:
-        "02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh/",
-      question:
-        "Por que o SSH usa a chave do usuário e também apresenta uma fingerprint do host?",
-      choices: [
-        "A chave do usuário autentica o acesso à conta remota; a chave do host ajuda o cliente a reconhecer a identidade do servidor",
-        "A chave do usuário abre a regra de rede; a chave do host substitui o endereço IP durante o roteamento dos pacotes",
-        "A chave do usuário cifra o disco local; a chave do host instala o cliente SSH na primeira conexão realizada",
-        "A chave do usuário escolhe a porta remota; a chave do host concede privilégios root depois que o canal é criado",
-      ],
-      correct: 0,
-      explanation:
-        "São identidades diferentes. O par do usuário comprova que o cliente possui a chave privada autorizada. A chave do host identifica o servidor e sua fingerprint permite detectar uma mudança inesperada de identidade.",
-    },
-    {
-      id: "exam-08-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Diagnóstico de SSH",
-      lesson: "Aula 8: Acesso remoto com SSH",
-      source:
-        "02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh/",
-      question:
-        "Um teste TCP para a porta 22 funciona, mas o SSH retorna Permission denied. Qual interpretação é mais adequada?",
-      choices: [
-        "O teste comprova que a chave privada está correta, então o erro só pode ser causado por uma versão antiga do cliente",
-        "A rede alcança a porta; agora devem ser verificados usuário, chave, permissões locais e autorização no servidor",
-        "O Security Group bloqueou a conexão depois do teste, então é necessário liberar também UDP 22 para autenticar",
-        "O DNS falhou após o handshake, então o nome de usuário deve ser substituído pelo endereço MAC da instância",
-      ],
-      correct: 1,
-      explanation:
-        "O teste TCP confirma alcance até a porta, não autenticação. Permission denied indica que a conexão chegou ao SSH e falhou na etapa de identidade ou autorização. Usuário, arquivo de chave, permissões da chave e configuração remota são os próximos pontos.",
-    },
-    {
-      id: "exam-09-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Terminal, shell e CLI",
-      lesson: "Aula 9: Fundamentos do terminal Linux",
-      source: "02-cloud-basics/09-linux-terminal-basics/",
-      question:
-        "Como terminal, shell e CLI se relacionam em uma sessão Linux?",
-      choices: [
-        "O terminal é o sistema de arquivos, a shell é o usuário root e a CLI é a rede usada para enviar comandos",
-        "O terminal interpreta cada programa, a shell desenha a janela e a CLI substitui todas as interfaces gráficas",
-        "O terminal oferece a interface, a shell interpreta comandos e a CLI é o modo de interação por texto",
-        "O terminal armazena comandos, a shell cria diretórios e a CLI define as permissões de cada arquivo",
-      ],
-      correct: 2,
-      explanation:
-        "O terminal é a interface que exibe entrada e saída. A shell, como Bash, interpreta o que foi digitado e inicia programas. CLI significa Command-Line Interface, a forma de interação baseada em texto.",
-    },
-    {
-      id: "exam-09-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Caminhos e anatomia de comandos",
-      lesson: "Aula 9: Fundamentos do terminal Linux",
-      source: "02-cloud-basics/09-linux-terminal-basics/",
-      question:
-        "Qual alternativa descreve um caminho absoluto e a estrutura básica de um comando?",
-      choices: [
-        "O caminho absoluto começa no diretório atual; o comando contém apenas uma opção e nunca recebe nomes de arquivos",
-        "O caminho absoluto depende do histórico da shell; o comando combina usuário, senha e código de saída anterior",
-        "O caminho absoluto começa em home; o comando sempre contém sudo, programa, porta e endereço de destino",
-        "O caminho absoluto começa em /; o comando normalmente combina programa, opções e argumentos conforme a tarefa",
-      ],
-      correct: 3,
-      explanation:
-        "Um caminho absoluto localiza o item a partir da raiz do sistema, indicada por /. Na linha de comando, o programa define a ação, opções ajustam o comportamento e argumentos informam alvos ou valores.",
-    },
-    {
-      id: "exam-09-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Evidências e diagnóstico no Linux",
-      lesson: "Aula 9: Fundamentos do terminal Linux",
-      source: "02-cloud-basics/09-linux-terminal-basics/",
-      question:
-        "Qual combinação de evidências ajuda a diagnosticar uma operação de arquivo que falhou?",
-      choices: [
-        "Confirmar o diretório com pwd, inspecionar arquivo e permissões com ls -l, ler o erro e verificar o código de saída",
-        "Executar history, repetir o comando com sudo e considerar a tarefa concluída se nenhuma janela gráfica aparecer",
-        "Usar Tab para alterar permissões, executar cd sem argumento e interpretar qualquer saída vazia como sucesso garantido",
-        "Consultar man apenas depois de apagar o arquivo, ignorar o usuário atual e verificar somente o horário mostrado no prompt",
-      ],
-      correct: 0,
-      explanation:
-        "O diagnóstico combina contexto e evidência: diretório atual, existência e metadados do arquivo, mensagem emitida e código de saída. Usar sudo sem entender a causa pode ocultar o problema e criar novos riscos.",
-    },
-    {
-      id: "exam-10-easy",
-      scope: "exam",
-      difficulty: "easy",
-      topic: "Definição de phishing",
-      lesson: "Aula 10: Phishing e engenharia social",
-      source: "03-phishing/10-introduction-to-phishing/",
-      question:
-        "O que caracteriza phishing?",
-      choices: [
-        "A exploração automática de qualquer falha no navegador, sem mensagem, pretexto ou ação esperada do usuário",
-        "O uso de comunicação enganosa para induzir uma pessoa a executar uma ação que beneficia o atacante",
-        "A instalação obrigatória de malware por uma vulnerabilidade no sistema operacional antes de qualquer interação",
-        "A cópia de arquivos entre servidores por um protocolo remoto, mesmo quando existe autorização dos proprietários",
-      ],
-      correct: 1,
-      explanation:
-        "Phishing é uma técnica de engenharia social. Ela combina mensagem, contexto e ação desejada, como abrir um link ou fornecer informação. Pode usar uma página falsa, mas não é sinônimo de malware ou exploit.",
-    },
-    {
-      id: "exam-10-medium",
-      scope: "exam",
-      difficulty: "medium",
-      topic: "Pretexto, isca e página",
-      lesson: "Aula 10: Phishing e engenharia social",
-      source: "03-phishing/10-introduction-to-phishing/",
-      question:
-        "Como pretexto, isca e landing page participam de uma tentativa de phishing?",
-      choices: [
-        "O pretexto é o código executado, a isca é o certificado TLS e a landing page é a regra que libera a porta do servidor",
-        "O pretexto é a vulnerabilidade, a isca é o malware instalado e a landing page é o sistema operacional comprometido",
-        "O pretexto dá sentido à história, a isca estimula a ação e a landing page recebe o visitante no fluxo planejado",
-        "O pretexto autentica o domínio, a isca cria o endereço IP e a landing page estabelece a conexão de transporte",
-      ],
-      correct: 2,
-      explanation:
-        "O pretexto é a narrativa usada para tornar a solicitação plausível. A isca é o elemento que desperta urgência ou interesse. A landing page é um possível destino da interação, não uma vulnerabilidade por si só.",
-    },
-    {
-      id: "exam-10-hard",
-      scope: "exam",
-      difficulty: "hard",
-      topic: "Página, exploit e malware",
-      lesson: "Aula 10: Phishing e engenharia social",
-      source: "03-phishing/10-introduction-to-phishing/",
-      question:
-        "Qual exemplo demonstra uma interação com uma página sem confundir página falsa, exploit e malware?",
-      choices: [
-        "Registrar senhas reais em texto puro, pois HTTPS torna legítima qualquer coleta realizada dentro do laboratório",
-        "Executar um exploit no navegador, pois toda página copiada precisa comprometer o sistema para comprovar o clique",
-        "Instalar um agente permanente, pois uma landing page não consegue produzir nenhuma evidência verificável de interação sozinha",
-        "Registrar apenas um evento fictício de envio, pois a página pode medir a ação sem explorar software nem coletar segredo",
-      ],
-      correct: 3,
-      explanation:
-        "Uma página pode registrar que um formulário fictício foi enviado. Esse evento mostra a interação sem significar exploração do navegador ou instalação de um programa no sistema.",
-    },
-  ]
-);
+      concept: concept.id,
+      difficulty,
+      topic: concept.topic,
+      lesson: concept.lesson,
+      source: concept.source,
+      ...concept.questions[difficulty],
+    }))
+  );
+
+  window.CYBER_QUIZ_QUESTIONS.push(...questions);
+})();

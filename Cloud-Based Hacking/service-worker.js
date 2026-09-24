@@ -1,6 +1,6 @@
 const APP_ROOT = "/cyber-learning/";
 const CACHE_PREFIX = "cyber-learning-";
-const CACHE_NAME = `${CACHE_PREFIX}pwa-20260924-v8`;
+const CACHE_NAME = `${CACHE_PREFIX}pwa-20260924-v9`;
 
 const PRECACHE_URLS = [
   APP_ROOT,
@@ -11,9 +11,9 @@ const PRECACHE_URLS = [
   `${APP_ROOT}assets/javascripts/bundle.d7400e89.min.js`,
   `${APP_ROOT}assets/javascripts/workers/search.2c215733.min.js`,
   `${APP_ROOT}javascripts/pwa.js?v=20260803`,
-  `${APP_ROOT}javascripts/quiz-loader.js?v=20260924-3`,
+  `${APP_ROOT}javascripts/quiz-loader.js?v=20260924-4`,
   `${APP_ROOT}javascripts/quiz-fixation-data.js?v=20260924-2`,
-  `${APP_ROOT}javascripts/quiz-exam-data.js?v=20260924-3`,
+  `${APP_ROOT}javascripts/quiz-exam-data.js?v=20260924-4`,
   `${APP_ROOT}javascripts/quiz.js?v=20260924-2`,
   `${APP_ROOT}search/search_index.json`,
   `${APP_ROOT}assets/site/apple-touch-icon.png`,

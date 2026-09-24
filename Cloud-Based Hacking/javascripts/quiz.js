@@ -436,7 +436,7 @@
           <header class="quiz-intro__header">
             <span class="quiz-kicker">Preparação para prova</span>
             <h2 tabindex="-1">Monte seu simulado</h2>
-            <p>Escolha a dificuldade e o tamanho da rodada sobre as aulas 1 a 22. Cada resposta recebe correção e uma explicação curta.</p>
+            <p>Escolha a dificuldade e o tamanho da rodada sobre os conceitos essenciais. Cada resposta recebe correção e uma explicação curta.</p>
           </header>
 
           <fieldset class="quiz-levels">

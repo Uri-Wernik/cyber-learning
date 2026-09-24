@@ -10,6 +10,30 @@ const dataFiles = [
 ];
 const allowedDifficulties = new Set(["easy", "medium", "hard"]);
 const allowedScopes = new Set(["lesson-fixation", "exam"]);
+const expectedExamConcepts = new Set([
+  "iam",
+  "ec2",
+  "ami",
+  "ebs",
+  "security-group",
+  "ip-e-porta",
+  "dns",
+  "registros-dns",
+  "http",
+  "https",
+  "tls",
+  "ssh",
+  "transferencia-arquivos",
+  "mfa",
+  "cookie-e-sessao",
+  "token-de-sessao",
+  "c2",
+  "proxy-reverso",
+  "apache",
+  "php",
+  "certbot",
+  "evilginx",
+]);
 const errors = [];
 const context = { window: {} };
 
@@ -74,6 +98,13 @@ if (!Array.isArray(questions)) {
     }
 
     if (
+      question.scope === "exam" &&
+      (typeof question.concept !== "string" || !question.concept.trim())
+    ) {
+      errors.push(`${label}: conceito essencial ausente.`);
+    }
+
+    if (
       !Array.isArray(question.choices) ||
       question.choices.length !== 4 ||
       question.choices.some(
@@ -103,6 +134,15 @@ if (!Array.isArray(questions)) {
       } else if (!mkdocsConfig.includes(markdownPath)) {
         errors.push(`${label}: aula de origem não está publicada (${markdownPath}).`);
       }
+
+      if (
+        question.scope === "exam" &&
+        !question.source.endsWith(`#${question.concept}`)
+      ) {
+        errors.push(
+          `${label}: a origem não aponta para o conceito ${question.concept}.`
+        );
+      }
     }
   }
 
@@ -111,7 +151,6 @@ if (!Array.isArray(questions)) {
   );
   const examQuestions = questions.filter((question) => question.scope === "exam");
   const lessonSources = new Set(lessonQuestions.map((question) => question.source));
-  const examSources = new Set(examQuestions.map((question) => question.source));
 
   for (const source of lessonSources) {
     const count = lessonQuestions.filter(
@@ -121,9 +160,6 @@ if (!Array.isArray(questions)) {
       errors.push(
         `${source}: quiz da aula deve ter entre 6 e 12 questões; encontrado ${count}.`
       );
-    }
-    if (!examSources.has(source)) {
-      errors.push(`${source}: não está representada no simulado geral.`);
     }
   }
 
@@ -138,21 +174,27 @@ if (!Array.isArray(questions)) {
     }
   }
 
-  for (let lessonNumber = 1; lessonNumber <= 22; lessonNumber += 1) {
-    const lessonQuestionsByNumber = examQuestions.filter((question) =>
-      typeof question.lesson === "string" &&
-      question.lesson.startsWith(`Aula ${lessonNumber}:`)
+  for (const concept of expectedExamConcepts) {
+    const conceptQuestions = examQuestions.filter(
+      (question) => question.concept === concept
     );
-
     for (const difficulty of allowedDifficulties) {
-      const count = lessonQuestionsByNumber.filter(
+      const count = conceptQuestions.filter(
         (question) => question.difficulty === difficulty
       ).length;
       if (count !== 1) {
         errors.push(
-          `Aula ${lessonNumber}: esperado 1 item ${difficulty} no simulado; encontrado ${count}.`
+          `${concept}: esperado 1 item ${difficulty} no simulado; encontrado ${count}.`
         );
       }
+    }
+  }
+
+  for (const question of examQuestions) {
+    if (!expectedExamConcepts.has(question.concept)) {
+      errors.push(
+        `${question.id}: conceito não esperado no simulado (${question.concept}).`
+      );
     }
   }
 
