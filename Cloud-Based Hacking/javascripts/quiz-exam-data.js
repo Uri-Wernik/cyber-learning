@@ -5,21 +5,21 @@ window.CYBER_QUIZ_QUESTIONS.push(
       id: "exam-01-easy",
       scope: "exam",
       difficulty: "easy",
-      topic: "Autorização e escopo",
+      topic: "Camadas de acesso",
       lesson: "Aula 1: Visão geral do curso",
       source:
         "01-introduction-to-cloud-computing-for-hackers/01-teaser/",
       question:
-        "O que transforma uma atividade de segurança ofensiva em um teste autorizado?",
+        "Qual opção diferencia conta, navegador e sistema operacional?",
       choices: [
-        "Ativos, período e técnicas definidos, com aprovação de quem possui autoridade sobre os sistemas",
-        "Ferramentas conhecidas, horário comercial e aviso informal enviado a qualquer integrante da equipe",
-        "Objetivo educacional, endereço do avaliador e acesso prévio a uma máquina virtual na nuvem",
-        "Boa intenção declarada, uso de dados fictícios e escolha de serviços visíveis pela Internet",
+        "Conta acessa um serviço; navegador executa conteúdo web; sistema executa processos locais com seus privilégios",
+        "Conta controla o hardware; navegador cria usuários; sistema operacional apenas exibe páginas recebidas pela rede",
+        "Conta e navegador são a mesma camada; sistema operacional serve somente para armazenar os arquivos baixados",
+        "Conta define a porta de rede; navegador cria o endereço IP; sistema operacional registra o nome de domínio",
       ],
       correct: 0,
       explanation:
-        "A autorização precisa partir de alguém com autoridade sobre os ativos e registrar limites como sistemas incluídos, período e técnicas permitidas. Boa intenção, acesso técnico ou finalidade educacional não substituem esse consentimento.",
+        "São três camadas diferentes. A conta existe dentro de um serviço, o navegador executa conteúdo web dentro de limites próprios e o sistema operacional executa processos locais com as permissões do usuário.",
     },
     {
       id: "exam-01-medium",
@@ -65,28 +65,28 @@ window.CYBER_QUIZ_QUESTIONS.push(
       id: "exam-02-easy",
       scope: "exam",
       difficulty: "easy",
-      topic: "Ativo, alvo e escopo",
-      lesson: "Aula 2: Hacking ético, pentest e Red Team",
+      topic: "Autenticação e autorização",
+      lesson: "Aula 2: Pentest e Red Team",
       source:
         "01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/",
       question:
-        "Qual alternativa diferencia corretamente ativo, alvo e escopo em um teste?",
+        "Qual é a diferença entre autenticação e autorização?",
       choices: [
-        "Ativo é a ferramenta usada, alvo é o avaliador designado e escopo é o relatório produzido ao final da atividade",
-        "Ativo é qualquer serviço público, alvo é toda conta encontrada e escopo é o conjunto de técnicas que funcionaram",
-        "Ativo é o risco identificado, alvo é a correção aplicada e escopo é a equipe que recebeu o aviso do teste",
-        "Ativo é algo de valor, alvo é o elemento avaliado e escopo define os limites autorizados da atividade",
+        "Autenticação cifra a rede; autorização escolhe qual endereço IP será usado pelo dispositivo conectado",
+        "Autenticação cria a conta; autorização guarda a senha em um cookie permanente dentro do navegador",
+        "Autenticação inicia o servidor; autorização abre automaticamente todas as portas necessárias no firewall",
+        "Autenticação confirma uma identidade; autorização define quais ações essa identidade pode executar",
       ],
       correct: 3,
       explanation:
-        "Um ativo é um recurso com valor para a organização. O alvo é o sistema, conta ou componente submetido ao teste. O escopo registra o que está dentro e fora da autorização.",
+        "Primeiro o sistema verifica a identidade por senha, chave ou outro fator. Depois consulta regras de autorização para decidir quais recursos e operações aquela identidade pode usar.",
     },
     {
       id: "exam-02-medium",
       scope: "exam",
       difficulty: "medium",
       topic: "Pentest e Red Team",
-      lesson: "Aula 2: Hacking ético, pentest e Red Team",
+      lesson: "Aula 2: Pentest e Red Team",
       source:
         "01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/",
       question:
@@ -94,19 +94,19 @@ window.CYBER_QUIZ_QUESTIONS.push(
       choices: [
         "O pentest busca encontrar e comprovar falhas dentro de um escopo; o Red Team avalia objetivos e controles em um cenário adversário",
         "O pentest testa somente redes internas; o Red Team testa somente aplicações que estejam publicadas diretamente na Internet",
-        "O pentest exige autorização formal; o Red Team substitui a autorização por regras técnicas definidas durante a operação",
+        "O pentest mede somente disponibilidade; o Red Team mede apenas a velocidade usada para corrigir cada resultado",
         "O pentest corrige cada falha encontrada; o Red Team administra permanentemente os controles defensivos da organização",
       ],
       correct: 0,
       explanation:
-        "O pentest costuma concentrar-se em identificar e demonstrar vulnerabilidades dentro de um escopo. Uma operação Red Team trabalha por objetivos e simula comportamento adversário para avaliar pessoas, processos e tecnologia, sempre com autorização e regras de engajamento.",
+        "O pentest costuma identificar e demonstrar vulnerabilidades em um conjunto definido de sistemas. O Red Team trabalha por objetivos e observa como pessoas, processos e tecnologia respondem juntos.",
     },
     {
       id: "exam-02-hard",
       scope: "exam",
       difficulty: "hard",
       topic: "Camadas de comprometimento",
-      lesson: "Aula 2: Hacking ético, pentest e Red Team",
+      lesson: "Aula 2: Pentest e Red Team",
       source:
         "01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/",
       question:
@@ -297,6 +297,420 @@ window.CYBER_QUIZ_QUESTIONS.push(
       correct: 1,
       explanation:
         "O ciclo seguro começa antes da execução: confirmar conta, região, recurso correto, exposição e alertas de orçamento. O encerramento exige remover o que não será reutilizado e verificar tanto o inventário quanto a área de custos.",
+    },
+  ]
+);
+
+window.CYBER_QUIZ_QUESTIONS.push(
+  ...[
+    {
+      id: "exam-16-easy",
+      scope: "exam",
+      difficulty: "easy",
+      topic: "Função do DNS",
+      lesson: "Aula 16: Domínio e DNS",
+      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
+      question: "Para que serve o DNS?",
+      choices: [
+        "Responder consultas sobre nomes, fornecendo dados como o endereço IP associado a um domínio",
+        "Transportar páginas HTML entre navegadores sem precisar de endereço IP, rota ou porta de destino",
+        "Criptografar todo o tráfego de rede e validar automaticamente o conteúdo publicado em cada servidor",
+        "Criar contas no sistema operacional e escolher quais arquivos cada processo poderá ler ou modificar",
+      ],
+      correct: 0,
+      explanation:
+        "DNS é um sistema de nomes. Ele fornece registros como endereços IP, mas não transporta a página e não abre a conexão com o servidor web.",
+    },
+    {
+      id: "exam-16-medium",
+      scope: "exam",
+      difficulty: "medium",
+      topic: "Registros A, AAAA e CNAME",
+      lesson: "Aula 16: Domínio e DNS",
+      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
+      question: "Qual relação entre registros DNS está correta?",
+      choices: [
+        "A aponta para IPv6, AAAA cria um alias e CNAME guarda diretamente o endereço IPv4 do servidor",
+        "A aponta para IPv4, AAAA aponta para IPv6 e CNAME declara que um nome é alias de outro nome",
+        "A escolhe a porta HTTP, AAAA instala o certificado e CNAME inicia o processo servidor na máquina",
+        "A transporta a página, AAAA cifra a resposta e CNAME autentica o usuário antes da conexão TCP",
+      ],
+      correct: 1,
+      explanation:
+        "A e AAAA são registros de endereço para IPv4 e IPv6. CNAME aponta um nome alternativo para outro nome, que depois precisa ser resolvido.",
+    },
+    {
+      id: "exam-16-hard",
+      scope: "exam",
+      difficulty: "hard",
+      topic: "Caminho da resolução DNS",
+      lesson: "Aula 16: Domínio e DNS",
+      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
+      question:
+        "O que acontece quando o computador não possui em cache o IP de um domínio?",
+      choices: [
+        "O navegador escolhe um IP aleatório, abre a porta 443 e espera que o certificado indique o servidor correto",
+        "O sistema envia HTTP ao registrador, que devolve o arquivo solicitado e grava o resultado no Security Group",
+        "Um resolvedor busca a resposta na hierarquia DNS, consulta a fonte autoritativa e devolve o registro ao cliente",
+        "O Apache consulta a chave privada, transforma o domínio em rota e envia a resposta diretamente ao navegador",
+      ],
+      correct: 2,
+      explanation:
+        "O resolvedor verifica seu cache e, quando necessário, percorre a hierarquia até encontrar o servidor autoritativo. Depois devolve a resposta ao computador, que inicia uma conexão separada.",
+    },
+    {
+      id: "exam-17-easy",
+      scope: "exam",
+      difficulty: "easy",
+      topic: "Registro A",
+      lesson: "Aula 17: Ligando domínio ao servidor",
+      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
+      question: "O que um registro DNS do tipo A informa?",
+      choices: [
+        "Qual processo deve iniciar no servidor depois que o navegador enviar uma requisição para o domínio",
+        "Qual certificado TLS precisa ser instalado para que qualquer subdomínio seja aceito pelo navegador",
+        "Qual arquivo do document root deve ser devolvido para todas as URLs recebidas pelo servidor Apache",
+        "Qual endereço IPv4 está associado ao nome consultado pelo cliente naquele momento",
+      ],
+      correct: 3,
+      explanation:
+        "O registro A associa um nome a um IPv4. Depois de receber esse endereço, o cliente ainda precisa alcançar a porta e conversar com o serviço.",
+    },
+    {
+      id: "exam-17-medium",
+      scope: "exam",
+      difficulty: "medium",
+      topic: "CNAME e TTL",
+      lesson: "Aula 17: Ligando domínio ao servidor",
+      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
+      question:
+        "Como CNAME e TTL influenciam uma alteração de nome no DNS?",
+      choices: [
+        "CNAME cria um alias para outro nome; TTL define por quanto tempo uma resposta anterior pode permanecer em cache",
+        "CNAME cria uma nova porta no servidor; TTL define quantas conexões HTTP o Apache pode manter abertas",
+        "CNAME copia um certificado TLS; TTL define por quanto tempo a chave privada pode ser usada pelo navegador",
+        "CNAME redireciona o navegador por HTTP; TTL define quantas vezes o cliente seguirá o novo endereço",
+      ],
+      correct: 0,
+      explanation:
+        "CNAME relaciona um alias a um nome canônico. O TTL controla o cache, por isso alguns resolvedores podem continuar devolvendo uma resposta antiga até esse tempo terminar.",
+    },
+    {
+      id: "exam-17-hard",
+      scope: "exam",
+      difficulty: "hard",
+      topic: "DNS correto e serviço indisponível",
+      lesson: "Aula 17: Ligando domínio ao servidor",
+      source: "04-preparacao-para-prova/01-guia-de-estudo/#dns",
+      question:
+        "O domínio resolve para o IP esperado, mas a página não abre. Qual conclusão é correta?",
+      choices: [
+        "O registro DNS está necessariamente errado, pois uma resposta A correta também comprova HTTP e Apache",
+        "A resolução funcionou; rota, filtro de rede, porta e processo web ainda precisam ser verificados separadamente",
+        "O CNAME precisa substituir o registro A, pois somente aliases conseguem abrir serviços publicados na Internet",
+        "O TTL deve ser definido como zero, pois qualquer cache impede o navegador de iniciar uma conexão TCP",
+      ],
+      correct: 1,
+      explanation:
+        "DNS apenas forneceu o endereço. A conexão ainda depende de rota, Security Group, firewall, porta e servidor web em execução.",
+    },
+    {
+      id: "exam-18-easy",
+      scope: "exam",
+      difficulty: "easy",
+      topic: "HTTPS e TLS",
+      lesson: "Aula 18: Introdução ao HTTPS",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#http-https-e-tls",
+      question: "O que significa HTTPS?",
+      choices: [
+        "Um tipo de DNS que esconde o endereço IP e escolhe automaticamente a página inicial do servidor",
+        "Um formato de arquivo usado pelo Apache para guardar senhas e tokens recebidos em formulários",
+        "HTTP transmitido dentro de uma conexão protegida pelo protocolo TLS",
+        "Uma versão do SSH criada para transferir páginas web diretamente pelo terminal",
+      ],
+      correct: 2,
+      explanation:
+        "HTTPS mantém as regras do HTTP, mas usa TLS para proteger a comunicação entre cliente e servidor.",
+    },
+    {
+      id: "exam-18-medium",
+      scope: "exam",
+      difficulty: "medium",
+      topic: "Certificado e chave privada",
+      lesson: "Aula 18: Introdução ao HTTPS",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#http-https-e-tls",
+      question:
+        "Qual é a diferença entre um certificado TLS e sua chave privada?",
+      choices: [
+        "O certificado permanece secreto no servidor; a chave privada é enviada a todo cliente durante o handshake",
+        "O certificado escolhe a rota da Internet; a chave privada abre a porta 443 no firewall da instância",
+        "O certificado guarda cookies do usuário; a chave privada recupera sessões expiradas no banco de dados",
+        "O certificado associa nomes a uma chave pública; a chave privada fica no servidor e prova sua posse",
+      ],
+      correct: 3,
+      explanation:
+        "O servidor apresenta o certificado aos clientes. A chave privada correspondente não é enviada e participa da prova criptográfica de identidade.",
+    },
+    {
+      id: "exam-18-hard",
+      scope: "exam",
+      difficulty: "hard",
+      topic: "Handshake TLS",
+      lesson: "Aula 18: Introdução ao HTTPS",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#http-https-e-tls",
+      question:
+        "Por que o TLS moderno cria chaves de sessão em vez de cifrar todos os dados diretamente com a chave do certificado?",
+      choices: [
+        "A criptografia assimétrica autentica e estabelece segredos; chaves simétricas derivadas protegem os dados com mais eficiência",
+        "A chave do certificado funciona apenas com DNS, enquanto as chaves de sessão liberam as portas TCP no servidor",
+        "O certificado deixa de ser válido após o primeiro pacote, então o navegador precisa solicitar outro a cada resposta",
+        "As chaves de sessão removem a necessidade de validar nome, prazo e cadeia de confiança durante o handshake",
+      ],
+      correct: 0,
+      explanation:
+        "O handshake usa mecanismos assimétricos para autenticação e acordo de segredos. A partir deles, os dois lados derivam chaves simétricas rápidas para proteger a sessão.",
+    },
+    {
+      id: "exam-19-easy",
+      scope: "exam",
+      difficulty: "easy",
+      topic: "Let's Encrypt, ACME e Certbot",
+      lesson: "Aula 19: Habilitando HTTPS",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#ferramentas-em-uma-frase",
+      question:
+        "Como Let's Encrypt, ACME e Certbot se relacionam?",
+      choices: [
+        "Let's Encrypt é o servidor web, ACME é o certificado e Certbot é a porta usada para receber HTTPS",
+        "Let's Encrypt emite certificados, ACME define a automação e Certbot é um cliente desse protocolo",
+        "Let's Encrypt resolve DNS, ACME cria usuários Linux e Certbot transfere arquivos para o document root",
+        "Let's Encrypt é a chave privada, ACME é o domínio e Certbot é a autoridade raiz instalada no navegador",
+      ],
+      correct: 1,
+      explanation:
+        "Let's Encrypt é uma autoridade certificadora. ACME é o protocolo de validação e emissão automatizada. Certbot é um programa que conversa por ACME.",
+    },
+    {
+      id: "exam-19-medium",
+      scope: "exam",
+      difficulty: "medium",
+      topic: "Desafio HTTP-01",
+      lesson: "Aula 19: Habilitando HTTPS",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#ferramentas-em-uma-frase",
+      question:
+        "Como o desafio ACME HTTP-01 confirma o controle de um domínio?",
+      choices: [
+        "A autoridade pede a senha da conta AWS e verifica se ela também funciona no usuário root do Linux",
+        "O navegador envia a chave privada por HTTPS e a autoridade compara seu conteúdo com o registro CNAME",
+        "O cliente publica uma resposta temporária e a autoridade tenta buscá-la pelo domínio usando HTTP na porta 80",
+        "O Apache envia todos os arquivos do site e a autoridade confirma se o conteúdo combina com o nome registrado",
+      ],
+      correct: 2,
+      explanation:
+        "No HTTP-01, o cliente ACME disponibiliza um token em um caminho conhecido. A autoridade consulta o domínio e tenta obter a resposta pela porta 80.",
+    },
+    {
+      id: "exam-19-hard",
+      scope: "exam",
+      difficulty: "hard",
+      topic: "Diagnóstico de emissão TLS",
+      lesson: "Aula 19: Habilitando HTTPS",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#ferramentas-em-uma-frase",
+      question:
+        "O DNS aponta corretamente, mas o HTTP-01 falha. O que ainda pode impedir a validação?",
+      choices: [
+        "O navegador não possui cookie de sessão, embora o desafio ACME seja executado pelo servidor e pela autoridade",
+        "A chave SSH usa outro formato, embora o desafio HTTP não dependa da autenticação do terminal local",
+        "O volume EBS tem espaço livre, embora o endereço público seja suficiente para responder qualquer requisição",
+        "A porta 80 pode estar bloqueada, o Apache pode estar parado ou o caminho do desafio pode ir a outro host",
+      ],
+      correct: 3,
+      explanation:
+        "DNS correto comprova somente a resolução. A autoridade ainda precisa alcançar TCP 80 e receber do servidor correto a resposta temporária preparada pelo cliente ACME.",
+    },
+    {
+      id: "exam-20-easy",
+      scope: "exam",
+      difficulty: "easy",
+      topic: "Definição de Evilginx",
+      lesson: "Aula 20: Introdução ao Evilginx",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+      question: "O que é Evilginx?",
+      choices: [
+        "Um framework de proxy reverso AiTM que intermedeia fluxos de autenticação web",
+        "Um cliente SSH usado para administrar instâncias por meio de uma chave privada local",
+        "Um servidor DNS recursivo que converte automaticamente qualquer URL em endereço IPv4",
+        "Um plugin do Apache que renova certificados TLS sem conversar com uma autoridade certificadora",
+      ],
+      correct: 0,
+      explanation:
+        "Evilginx atua como intermediário entre navegador e aplicação. Ele mantém duas conexões e encaminha o tráfego nos dois sentidos.",
+    },
+    {
+      id: "exam-20-medium",
+      scope: "exam",
+      difficulty: "medium",
+      topic: "Duas conexões do proxy",
+      lesson: "Aula 20: Introdução ao Evilginx",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+      question:
+        "Como um proxy AiTM intermedeia uma autenticação protegida por TLS?",
+      choices: [
+        "Ele quebra a chave privada da aplicação e usa a mesma conexão criptográfica nos dois lados do fluxo",
+        "Ele encerra TLS em seu domínio e abre outra conexão TLS separada com a aplicação de destino",
+        "Ele remove TCP da comunicação e encaminha os campos do formulário diretamente por registros DNS",
+        "Ele converte o certificado do destino em uma chave SSH e entrega essa chave ao navegador conectado",
+      ],
+      correct: 1,
+      explanation:
+        "O navegador estabelece TLS com o proxy, e o proxy estabelece outro TLS com a aplicação. O intermediário vê os dados entre a decifragem de uma conexão e a cifragem da outra.",
+    },
+    {
+      id: "exam-20-hard",
+      scope: "exam",
+      difficulty: "hard",
+      topic: "Função de um phishlet",
+      lesson: "Aula 20: Introdução ao Evilginx",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+      question:
+        "Por que um phishlet depende do comportamento da aplicação intermediada?",
+      choices: [
+        "Porque ele contém a AMI e precisa recriar a máquina virtual sempre que a página muda de aparência",
+        "Porque ele substitui o DNS público e precisa escolher uma nova porta para cada resposta recebida",
+        "Porque suas regras reconhecem hosts, caminhos e cookies, que podem mudar quando a aplicação altera o fluxo",
+        "Porque ele guarda a chave privada do usuário e precisa convertê-la quando o navegador atualiza o certificado",
+      ],
+      correct: 2,
+      explanation:
+        "Um phishlet descreve elementos específicos do fluxo web. Mudanças de domínio, caminho, cabeçalho ou cookie podem fazer essas regras deixarem de corresponder.",
+    },
+    {
+      id: "exam-21-easy",
+      scope: "exam",
+      difficulty: "easy",
+      topic: "Componentes de compilação",
+      lesson: "Aula 21: Componentes do Evilginx",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+      question:
+        "Qual é o papel geral de Git, Go e Make em um projeto como Evilginx?",
+      choices: [
+        "Git emite o certificado, Go configura o DNS e Make abre as portas necessárias no Security Group",
+        "Git hospeda a página, Go transfere os arquivos por SFTP e Make cria o usuário remoto no Linux",
+        "Git autentica o domínio, Go atua como proxy e Make substitui o servidor autoritativo da zona DNS",
+        "Git obtém o código, Go fornece a linguagem e Make coordena as etapas definidas para a compilação",
+      ],
+      correct: 3,
+      explanation:
+        "Git gerencia e obtém versões do código. Go é a linguagem e seu conjunto de ferramentas. Make executa uma sequência de tarefas descrita pelo projeto.",
+    },
+    {
+      id: "exam-21-medium",
+      scope: "exam",
+      difficulty: "medium",
+      topic: "Domínio, DNS, IP e TLS",
+      lesson: "Aula 21: Componentes do Evilginx",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+      question:
+        "Por que domínio, DNS, IP e certificado TLS precisam ser coerentes em um proxy web?",
+      choices: [
+        "O domínio precisa resolver para o proxy, a rede precisa alcançá-lo e o certificado precisa cobrir o nome solicitado",
+        "O domínio substitui a porta, o DNS inicia o processo e o certificado escolhe o endereço IP usado pelo cliente",
+        "O domínio compila o programa, o DNS cria cookies e o certificado instala automaticamente cada phishlet disponível",
+        "O domínio guarda a sessão, o DNS valida a senha e o certificado transfere os arquivos do navegador ao servidor",
+      ],
+      correct: 0,
+      explanation:
+        "O cliente resolve o nome pelo DNS, conecta ao IP e valida se o certificado apresentado cobre aquele host. Uma inconsistência interrompe o fluxo em sua respectiva camada.",
+    },
+    {
+      id: "exam-21-hard",
+      scope: "exam",
+      difficulty: "hard",
+      topic: "Dependências de publicação",
+      lesson: "Aula 21: Componentes do Evilginx",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+      question:
+        "O processo do proxy está ativo, mas o navegador não consegue abrir seu domínio. Qual sequência de verificação é mais útil?",
+      choices: [
+        "Trocar a linguagem Go, recriar o repositório Git e alterar o conteúdo do phishlet antes de verificar a rede",
+        "Confirmar resolução DNS, IP atual, filtros de rede, portas em escuta e certificado apresentado para o host",
+        "Apagar o token de sessão, mudar o usuário do Apache e recriar o volume EBS sem testar o endereço publicado",
+        "Alterar o TTL para zero, desativar TCP e usar somente CNAME para transportar a página até o navegador",
+      ],
+      correct: 1,
+      explanation:
+        "Um processo ativo não comprova publicação. O diagnóstico deve seguir o caminho real: nome, endereço, rede, listener e TLS.",
+    },
+    {
+      id: "exam-22-easy",
+      scope: "exam",
+      difficulty: "easy",
+      topic: "Senha e token de sessão",
+      lesson: "Aula 22: Token de sessão e MFA",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#token-de-sessao",
+      question:
+        "Qual é a diferença principal entre senha e token de sessão?",
+      choices: [
+        "A senha identifica a porta do serviço; o token informa ao DNS qual endereço deve responder ao navegador",
+        "A senha cifra cada pacote da rede; o token contém a chave privada usada pelo certificado do servidor",
+        "A senha participa do login; o token representa a sessão criada depois que a autenticação foi aceita",
+        "A senha existe somente no navegador; o token é um comando executado pela shell do sistema remoto",
+      ],
+      correct: 2,
+      explanation:
+        "A senha é uma evidência usada durante a autenticação. O token é emitido depois do sucesso e permite reconhecer a sessão nas requisições seguintes.",
+    },
+    {
+      id: "exam-22-medium",
+      scope: "exam",
+      difficulty: "medium",
+      topic: "MFA e sessão autenticada",
+      lesson: "Aula 22: Token de sessão e MFA",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+      question:
+        "Por que observar um token depois do MFA não significa que o segundo fator foi quebrado?",
+      choices: [
+        "Porque o segundo fator deixa de existir quando a conta é criada e nunca participa dos logins posteriores",
+        "Porque o proxy calcula sozinho o mesmo código temporário sem receber qualquer resposta do navegador",
+        "Porque o token contém apenas informações públicas e exige todos os fatores novamente em cada requisição",
+        "Porque o usuário concluiu o desafio verdadeiro e o token representa a sessão emitida depois dessa verificação",
+      ],
+      correct: 3,
+      explanation:
+        "O MFA funcionou e foi aceito pela aplicação. O risco aparece porque o token de uma sessão já autenticada também atravessa o intermediário.",
+    },
+    {
+      id: "exam-22-hard",
+      scope: "exam",
+      difficulty: "hard",
+      topic: "Proteções contra session replay",
+      lesson: "Aula 22: Token de sessão e MFA",
+      source:
+        "04-preparacao-para-prova/01-guia-de-estudo/#session-replay",
+      question:
+        "Qual conjunto de controles reduz melhor o risco de reutilização de uma sessão intermediada?",
+      choices: [
+        "WebAuthn ligado à origem, token protegido ou vinculado ao dispositivo, validade curta e nova autenticação sensível",
+        "Senha mais longa, página com HTTPS e um TTL DNS maior, mantendo a mesma sessão ativa por tempo indefinido",
+        "Troca da porta SSH, remoção do CNAME e aumento do volume EBS, sem mudar como a aplicação trata sessões",
+        "Uso de código TOTP sozinho, certificado válido e cookie sem expiração, aceito de qualquer dispositivo conectado",
+      ],
+      correct: 0,
+      explanation:
+        "WebAuthn verifica a origem, e controles de sessão limitam onde e por quanto tempo o token pode ser usado. Nova autenticação reduz o impacto em ações importantes.",
     },
   ]
 );
@@ -882,7 +1296,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       lesson: "Aula 10: Phishing e engenharia social",
       source: "03-phishing/10-introduction-to-phishing/",
       question:
-        "Em uma simulação autorizada, o que demonstra interação sem confundir página falsa, exploit e malware?",
+        "Qual exemplo demonstra uma interação com uma página sem confundir página falsa, exploit e malware?",
       choices: [
         "Registrar senhas reais em texto puro, pois HTTPS torna legítima qualquer coleta realizada dentro do laboratório",
         "Executar um exploit no navegador, pois toda página copiada precisa comprometer o sistema para comprovar o clique",
@@ -891,7 +1305,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       ],
       correct: 3,
       explanation:
-        "Uma página pode registrar, em ambiente autorizado, que um formulário fictício foi enviado. Isso comprova a interação definida no exercício sem coletar credenciais reais, explorar o navegador ou instalar malware.",
+        "Uma página pode registrar que um formulário fictício foi enviado. Esse evento mostra a interação sem significar exploração do navegador ou instalação de um programa no sistema.",
     },
   ]
 );

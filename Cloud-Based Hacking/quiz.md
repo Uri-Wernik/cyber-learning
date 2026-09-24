@@ -8,7 +8,7 @@ search:
 
 # Quiz interativo
 
-<p class="quiz-page__lead">Use o quiz da aula para fixar um capítulo ou monte um simulado com quantidade e dificuldade escolhidas por você.</p>
+<p class="quiz-page__lead">Monte um simulado sobre as aulas 1 a 22 escolhendo a quantidade de perguntas e a dificuldade.</p>
 
 <section class="quiz-shell" data-quiz-app aria-labelledby="quiz-title">
   <div class="quiz-loading" role="status" aria-live="polite">

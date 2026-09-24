@@ -94,7 +94,8 @@ if (!Array.isArray(questions)) {
     }
 
     if (typeof question.source === "string") {
-      const markdownPath = `${question.source.replace(/\/$/, "")}.md`;
+      const sourcePath = question.source.split(/[?#]/, 1)[0];
+      const markdownPath = `${sourcePath.replace(/\/$/, "")}.md`;
       const absoluteMarkdownPath = path.join(docsRoot, ...markdownPath.split("/"));
 
       if (!fs.existsSync(absoluteMarkdownPath)) {
@@ -130,10 +131,28 @@ if (!Array.isArray(questions)) {
     const count = examQuestions.filter(
       (question) => question.difficulty === difficulty
     ).length;
-    if (count < 12) {
+    if (count < 22) {
       errors.push(
-        `Simulado ${difficulty}: mínimo de 12 questões; encontrado ${count}.`
+        `Simulado ${difficulty}: mínimo de 22 questões; encontrado ${count}.`
       );
+    }
+  }
+
+  for (let lessonNumber = 1; lessonNumber <= 22; lessonNumber += 1) {
+    const lessonQuestionsByNumber = examQuestions.filter((question) =>
+      typeof question.lesson === "string" &&
+      question.lesson.startsWith(`Aula ${lessonNumber}:`)
+    );
+
+    for (const difficulty of allowedDifficulties) {
+      const count = lessonQuestionsByNumber.filter(
+        (question) => question.difficulty === difficulty
+      ).length;
+      if (count !== 1) {
+        errors.push(
+          `Aula ${lessonNumber}: esperado 1 item ${difficulty} no simulado; encontrado ${count}.`
+        );
+      }
     }
   }
 

@@ -75,16 +75,16 @@ Cada etapa introduz os conceitos necessários para a seguinte, sem presumir expe
 <section class="study-entry" aria-labelledby="study-entry-title">
     <div class="study-entry__copy">
         <h2 id="study-entry-title">Preparação para a prova</h2>
-        <p>Uma área independente para revisar as 15 aulas publicadas, conectar conceitos e ferramentas e montar um simulado configurável.</p>
+        <p>Uma lista simples com os conceitos e as ferramentas das aulas 1 a 22, seguida por um simulado configurável.</p>
     </div>
     <a class="md-button md-button--primary" href="04-preparacao-para-prova/01-guia-de-estudo/">
-        Abrir guia <span aria-hidden="true">&rarr;</span>
+        Ver conceitos <span aria-hidden="true">&rarr;</span>
     </a>
 </section>
 
 <section class="edition-note">
     <div>
-        <strong>15 aulas revisadas</strong>
+        <strong>22 aulas no guia</strong>
     </div>
-    <p>A preparação para a prova cobre apenas os capítulos publicados. As aulas seguintes permanecem como rascunhos até passarem por revisão técnica, ética e editorial.</p>
+    <p>As aulas 1 a 15 possuem capítulos publicados. Os conceitos das aulas 16 a 22 também aparecem na preparação para a prova.</p>
 </section>
