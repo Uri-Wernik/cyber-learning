@@ -421,7 +421,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "HTTPS e TLS",
       lesson: "Aula 18: Introdução ao HTTPS",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#http-https-e-tls",
+        "04-preparacao-para-prova/01-guia-de-estudo/#https",
       question: "O que significa HTTPS?",
       choices: [
         "Um tipo de DNS que esconde o endereço IP e escolhe automaticamente a página inicial do servidor",
@@ -440,7 +440,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Certificado e chave privada",
       lesson: "Aula 18: Introdução ao HTTPS",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#http-https-e-tls",
+        "04-preparacao-para-prova/01-guia-de-estudo/#https",
       question:
         "Qual é a diferença entre um certificado TLS e sua chave privada?",
       choices: [
@@ -460,7 +460,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Handshake TLS",
       lesson: "Aula 18: Introdução ao HTTPS",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#http-https-e-tls",
+        "04-preparacao-para-prova/01-guia-de-estudo/#https",
       question:
         "Por que o TLS moderno cria chaves de sessão em vez de cifrar todos os dados diretamente com a chave do certificado?",
       choices: [
@@ -480,7 +480,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Let's Encrypt, ACME e Certbot",
       lesson: "Aula 19: Habilitando HTTPS",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#ferramentas-em-uma-frase",
+        "04-preparacao-para-prova/01-guia-de-estudo/#certbot",
       question:
         "Como Let's Encrypt, ACME e Certbot se relacionam?",
       choices: [
@@ -500,7 +500,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Desafio HTTP-01",
       lesson: "Aula 19: Habilitando HTTPS",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#ferramentas-em-uma-frase",
+        "04-preparacao-para-prova/01-guia-de-estudo/#certbot",
       question:
         "Como o desafio ACME HTTP-01 confirma o controle de um domínio?",
       choices: [
@@ -520,7 +520,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Diagnóstico de emissão TLS",
       lesson: "Aula 19: Habilitando HTTPS",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#ferramentas-em-uma-frase",
+        "04-preparacao-para-prova/01-guia-de-estudo/#certbot",
       question:
         "O DNS aponta corretamente, mas o HTTP-01 falha. O que ainda pode impedir a validação?",
       choices: [
@@ -540,7 +540,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Definição de Evilginx",
       lesson: "Aula 20: Introdução ao Evilginx",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
       question: "O que é Evilginx?",
       choices: [
         "Um framework de proxy reverso AiTM que intermedeia fluxos de autenticação web",
@@ -559,7 +559,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Duas conexões do proxy",
       lesson: "Aula 20: Introdução ao Evilginx",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
       question:
         "Como um proxy AiTM intermedeia uma autenticação protegida por TLS?",
       choices: [
@@ -579,7 +579,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Função de um phishlet",
       lesson: "Aula 20: Introdução ao Evilginx",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
       question:
         "Por que um phishlet depende do comportamento da aplicação intermediada?",
       choices: [
@@ -599,7 +599,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Componentes de compilação",
       lesson: "Aula 21: Componentes do Evilginx",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
       question:
         "Qual é o papel geral de Git, Go e Make em um projeto como Evilginx?",
       choices: [
@@ -619,7 +619,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Domínio, DNS, IP e TLS",
       lesson: "Aula 21: Componentes do Evilginx",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
       question:
         "Por que domínio, DNS, IP e certificado TLS precisam ser coerentes em um proxy web?",
       choices: [
@@ -639,7 +639,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "Dependências de publicação",
       lesson: "Aula 21: Componentes do Evilginx",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
       question:
         "O processo do proxy está ativo, mas o navegador não consegue abrir seu domínio. Qual sequência de verificação é mais útil?",
       choices: [
@@ -679,7 +679,7 @@ window.CYBER_QUIZ_QUESTIONS.push(
       topic: "MFA e sessão autenticada",
       lesson: "Aula 22: Token de sessão e MFA",
       source:
-        "04-preparacao-para-prova/01-guia-de-estudo/#como-o-evilginx-funciona",
+        "04-preparacao-para-prova/01-guia-de-estudo/#evilginx",
       question:
         "Por que observar um token depois do MFA não significa que o segundo fator foi quebrado?",
       choices: [

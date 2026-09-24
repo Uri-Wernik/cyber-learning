@@ -89,7 +89,7 @@
 
     if (!loadPromise) {
       loadPromise = loadScript("quiz-fixation-data.js?v=20260924-2")
-        .then(() => loadScript("quiz-exam-data.js?v=20260924-2"))
+        .then(() => loadScript("quiz-exam-data.js?v=20260924-3"))
         .then(() => loadScript("quiz.js?v=20260924-2"));
     }
 

@@ -1,142 +1,228 @@
-# Conceitos e ferramentas das aulas 1 a 22
+# Dicionário fácil das aulas 1 a 22
 
-Esta é uma lista curta para consulta. Cada item explica **o que é** e **como funciona**, sem repetir o conteúdo completo das aulas.
+Cada palavra aparece separada, com uma explicação curta e fácil de lembrar.
 
-## Mapa rápido das 22 aulas
+## Nuvem e computadores
 
-1. **Visão geral:** conta, navegador e sistema operacional são camadas diferentes. Um **token de sessão** representa um login já concluído.
-2. **Pentest e Red Team:** pentest procura e comprova falhas; Red Team simula um adversário para testar vários controles trabalhando juntos.
-3. **Computação em nuvem:** servidores físicos são divididos em recursos virtuais que podem ser criados e removidos por painel ou API.
-4. **Nuvem e conexões:** cliente inicia uma comunicação, servidor responde, **callback** é uma conexão de retorno e **C2** coordena agentes remotos.
-5. **Ciclo do laboratório:** uma instância pode estar iniciando, ligada, parando, parada ou encerrada. Armazenamento e outros recursos podem continuar existindo.
-6. **Conta AWS:** **IAM** controla identidades e permissões; **MFA** pede mais de um fator; regiões separam recursos geograficamente.
-7. **Kali no EC2:** a **AMI** é o modelo, **EC2** é a máquina virtual, **EBS** é o disco e o **Security Group** filtra tráfego.
-8. **SSH:** cria um canal remoto criptografado. O cliente roda no computador local e o processo `sshd` atende na máquina remota.
-9. **Terminal Linux:** a shell interpreta comandos; caminhos localizam arquivos; usuário, grupo e permissões controlam o acesso.
-10. **Phishing:** combina uma mensagem, um motivo e uma página para induzir uma ação. Não é a mesma coisa que exploit ou malware.
-11. **Apache e HTTP:** Apache escuta requisições web, encontra o recurso solicitado e devolve uma resposta HTTP.
-12. **Cópia e SFTP:** uma cópia estática salva o que o navegador recebeu; FileZilla usa SFTP para transferir arquivos por SSH.
-13. **Publicação no Apache:** o **document root** é a pasta publicada. `chown` altera o proprietário para permitir ou bloquear escrita.
-14. **Formulários:** HTML cria campos; JavaScript pode alterar o DOM; `POST` envia dados no corpo da requisição.
-15. **PHP e arquivos:** PHP executa no servidor, lê `$_POST` e pode abrir, escrever e fechar arquivos conforme as permissões do processo.
-16. **Domínio e DNS:** DNS transforma um nome em dados como um endereço IP. O navegador ainda precisa conectar ao serviço depois da resolução.
-17. **Registros DNS:** registro **A** aponta para IPv4; **AAAA** aponta para IPv6; **CNAME** cria um nome alternativo; **TTL** controla cache.
-18. **HTTPS e TLS:** TLS cifra a comunicação, detecta alterações e permite verificar o certificado apresentado pelo servidor.
-19. **Certbot e ACME:** Certbot conversa com uma autoridade certificadora, prova o controle do domínio e configura o certificado no Apache.
-20. **Evilginx:** é um proxy reverso AiTM que fica entre navegador e aplicação e consegue observar dados que atravessam as duas conexões.
-21. **Componentes do Evilginx:** domínio, DNS, IP, TLS e **phishlets** trabalham juntos para intermediar hosts e fluxos de autenticação.
-22. **Sessão e MFA:** o proxy encaminha senha e segundo fator em tempo real e pode observar o token emitido depois do login.
+- **Conta** — Seu espaço dentro de um serviço. É como um quarto ao qual você entra usando uma identidade.
 
-## Conceitos que mais aparecem
+- **Navegador** — Programa usado para abrir sites, como Chrome ou Firefox. Ele pede páginas e mostra as respostas.
 
-### Token de sessão
+- **Sistema operacional** — Base que controla programas, arquivos e dispositivos. Windows, Linux e macOS são exemplos.
 
-- **O que é:** um valor secreto que identifica uma sessão já autenticada.
-- **Como funciona:** depois do login, o servidor entrega o token ao navegador. O navegador o envia nas próximas requisições para não repetir senha e MFA a cada página.
-- **Importante:** quem consegue reutilizar um token válido pode agir como aquela sessão até ela expirar ou ser revogada.
+- **Pentest** — Teste que procura e comprova falhas. É como uma inspeção técnica em um prédio.
 
-### Autenticação, autorização e MFA
+- **Red Team** — Simulação mais ampla de um adversário. Em vez de olhar uma única fechadura, testa como o prédio inteiro reage.
 
-- **Autenticação:** confirma quem é o usuário.
-- **Autorização:** define o que esse usuário pode fazer.
-- **MFA:** combina dois ou mais fatores, como senha e aplicativo autenticador.
-- **Como funciona:** o MFA protege o momento do login; depois dele, a aplicação normalmente usa um token de sessão.
+- **Computação em nuvem** — Uso de computadores, discos e redes de um provedor pela Internet. É como alugar infraestrutura em vez de comprar tudo.
 
-### Cliente, servidor, callback e C2
+- **Máquina virtual** — Computador criado por software dentro de um servidor físico. Parece uma máquina separada, mas compartilha o hardware.
 
-- **Cliente:** inicia a conexão ou faz a pergunta.
-- **Servidor:** fica em escuta e responde.
-- **Callback:** o computador remoto inicia uma conexão de retorno.
-- **C2:** sistema que recebe conexões e envia comandos para agentes.
+- **AWS** — Plataforma de nuvem da Amazon. Oferece máquinas virtuais, redes, discos e vários outros serviços.
 
-### IP, domínio, URL e porta
+- **Região** — Área geográfica onde os recursos da nuvem são criados. É como escolher em qual cidade ficará o servidor.
 
-- **IP:** endereço de uma interface na rede.
-- **Domínio:** nome usado por pessoas, como `example.com`.
-- **URL:** endereço completo de um recurso, incluindo protocolo, host e caminho.
-- **Porta:** número lógico que entrega a conexão ao processo certo, como `22`, `80` ou `443`.
+- **IAM** — Serviço da AWS que controla identidades e permissões. É como o setor que entrega crachás e decide quais portas cada crachá abre.
 
-### DNS
+- **EC2** — Serviço da AWS que oferece máquinas virtuais. Uma máquina criada nele é chamada de instância.
 
-- **O que é:** sistema que responde perguntas sobre nomes de domínio.
-- **Como funciona:** o computador consulta um resolvedor; ele usa cache ou procura o servidor autoritativo e devolve o registro encontrado.
-- **Registros principais:** `A` para IPv4, `AAAA` para IPv6 e `CNAME` para alias.
-- **TTL:** tempo que uma resposta pode permanecer em cache.
+- **Instância** — Máquina virtual criada na nuvem. Ela pode ser iniciada, parada ou encerrada.
 
-### HTTP, HTTPS e TLS
+- **AMI** — Modelo usado para criar uma instância EC2. É como uma forma pronta com sistema e configurações iniciais.
 
-- **HTTP:** formato de requisições e respostas da Web.
-- **HTTPS:** HTTP dentro de uma conexão TLS.
-- **TLS:** negocia chaves, cifra o conteúdo e verifica o certificado do servidor.
-- **Certificado:** liga uma chave pública a um domínio.
-- **Chave privada:** segredo mantido pelo servidor para provar sua identidade.
+- **EBS** — Disco virtual usado por uma instância EC2. Pode continuar existindo mesmo quando a máquina está parada.
 
-### Cookie e sessão
+- **Security Group** — Filtro de rede da AWS. É como um porteiro que verifica protocolo, porta e origem antes de deixar o tráfego entrar.
 
-- **Cookie:** pequeno dado que o navegador guarda para um site.
-- **Sessão:** estado mantido para reconhecer o usuário entre várias requisições.
-- **Como funcionam juntos:** o cookie pode carregar um identificador ou token que aponta para a sessão no servidor.
+- **Cliente** — Programa que inicia uma comunicação. É como o cliente de um restaurante fazendo um pedido.
 
-### Proxy reverso
+- **Servidor** — Programa que espera pedidos e envia respostas. É como a cozinha que recebe e prepara o pedido.
 
-- **O que é:** servidor que recebe uma requisição e abre outra conexão para o serviço de destino.
-- **Como funciona:** cliente e aplicação não conversam diretamente; o proxy recebe, encaminha e devolve as respostas.
-- **Usos comuns:** balanceamento, cache, publicação de aplicações e aplicação de políticas.
+- **Callback** — Conexão de retorno iniciada pelo computador remoto. É como deixar um número e receber a ligação de volta.
 
-### Adversary-in-the-Middle (AiTM)
+- **C2** — Sistema de comando e controle que recebe conexões e envia tarefas para agentes remotos. É como uma central de controle.
 
-- **O que é:** intermediação ativa entre duas partes.
-- **Como funciona:** o intermediário mantém uma conexão com o navegador e outra com a aplicação, podendo observar dados antes de encaminhá-los.
+## Linux e acesso remoto
 
-### Phishlet
+- **Kali Linux** — Distribuição Linux com ferramentas de redes e segurança já organizadas.
 
-- **O que é:** conjunto de regras usado pelo Evilginx para entender os hosts, cookies e partes de um fluxo web.
-- **Como funciona:** informa quais endereços devem ser intermediados e quais elementos precisam ser reconhecidos durante a navegação.
+- **Terminal** — Janela usada para escrever comandos e ver seus resultados. É um painel de controle por texto.
 
-### Session replay
+- **CLI** — Forma de usar um programa digitando comandos, em vez de clicar em botões.
 
-- **O que é:** reutilização de uma sessão capturada em outro cliente.
-- **Como funciona:** o segundo cliente apresenta o token como se fosse o navegador que concluiu o login.
-- **Limites:** expiração curta, nova autenticação, vínculo ao dispositivo e proteção de token podem impedir a reutilização.
+- **Shell** — Programa que lê o comando e pede ao sistema para executá-lo. É como um intérprete entre você e o Linux.
 
-## Ferramentas em uma frase
+- **Bash** — Uma das shells mais usadas no Linux.
 
-| Ferramenta | O que é e como funciona |
-|---|---|
-| **AWS Console** | Painel web para criar, alterar e remover recursos da conta AWS. |
-| **IAM** | Serviço da AWS que associa identidades a políticas de permissão. |
-| **EC2** | Serviço da AWS que executa máquinas virtuais chamadas instâncias. |
-| **Kali Linux** | Distribuição Linux com ferramentas de redes e segurança. |
-| **Security Group** | Filtro de rede da AWS que permite ou bloqueia protocolos, portas e origens. |
-| **OpenSSH** | Conjunto formado pelo cliente `ssh` e pelo servidor `sshd`. |
-| **Terminal** | Janela que mostra a entrada e a saída da shell. |
-| **Bash** | Shell que interpreta comandos e inicia programas no Linux. |
-| **APT** | Gerenciador que consulta repositórios e instala pacotes no Debian e no Kali. |
-| **systemctl** | Programa que consulta, inicia, recarrega e para serviços do sistema. |
-| **ss** | Ferramenta que mostra conexões e portas em escuta. |
-| **curl** | Cliente que envia requisições HTTP e mostra a resposta recebida. |
-| **Apache** | Servidor web que escuta HTTP/HTTPS e entrega arquivos ou conteúdo processado. |
-| **FileZilla** | Cliente gráfico que transfere arquivos; no livro, usa SFTP. |
-| **SFTP** | Protocolo de transferência de arquivos executado dentro do SSH. |
-| **PHP** | Linguagem executada no servidor para processar requisições e gerar respostas. |
-| **chown** | Comando Linux que altera o usuário e o grupo proprietários de um arquivo. |
-| **Resolve-DnsName / dig** | Ferramentas que consultam registros DNS no Windows e no Linux. |
-| **Let's Encrypt** | Autoridade certificadora que emite certificados TLS por validação automatizada. |
-| **ACME** | Protocolo usado para automatizar emissão e renovação de certificados. |
-| **Certbot** | Cliente ACME que solicita certificados e pode configurar o Apache. |
-| **Git** | Ferramenta que baixa e controla versões de código-fonte. |
-| **Go** | Linguagem em que as versões atuais do Evilginx são implementadas. |
-| **Evilginx** | Framework de proxy reverso AiTM voltado a fluxos de autenticação web. |
+- **Comando** — Instrução dada ao sistema. Pode conter opções e um alvo sobre o qual trabalhar.
 
-## Como o Evilginx funciona
+- **Caminho** — Endereço de um arquivo ou pasta dentro do sistema.
 
-1. O navegador abre um domínio que aponta para o proxy.
-2. O proxy abre outra conexão com a aplicação real.
-3. A página e as requisições passam pelo proxy nos dois sentidos.
-4. Senha e desafio de MFA são encaminhados enquanto o login acontece.
-5. Depois do sucesso, a aplicação emite um token de sessão.
-6. Como a resposta também passa pelo proxy, o token pode ser observado e reutilizado enquanto for aceito.
+- **Root do sistema** — Diretório `/`, onde começa toda a árvore de arquivos do Linux.
 
-Isso não decifra nem quebra o MFA. O usuário conclui o desafio verdadeiro, e o que pode ser reutilizado é a sessão criada **depois** da autenticação. Passkeys e chaves FIDO2/WebAuthn são mais resistentes porque vinculam a confirmação ao domínio correto.
+- **Usuário root** — Conta administrativa do Linux. Possui acesso muito maior que um usuário comum.
+
+- **Permissão** — Regra que decide quem pode ler, escrever ou executar um arquivo. É como a chave de uma sala.
+
+- <span id="ssh"></span>**SSH** — Protocolo para controlar outro computador por um canal criptografado. É como um controle remoto dentro de um túnel protegido.
+
+- **sshd** — Programa que fica no computador remoto esperando conexões SSH.
+
+- **Chave pública** — Parte que pode ficar no servidor para reconhecer uma identidade.
+
+- **Chave privada** — Parte secreta que fica com o usuário e prova que ele possui a chave correta.
+
+- **Fingerprint** — Resumo curto da chave do servidor. Funciona como a impressão digital usada para conferir sua identidade.
+
+- **APT** — Gerenciador de pacotes do Debian e do Kali. É parecido com uma loja de aplicativos usada pelo terminal.
+
+- **systemctl** — Ferramenta que inicia, para e consulta serviços do Linux. É como um painel de liga e desliga.
+
+- **ss** — Ferramenta que mostra conexões e portas em escuta. É como olhar quais portas do prédio estão abertas.
+
+- **curl** — Cliente que envia requisições e mostra respostas. É útil para testar um site sem precisar da interface do navegador.
+
+- **chown** — Comando que troca o proprietário de um arquivo ou pasta. É como alterar o nome no documento de posse.
+
+## Web, páginas e arquivos
+
+- **Phishing** — Mensagem ou página criada para induzir uma pessoa a realizar uma ação.
+
+- **Exploit** — Código que aproveita uma falha de software para produzir um comportamento não esperado.
+
+- **Malware** — Programa criado para executar ações prejudiciais ou indesejadas em um dispositivo.
+
+- <span id="http"></span>**HTTP** — Linguagem de pedidos e respostas usada na Web. O navegador pede um recurso e o servidor responde.
+
+- <span id="apache"></span>**Apache** — Programa que entrega sites. Pense nele como um garçom: recebe o pedido do navegador, busca a página e leva a resposta.
+
+- **Document root** — Pasta que o Apache usa como ponto inicial para encontrar os arquivos publicados.
+
+- **HTML** — Estrutura da página. É como o esqueleto que organiza títulos, textos, imagens e formulários.
+
+- **CSS** — Aparência da página. Controla cores, tamanhos e posições.
+
+- **JavaScript** — Comportamento da página. Pode reagir a cliques, mudar elementos e enviar dados.
+
+- **DOM** — Versão da página que o navegador mantém na memória. JavaScript pode modificá-la depois que o HTML chega.
+
+- **Formulário** — Conjunto de campos usado para receber dados e enviá-los a um destino.
+
+- **POST** — Método HTTP usado para enviar dados no corpo de uma requisição.
+
+- **PHP** — Linguagem executada no servidor. Ela recebe dados, executa regras e gera uma resposta para o navegador.
+
+- **`$_POST`** — Área do PHP onde ficam os campos recebidos por uma requisição POST.
+
+- **`fopen`** — Função do PHP que tenta abrir um arquivo.
+
+- **`fwrite`** — Função do PHP que tenta escrever dados no arquivo aberto.
+
+- **`fclose`** — Função do PHP que fecha o arquivo depois do uso.
+
+- **FileZilla** — Programa gráfico para transferir arquivos. Um lado mostra o computador local e o outro mostra o remoto.
+
+- **FTP** — Protocolo antigo de transferência de arquivos sem criptografia nativa.
+
+- **FTPS** — FTP protegido com TLS.
+
+- **SFTP** — Protocolo de transferência que funciona dentro do SSH. É como levar arquivos pelo mesmo túnel protegido do acesso remoto.
+
+## Rede, DNS e HTTPS
+
+- **Protocolo** — Conjunto de regras que dois programas seguem para conseguir conversar.
+
+- **IP** — Endereço de uma interface na rede. É parecido com o endereço de um prédio.
+
+- **Domínio** — Nome fácil de lembrar, como `example.com`, usado no lugar de decorar um IP.
+
+- **URL** — Endereço completo de um recurso. É como informar rua, prédio e sala, tudo junto.
+
+- **Porta** — Número que leva a conexão ao programa correto. Se o IP é o prédio, a porta é o número da sala.
+
+- <span id="dns"></span>**DNS** — Sistema que encontra dados de um domínio. É como uma agenda que procura um nome e devolve seu endereço IP.
+
+- **Resolvedor DNS** — Servidor que procura a resposta DNS em nome do computador.
+
+- **DNS autoritativo** — Servidor que guarda a resposta oficial de um domínio.
+
+- **Registro A** — Registro DNS que liga um nome a um endereço IPv4.
+
+- **Registro AAAA** — Registro DNS que liga um nome a um endereço IPv6.
+
+- **CNAME** — Registro DNS que faz um nome funcionar como apelido de outro nome.
+
+- **TTL** — Tempo durante o qual uma resposta DNS pode ficar guardada em cache.
+
+- **Cache** — Cópia temporária de uma resposta usada para evitar buscar a mesma informação novamente.
+
+- <span id="https"></span>**HTTPS** — HTTP com proteção. É como enviar a conversa dentro de um envelope fechado.
+
+- <span id="tls"></span>**TLS** — Tecnologia que cria a proteção usada pelo HTTPS. Ela combina certificado, chaves e criptografia.
+
+- **Handshake TLS** — Conversa inicial em que navegador e servidor escolhem a proteção e criam chaves para aquela sessão.
+
+- **Criptografia** — Transformação que deixa os dados ilegíveis para quem não possui a chave correta.
+
+- **Certificado TLS** — Documento digital que liga um domínio a uma chave pública. É como a identidade apresentada pelo servidor.
+
+- **Autoridade certificadora** — Organização que verifica o controle do domínio e assina o certificado. Funciona como um cartório digital.
+
+- **Let's Encrypt** — Autoridade certificadora que emite certificados TLS de forma automatizada.
+
+- **ACME** — Protocolo que define a conversa automática para pedir, validar e renovar certificados.
+
+- <span id="certbot"></span>**Certbot** — Programa que usa ACME para pedir um certificado e pode configurar o Apache. É como um assistente que cuida da papelada do HTTPS.
+
+- **HTTP-01** — Teste no qual a autoridade busca um código temporário pelo domínio usando HTTP na porta 80.
+
+## Login, sessão e Evilginx
+
+- **Autenticação** — Processo que confirma a identidade do usuário. É a pergunta: "quem é você?".
+
+- **Autorização** — Regra que decide o que o usuário pode fazer. É a pergunta: "onde você pode entrar?".
+
+- **MFA** — Login que exige dois ou mais tipos de prova, como senha e código do celular. É como uma porta com duas fechaduras diferentes.
+
+- **Cookie** — Pequeno dado que o navegador guarda para um site. É como um bilhete que o site pede para ver novamente.
+
+- **Sessão** — Estado que mantém o usuário reconhecido depois do login.
+
+- <span id="token-de-sessao"></span>**Token de sessão** — Valor secreto que representa um login já concluído. É como uma pulseira entregue depois da entrada: enquanto for aceita, não é preciso mostrar os documentos novamente.
+
+- **Proxy** — Programa que recebe uma comunicação e a encaminha para outro destino. É um intermediário.
+
+- **Proxy reverso** — Proxy que fica na frente de um servidor e recebe os pedidos antes dele. É como uma recepção entre o visitante e o escritório.
+
+- **AiTM** — Intermediário ativo entre duas partes. Ele mantém uma conversa com cada lado e encaminha as mensagens.
+
+- <span id="evilginx"></span>**Evilginx** — Framework que usa um proxy reverso AiTM para intermediar um login web em tempo real.
+
+- **Phishlet** — Arquivo de regras que explica ao Evilginx quais hosts, caminhos e cookies fazem parte de um fluxo.
+
+- **Lure** — Link criado para conduzir o navegador a um fluxo configurado no proxy.
+
+- <span id="session-replay"></span>**Session replay** — Reutilização de um token válido em outro cliente. É como alguém tentar entrar usando uma pulseira de acesso que ainda não expirou.
+
+- **Passkey** — Credencial criptográfica criada para um serviço específico. Ela não envia uma senha reutilizável.
+
+- **WebAuthn** — Padrão que liga a autenticação ao domínio correto. Uma página parecida não recebe uma confirmação válida para o domínio verdadeiro.
+
+- **Git** — Ferramenta que baixa e controla versões de código.
+
+- **Go** — Linguagem usada para desenvolver as versões atuais do Evilginx.
+
+- **Make** — Ferramenta que executa as etapas de compilação definidas por um projeto.
+
+## Evilginx em seis passos
+
+1. O navegador abre o domínio do proxy.
+2. O proxy abre outra conexão com a aplicação.
+3. A página passa pelo proxy até o navegador.
+4. As respostas do navegador voltam pelo proxy.
+5. Depois do login e do MFA, a aplicação cria um token de sessão.
+6. Como o token atravessa o proxy, ele pode ser observado e reutilizado enquanto ainda for aceito.
+
+O Evilginx não quebra a criptografia do MFA. Ele intermedeia o login verdadeiro e observa a sessão criada **depois** da verificação.
 
 [Abrir o simulado das 22 aulas :material-arrow-right:](../quiz.md){ .md-button .md-button--primary }
