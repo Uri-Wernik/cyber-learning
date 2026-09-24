@@ -88,7 +88,7 @@ extra:
 nav:
   - Início: index.md
   - Preparação para a prova:
-      - Dicionário fácil: 04-preparacao-para-prova/01-guia-de-estudo.md
+      - Conceitos e ferramentas: 04-preparacao-para-prova/01-guia-de-estudo.md
       - Simulado configurável: quiz.md
   - 1. Contexto e fundamentos:
       - 1. Visão geral do curso: 01-introduction-to-cloud-computing-for-hackers/01-teaser.md

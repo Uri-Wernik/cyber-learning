@@ -78,7 +78,7 @@ Cada etapa introduz os conceitos necessários para a seguinte, sem presumir expe
         <p>Uma lista simples com os conceitos e as ferramentas das aulas 1 a 22, seguida por um simulado configurável.</p>
     </div>
     <a class="md-button md-button--primary" href="04-preparacao-para-prova/01-guia-de-estudo/">
-        Abrir dicionário <span aria-hidden="true">&rarr;</span>
+        Ver conceitos <span aria-hidden="true">&rarr;</span>
     </a>
 </section>
 
