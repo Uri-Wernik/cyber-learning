@@ -1,7 +1,7 @@
 (() => {
   const QUIZ_SELECTOR = "[data-quiz-app], [data-lesson-quiz]";
   const STORAGE_KEY = "cyber-learning-quiz-v1";
-  const GENERAL_SESSION_LENGTH = 10;
+  const DEFAULT_EXAM_LENGTH = 10;
   const LESSON_PATHS = [
     "01-introduction-to-cloud-computing-for-hackers/01-teaser/",
     "01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud/",
@@ -20,6 +20,11 @@
     "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
   ];
   const LEVELS = {
+    mixed: {
+      label: "Misto",
+      description: "Combina fundamentos, relações e cenários técnicos.",
+      marker: "M",
+    },
     easy: {
       label: "Fácil",
       description: "Conceitos, siglas e funções essenciais.",
@@ -37,6 +42,7 @@
     },
   };
   const OPTION_LABELS = ["A", "B", "C", "D"];
+  const EXAM_DIFFICULTIES = ["easy", "medium", "hard"];
 
   const escapeHtml = (value) =>
     String(value).replace(
@@ -101,6 +107,8 @@
     return currentIndex >= 0 ? LESSON_PATHS[currentIndex + 1] || null : null;
   };
 
+  const getExamBestKey = (level, count) => `${level}:${count}`;
+
   const prepareQuestion = (question) => {
     const choices = shuffle(
       question.choices.map((text, index) => ({
@@ -123,17 +131,19 @@
       const requestedLessonPath = new URLSearchParams(window.location.search).get(
         "lesson"
       );
+      const isQuizPage = root.hasAttribute("data-quiz-app");
       this.isStandaloneLessonQuiz =
-        root.hasAttribute("data-quiz-app") &&
+        isQuizPage &&
+        Boolean(requestedLessonPath) &&
         questions.some(
           (question) =>
             question.scope === "lesson-fixation" &&
             question.source === requestedLessonPath
         );
-      if (root.hasAttribute("data-quiz-app") && !this.isStandaloneLessonQuiz) {
-        window.location.replace(getLessonUrl(""));
-        return;
-      }
+      this.hasInvalidLessonRequest =
+        isQuizPage &&
+        Boolean(requestedLessonPath) &&
+        !this.isStandaloneLessonQuiz;
       this.isLessonQuiz =
         root.hasAttribute("data-lesson-quiz") || this.isStandaloneLessonQuiz;
       this.lessonPath = root.dataset.lessonPath || requestedLessonPath || "";
@@ -142,13 +152,22 @@
           question.source === this.lessonPath &&
           question.scope === "lesson-fixation"
       );
+      this.examQuestions = questions.filter(
+        (question) => question.scope === "exam"
+      );
       this.progress = readProgress();
-      this.selectedLevel = this.progress.lastLevel || "easy";
+      this.selectedLevel = LEVELS[this.progress.lastLevel]
+        ? this.progress.lastLevel
+        : "mixed";
+      this.selectedCount = Number.isInteger(this.progress.lastCount)
+        ? this.progress.lastCount
+        : DEFAULT_EXAM_LENGTH;
       this.sessionQuestions = [];
       this.answers = [];
       this.currentIndex = 0;
       this.score = 0;
       this.hasAnswered = false;
+      this.normalizeSelectedCount();
 
       this.root.dataset.quizReady = "true";
       this.root.removeAttribute("aria-labelledby");
@@ -168,7 +187,9 @@
           this.trapFocus(event);
         }
       });
-      if (this.isStandaloneLessonQuiz) {
+      if (this.hasInvalidLessonRequest) {
+        this.renderInvalidLesson();
+      } else if (this.isStandaloneLessonQuiz) {
         this.startGame();
       } else if (this.isLessonQuiz) {
         this.renderLessonStart();
@@ -211,12 +232,90 @@
     }
 
     handleChange(event) {
-      if (event.target.name !== "quiz-level") return;
+      if (event.target.name === "quiz-level") {
+        this.selectedLevel = event.target.value;
+        this.normalizeSelectedCount();
+      } else if (event.target.name === "quiz-count") {
+        this.selectedCount = Number.parseInt(event.target.value, 10);
+        this.normalizeSelectedCount();
+      } else {
+        return;
+      }
 
-      this.selectedLevel = event.target.value;
       this.progress.lastLevel = this.selectedLevel;
+      this.progress.lastCount = this.selectedCount;
       saveProgress(this.progress);
       this.updateStartSummary();
+    }
+
+    getExamQuestionPool(level = this.selectedLevel) {
+      return this.examQuestions.filter(
+        (question) => level === "mixed" || question.difficulty === level
+      );
+    }
+
+    getMaxQuestionCount(level = this.selectedLevel) {
+      return this.getExamQuestionPool(level).length;
+    }
+
+    normalizeSelectedCount() {
+      const max = this.getMaxQuestionCount();
+      const parsed = Number.parseInt(this.selectedCount, 10);
+      const validCount = Number.isFinite(parsed) ? parsed : DEFAULT_EXAM_LENGTH;
+      this.selectedCount = Math.min(Math.max(validCount, 1), Math.max(max, 1));
+    }
+
+    getExamBest(level, count) {
+      return this.progress.examBest?.[getExamBestKey(level, count)];
+    }
+
+    getExamBestLabel(level, count) {
+      const best = this.getExamBest(level, count);
+      return Number.isInteger(best)
+        ? `Melhor resultado: ${best}/${count}`
+        : `Sem tentativa com ${count} questões`;
+    }
+
+    buildExamSession(questionPool, count) {
+      if (this.selectedLevel !== "mixed") {
+        return shuffle(questionPool).slice(0, count);
+      }
+
+      const buckets = shuffle(EXAM_DIFFICULTIES).map((difficulty) =>
+        shuffle(
+          questionPool.filter((question) => question.difficulty === difficulty)
+        )
+      );
+      const selected = [];
+
+      while (selected.length < count) {
+        let foundQuestion = false;
+
+        for (const bucket of buckets) {
+          const question = bucket.pop();
+          if (!question) continue;
+
+          selected.push(question);
+          foundQuestion = true;
+          if (selected.length === count) break;
+        }
+
+        if (!foundQuestion) break;
+      }
+
+      return shuffle(selected);
+    }
+
+    renderInvalidLesson() {
+      const examUrl = new URL("quiz/", getAppRoot()).href;
+      this.root.innerHTML = `
+        <div class="quiz-error" role="alert">
+          <strong>Não encontramos o quiz solicitado.</strong>
+          <span>O endereço da aula não corresponde a um capítulo publicado.</span>
+          <a class="quiz-button quiz-button--primary" href="${escapeHtml(examUrl)}">
+            Abrir simulado <span aria-hidden="true">→</span>
+          </a>
+        </div>`;
     }
 
     setSessionOpen(isOpen) {
@@ -308,10 +407,10 @@
       const levelOptions = Object.entries(LEVELS)
         .map(([value, level]) => {
           const isChecked = value === this.selectedLevel;
-          const best = this.progress.best?.[value];
-          const bestLabel = Number.isInteger(best)
-            ? `Melhor resultado: ${best}/${GENERAL_SESSION_LENGTH}`
-            : "Ainda não jogado";
+          const levelCount = Math.min(
+            this.selectedCount,
+            Math.max(this.getMaxQuestionCount(value), 1)
+          );
 
           return `
             <label class="quiz-level${isChecked ? " is-selected" : ""}">
@@ -322,32 +421,47 @@
               <span class="quiz-level__copy">
                 <strong>${level.label}</strong>
                 <span>${level.description}</span>
-                <small>${bestLabel}</small>
+                <small data-quiz-level-best="${value}">${this.getExamBestLabel(
+                  value,
+                  levelCount
+                )}</small>
               </span>
             </label>`;
         })
         .join("");
+      const availableCount = this.getMaxQuestionCount();
 
       this.root.innerHTML = `
         <div class="quiz-intro quiz-view">
           <header class="quiz-intro__header">
-            <span class="quiz-kicker">Modo de estudo</span>
-            <h2 tabindex="-1">Escolha seu desafio</h2>
-            <p>São 10 perguntas por rodada. Após cada resposta, você recebe a correção e uma explicação baseada nas aulas.</p>
+            <span class="quiz-kicker">Preparação para prova</span>
+            <h2 tabindex="-1">Monte seu simulado</h2>
+            <p>Escolha a dificuldade e o tamanho da rodada. Cada resposta recebe correção, explicação e um link para revisar a aula de origem.</p>
           </header>
 
           <fieldset class="quiz-levels">
-            <legend>Nível da rodada</legend>
+            <legend>Dificuldade da rodada</legend>
             ${levelOptions}
           </fieldset>
 
+          <div class="quiz-count">
+            <label for="quiz-count">
+              <strong>Quantidade de questões</strong>
+              <span data-quiz-count-help>${availableCount} disponíveis nesta dificuldade.</span>
+            </label>
+            <div class="quiz-count__control">
+              <input id="quiz-count" name="quiz-count" type="number" min="1" max="${availableCount}" step="1" value="${this.selectedCount}" inputmode="numeric">
+              <span>questões</span>
+            </div>
+          </div>
+
           <div class="quiz-startbar">
             <div class="quiz-startbar__summary" aria-live="polite">
-              <strong data-quiz-start-level>${LEVELS[this.selectedLevel].label}</strong>
+              <strong data-quiz-start-level>${LEVELS[this.selectedLevel].label}, ${this.selectedCount} questões</strong>
               <span data-quiz-start-description>${LEVELS[this.selectedLevel].description}</span>
             </div>
             <button class="quiz-button quiz-button--primary" type="button" data-quiz-action="start">
-              Começar quiz <span aria-hidden="true">→</span>
+              Começar simulado <span aria-hidden="true">→</span>
             </button>
           </div>
         </div>`;
@@ -362,30 +476,58 @@
       });
 
       const selected = LEVELS[this.selectedLevel];
-      this.root.querySelector("[data-quiz-start-level]").textContent = selected.label;
+      const countInput = this.root.querySelector('[name="quiz-count"]');
+      const availableCount = this.getMaxQuestionCount();
+      countInput.max = availableCount;
+      countInput.value = this.selectedCount;
+      this.root.querySelector("[data-quiz-count-help]").textContent =
+        `${availableCount} disponíveis nesta dificuldade.`;
+      this.root.querySelector("[data-quiz-start-level]").textContent =
+        `${selected.label}, ${this.selectedCount} questões`;
       this.root.querySelector("[data-quiz-start-description]").textContent =
         selected.description;
+      this.root.querySelectorAll("[data-quiz-level-best]").forEach((label) => {
+        const level = label.dataset.quizLevelBest;
+        const levelCount = Math.min(
+          this.selectedCount,
+          Math.max(this.getMaxQuestionCount(level), 1)
+        );
+        label.textContent = this.getExamBestLabel(level, levelCount);
+      });
     }
 
     startGame() {
       const questionPool = this.isLessonQuiz
         ? this.lessonQuestions
-        : this.questions.filter(
-            (question) =>
-              question.scope !== "lesson-fixation" &&
-              question.difficulty === this.selectedLevel
-          );
+        : this.getExamQuestionPool();
       const sessionLength = this.isLessonQuiz
         ? questionPool.length
-        : GENERAL_SESSION_LENGTH;
-      this.sessionQuestions = shuffle(questionPool)
-        .slice(0, sessionLength)
-        .map(prepareQuestion);
+        : Math.min(this.selectedCount, questionPool.length);
+      const selectedQuestions = this.isLessonQuiz
+        ? shuffle(questionPool)
+        : this.buildExamSession(questionPool, sessionLength);
+
+      if (selectedQuestions.length === 0) {
+        this.root.innerHTML = `
+          <div class="quiz-error" role="alert">
+            <strong>Não há perguntas disponíveis para esta configuração.</strong>
+            <span>Volte à preparação e escolha outra dificuldade.</span>
+            <button class="quiz-button quiz-button--secondary" type="button" data-quiz-action="levels">
+              Voltar à configuração
+            </button>
+          </div>`;
+        return;
+      }
+
+      this.sessionQuestions = selectedQuestions.map(prepareQuestion);
       this.answers = [];
       this.currentIndex = 0;
       this.score = 0;
       this.hasAnswered = false;
-      if (!this.isLessonQuiz) this.progress.lastLevel = this.selectedLevel;
+      if (!this.isLessonQuiz) {
+        this.progress.lastLevel = this.selectedLevel;
+        this.progress.lastCount = sessionLength;
+      }
       saveProgress(this.progress);
       this.setSessionOpen(true);
       this.renderQuestion();
@@ -541,7 +683,7 @@
       const percentage = Math.round((this.score / total) * 100);
       const previousBest = this.isLessonQuiz
         ? this.progress.fixationBest?.[this.lessonPath] || 0
-        : this.progress.best?.[this.selectedLevel] || 0;
+        : this.getExamBest(this.selectedLevel, total) || 0;
       const best = Math.max(previousBest, this.score);
       if (this.isLessonQuiz) {
         this.progress.fixationBest = {
@@ -549,9 +691,9 @@
           [this.lessonPath]: best,
         };
       } else {
-        this.progress.best = {
-          ...this.progress.best,
-          [this.selectedLevel]: best,
+        this.progress.examBest = {
+          ...this.progress.examBest,
+          [getExamBestKey(this.selectedLevel, total)]: best,
         };
       }
       saveProgress(this.progress);
@@ -588,7 +730,7 @@
         : `<p class="quiz-result__perfect">Você acertou todas as perguntas desta rodada.</p>`;
       const context = this.isLessonQuiz
         ? `Quiz desta aula. Sua melhor marca é ${best}/${total}.`
-        : `Nível ${LEVELS[this.selectedLevel].label}. Seu melhor resultado neste nível é ${best}/${total}.`;
+        : `Nível ${LEVELS[this.selectedLevel].label}, com ${total} questões. Sua melhor marca nesta configuração é ${best}/${total}.`;
       const nextLessonPath = this.isLessonQuiz
         ? getNextLessonPath(this.lessonPath)
         : null;
@@ -607,7 +749,7 @@
             Refazer quiz
           </button>`
         : `<button class="quiz-button quiz-button--secondary" type="button" data-quiz-action="levels">
-            Trocar nível
+            Configurar rodada
           </button>`;
 
       this.root.innerHTML = `

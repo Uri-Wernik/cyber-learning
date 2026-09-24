@@ -22,6 +22,7 @@ hide:
 <div class="book-cover__actions" markdown>
 
 [Começar a leitura :material-arrow-right:](01-introduction-to-cloud-computing-for-hackers/01-teaser.md){ .md-button .md-button--primary }
+[Preparar para a prova](04-preparacao-para-prova/01-guia-de-estudo.md){ .md-button }
 
 </div>
 
@@ -39,7 +40,7 @@ hide:
 
 <div class="section-heading" markdown>
 
-## Três módulos para construir a base
+## Quatro módulos para construir a base
 
 Cada etapa introduz os conceitos necessários para a seguinte, sem presumir experiência anterior com redes, Linux ou nuvem.
 
@@ -67,14 +68,22 @@ Cada etapa introduz os conceitos necessários para a seguinte, sem presumir expe
             <strong>Phishing e infraestrutura web</strong>
             <span>Engenharia social, publicação HTTP e transferência SFTP em laboratório seguro.</span>
         </span>
-        <span class="module-row__meta">3 aulas</span>
+        <span class="module-row__meta">6 aulas</span>
+        <span class="module-row__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a class="module-row" href="04-preparacao-para-prova/01-guia-de-estudo/">
+        <span class="module-row__copy">
+            <strong>Preparação para a prova</strong>
+            <span>Revisão integrada dos conceitos, ferramentas e fluxos, seguida por um simulado configurável.</span>
+        </span>
+        <span class="module-row__meta">4 guias + simulado</span>
         <span class="module-row__arrow" aria-hidden="true">&rarr;</span>
     </a>
 </div>
 
 <section class="edition-note">
     <div>
-        <strong>12 aulas revisadas</strong>
+        <strong>15 aulas revisadas</strong>
     </div>
-    <p>Os capítulos seguintes permanecem como rascunhos até passarem por revisão técnica, ética e editorial.</p>
+    <p>A preparação para a prova cobre apenas os capítulos publicados. As aulas seguintes permanecem como rascunhos até passarem por revisão técnica, ética e editorial.</p>
 </section>

@@ -88,8 +88,9 @@
     if (!root) return;
 
     if (!loadPromise) {
-      loadPromise = loadScript("quiz-fixation-data.js?v=20260813-2")
-        .then(() => loadScript("quiz.js?v=20260813-2"));
+      loadPromise = loadScript("quiz-fixation-data.js?v=20260924")
+        .then(() => loadScript("quiz-exam-data.js?v=20260924"))
+        .then(() => loadScript("quiz.js?v=20260924"));
     }
 
     loadPromise.catch(showLoadError);
