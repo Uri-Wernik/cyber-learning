@@ -1,77 +1,67 @@
-# Conceitos e ferramentas das aulas 1 a 22
+# Siglas, conceitos e ferramentas do curso
 
-Resumo curto dos termos técnicos mais importantes do curso.
+Resumo das siglas e tecnologias estudadas nas aulas 1 a 22.
 
-## Conceitos
+## Siglas e conceitos
 
-| Conceito | Explicação simples |
-|---|---|
-| **Computação em nuvem** | Aluguel de processamento, armazenamento e rede pela Internet. Em vez de comprar um servidor, você cria e remove recursos quando precisa. |
-| **Máquina virtual** | Computador criado por software dentro de um servidor físico. Funciona como uma máquina separada, embora compartilhe o hardware. |
-| **Cliente e servidor** | O cliente faz um pedido e o servidor responde. É como uma pessoa pedindo uma refeição e a cozinha preparando o pedido. |
-| **Callback** | Conexão de retorno iniciada pela máquina remota. É como deixar seu número e receber a ligação de volta. |
-| **C2 (Command and Control)** | Em português, **Comando e Controle**. É a central usada para enviar comandos a agentes remotos e receber seus resultados. |
-| **IAM** | Gerenciamento de identidades e acessos da AWS. É como o setor que entrega crachás e decide quais portas cada crachá abre. |
-| **MFA** | Autenticação com dois ou mais fatores, como senha e código do celular. É como uma porta com duas fechaduras diferentes. |
-| **IP** | Endereço de uma máquina ou interface na rede. É parecido com o endereço de um prédio. |
-| **Porta** | Número que entrega a conexão ao programa correto. Se o IP é o prédio, a porta é o número da sala. |
-| <span id="dns"></span>**DNS** | Converte nomes em informações como endereços IP. Funciona como uma agenda que procura um nome e devolve o endereço. |
-| **Registro A** | Liga um nome a um endereço IPv4. |
-| **Registro AAAA** | Liga um nome a um endereço IPv6. |
-| **CNAME** | Faz um nome funcionar como apelido de outro nome. |
-| **TTL** | Tempo durante o qual uma resposta DNS pode permanecer guardada em cache. |
-| **HTTP** | Conjunto de regras para pedidos e respostas na Web. O cliente pede um recurso e o servidor responde. |
-| <span id="https"></span>**HTTPS** | HTTP com proteção TLS. É como colocar a conversa dentro de um envelope fechado. |
-| **TLS** | Tecnologia que cifra os dados, detecta alterações e verifica o certificado do servidor. |
-| **Certificado TLS** | Documento digital que liga um nome a uma chave pública. É a identidade apresentada pelo servidor. |
-| **Autenticação** | Confirma quem é o usuário. Responde à pergunta: "quem é você?". |
-| **Autorização** | Decide o que o usuário pode fazer. Responde à pergunta: "onde você pode entrar?". |
-| **Cookie** | Pequeno dado que um site pede para o navegador guardar e devolver depois. |
-| **Sessão** | Estado que mantém o usuário reconhecido após o login. |
-| <span id="token-de-sessao"></span>**Token de sessão** | Segredo que representa um login concluído. É como uma pulseira de acesso: enquanto for aceita, não é preciso repetir o login. |
-| **Proxy reverso** | Intermediário que recebe pedidos antes do servidor e os encaminha. É como uma recepção entre o visitante e o escritório. |
-| **AiTM** | Sigla de *Adversary-in-the-Middle*. O intermediário mantém uma conexão com cada lado e repassa as mensagens entre eles. |
-| **Phishlet** | Arquivo de regras que informa ao Evilginx quais hosts, caminhos e cookies pertencem a um fluxo. |
-| <span id="session-replay"></span>**Session replay** | Reutilização de um token válido em outro cliente. É como tentar entrar usando uma pulseira de acesso que ainda não expirou. |
+| Sigla ou termo | Nome completo | O que é |
+|---|---|---|
+| **AWS** | *Amazon Web Services* | Plataforma de nuvem da Amazon. Oferece máquinas virtuais, redes, discos e outros serviços. |
+| **IAM** | *Identity and Access Management* - Gestão de Identidade e Acesso | Serviço da AWS que controla usuários, funções e permissões. |
+| **EC2** | *Elastic Compute Cloud* | Serviço da AWS usado para criar e executar máquinas virtuais chamadas instâncias. |
+| **AMI** | *Amazon Machine Image* | Modelo com sistema e configurações iniciais usado para criar uma instância EC2. |
+| **EBS** | *Elastic Block Store* | Disco virtual persistente conectado a uma instância EC2. |
+| **VPC** | *Virtual Private Cloud* - Nuvem Privada Virtual | Rede virtual isolada onde ficam os recursos da AWS. |
+| **Security Group** | Grupo de segurança | Firewall virtual da AWS que libera ou bloqueia tráfego por protocolo, porta e origem. |
+| **2FA / MFA / TOTP** | Autenticação de dois fatores, autenticação multifator e senha temporária | 2FA usa dois fatores; MFA usa dois ou mais; TOTP é o código que muda após alguns segundos. |
+| **IP / IPv4 / IPv6** | *Internet Protocol* | IP identifica uma interface na rede; IPv4 e IPv6 são duas versões desse sistema de endereços. |
+| **TCP** | *Transmission Control Protocol* | Cria uma conexão confiável entre programas e usa portas para entregar os dados ao serviço correto. |
+| **CIDR** | *Classless Inter-Domain Routing* | Forma de representar um endereço ou intervalo de rede, como `192.0.2.0/24`. |
+| <span id="dns"></span>**DNS** | *Domain Name System* - Sistema de Nomes de Domínio | Procura registros de um nome e devolve informações como seu endereço IP. |
+| **A / AAAA / CNAME / TTL** | Registros e tempo de cache do DNS | `A` aponta para IPv4, `AAAA` para IPv6, `CNAME` cria um alias e `TTL` define o tempo de cache. |
+| **HTTP** | *Hypertext Transfer Protocol* - Protocolo de Transferência de Hipertexto | Define como clientes fazem requisições e servidores enviam respostas na Web. |
+| <span id="https"></span>**HTTPS** | *Hypertext Transfer Protocol Secure* | É o HTTP protegido por TLS. |
+| **TLS** | *Transport Layer Security* - Segurança da Camada de Transporte | Cifra os dados, detecta alterações e permite verificar o certificado do servidor. |
+| **CA** | *Certificate Authority* - Autoridade Certificadora | Organização que valida o controle de um nome e assina certificados TLS. |
+| **ACME** | *Automatic Certificate Management Environment* | Protocolo que automatiza a emissão e a renovação de certificados TLS. |
+| **SSH** | *Secure Shell* | Protocolo para acessar e controlar outra máquina por uma conexão criptografada. |
+| **HTML / CSS / JS / DOM** | Estrutura, estilo, comportamento e modelo da página | HTML organiza, CSS estiliza, JavaScript controla ações e o DOM representa a página na memória. |
+| **POST / PHP** | Método HTTP e linguagem de servidor | POST envia dados no corpo da requisição; PHP processa esses dados no servidor. |
+| **C2** | *Command and Control* - Comando e Controle | Central que envia comandos para agentes remotos e recebe os resultados. |
+| **AiTM** | *Adversary-in-the-Middle* - Adversário no Meio | Intermediário ativo que mantém uma conexão com cada lado e repassa as mensagens. |
+| <span id="token-de-sessao"></span>**Token de sessão** | Identificador secreto de uma sessão | Representa um login concluído e permite que o servidor reconheça o usuário nas próximas requisições. |
+| <span id="session-replay"></span>**Session replay** | Reutilização de sessão | Uso de um token válido em outro cliente para tentar continuar a sessão já autenticada. |
+| **WebAuthn / FIDO2 / Passkey** | Padrões de autenticação ligados ao domínio | Usam criptografia em vez de uma senha reutilizável e são mais resistentes a proxies de phishing. |
 
 ## SFTP, FTP e FTPS
 
-| Protocolo | Como funciona |
-|---|---|
-| **FTP** | Protocolo próprio para transferir arquivos. Não possui criptografia nativa. |
-| **FTPS** | É o FTP protegido com TLS. Mantém o funcionamento do FTP, mas cifra a comunicação. |
-| **SFTP** | Protocolo de arquivos que funciona dentro do SSH, normalmente na porta `22`. Apesar do nome, não é FTP com SSH. |
+| Sigla | Nome completo | O que é |
+|---|---|---|
+| **FTP** | *File Transfer Protocol* - Protocolo de Transferência de Arquivos | Transfere arquivos, mas não possui criptografia nativa. |
+| **FTPS** | *FTP over TLS* | É o FTP protegido por TLS. |
+| **SFTP** | *SSH File Transfer Protocol* | Transfere arquivos dentro do SSH, normalmente pela porta `22`. Não é FTP com SSH. |
 
 ## Ferramentas
 
-| Ferramenta | Para que serve |
+| Ferramenta | O que faz |
 |---|---|
-| **AWS Console** | Painel web usado para criar e administrar recursos da AWS. |
-| **EC2** | Serviço da AWS que executa máquinas virtuais chamadas instâncias. |
-| **AMI** | Modelo usado para criar uma instância EC2 com um sistema inicial. |
-| **EBS** | Disco virtual usado pelas instâncias EC2. |
-| **Security Group** | Porteiro da rede da AWS: permite ou bloqueia tráfego conforme protocolo, porta e origem. |
+| **AWS Console** | Painel usado para criar e administrar recursos da AWS. |
 | **Kali Linux** | Distribuição Linux que reúne ferramentas de redes e segurança. |
-| <span id="ssh"></span>**SSH / OpenSSH** | Permite controlar outro computador por um canal criptografado. É como um controle remoto dentro de um túnel protegido. |
-| **FileZilla** | Programa gráfico para enviar e baixar arquivos. No curso, ele usa SFTP para falar com o servidor. |
-| <span id="apache"></span>**Apache** | Servidor web. É como um garçom: recebe o pedido, busca a página ou chama o PHP e entrega a resposta. |
-| **PHP** | Linguagem executada no servidor para receber dados, aplicar regras e produzir respostas. |
-| **APT** | Gerenciador de pacotes que instala programas no Debian e no Kali. É como uma loja de aplicativos do terminal. |
-| **systemctl** | Inicia, para e consulta serviços do Linux. É como um painel de liga e desliga. |
-| **ss** | Mostra conexões e portas em escuta no Linux. |
-| **curl** | Envia requisições e mostra respostas, sendo útil para testar HTTP e HTTPS pelo terminal. |
-| **chown** | Altera o usuário e o grupo proprietários de um arquivo ou diretório. |
+| **OpenSSH** | Implementa o cliente `ssh`, o servidor `sshd` e o SFTP. |
+| <span id="apache"></span>**Apache** | Servidor web que recebe requisições HTTP/HTTPS e entrega arquivos ou conteúdo processado. |
+| **FileZilla** | Cliente gráfico usado para enviar e baixar arquivos; no curso, utiliza SFTP. |
+| **APT / systemctl** | APT instala pacotes; `systemctl` inicia, para e consulta serviços do Linux. |
+| **ss / curl** | `ss` mostra portas em escuta; `curl` envia requisições e mostra respostas HTTP/HTTPS. |
+| **chown** | Altera o usuário e o grupo proprietários de arquivos e diretórios. |
 | **dig / Resolve-DnsName** | Consultam registros DNS no Linux e no Windows. |
 | **Let's Encrypt** | Autoridade certificadora que emite certificados TLS automaticamente. |
-| **ACME** | Protocolo que organiza a emissão e a renovação automática de certificados. |
-| <span id="certbot"></span>**Certbot** | Usa ACME para pedir certificados e pode configurar o Apache. É como um assistente que cuida da papelada do HTTPS. |
-| **Git** | Baixa código e controla suas versões. |
-| **Go** | Linguagem usada para desenvolver as versões atuais do Evilginx. |
-| **Make** | Executa as etapas de compilação definidas por um projeto. |
-| <span id="evilginx"></span>**Evilginx** | Framework de proxy reverso AiTM. Ele encaminha um login em tempo real e pode observar credenciais e o token criado após o MFA. |
+| <span id="certbot"></span>**Certbot** | Cliente ACME que solicita certificados e pode configurar o Apache. |
+| **Git / Go / Make** | Git baixa o código, Go é a linguagem do Evilginx e Make executa as etapas de compilação. |
+| <span id="evilginx"></span>**Evilginx** | Framework de proxy reverso AiTM que intermedeia logins e pode observar o token emitido após o MFA. |
+| **Phishlet** | Arquivo de configuração do Evilginx que descreve hosts, caminhos e cookies de um fluxo. |
 
-## Evilginx em resumo
+## Evilginx e MFA
 
-O Evilginx fica entre o cliente e a aplicação, mantendo uma conexão com cada lado. Ele não quebra o MFA: encaminha o login verdadeiro e pode observar o token de sessão emitido **depois** que o MFA foi aceito.
+O Evilginx não quebra o MFA. Ele encaminha o login verdadeiro em tempo real e pode observar o token de sessão criado **depois** que o segundo fator foi aceito.
 
 [Abrir o simulado das 22 aulas :material-arrow-right:](../quiz.md){ .md-button .md-button--primary }
