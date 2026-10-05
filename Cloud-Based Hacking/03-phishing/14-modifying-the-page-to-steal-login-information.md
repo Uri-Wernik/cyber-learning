@@ -1,6 +1,6 @@
 # Entendendo e controlando o envio de um formulário
 
-> **Status:** capítulo em revisão editorial.
+> **Status:** publicado.
 >
 > **Título original:** Modifying The Page to Steal Login Information
 >

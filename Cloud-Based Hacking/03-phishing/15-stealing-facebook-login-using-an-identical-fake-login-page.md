@@ -1,6 +1,6 @@
 # Arquivos, permissões e redirecionamento em PHP
 
-> **Status:** capítulo em revisão editorial.
+> **Status:** publicado.
 >
 > **Título original:** Stealing Facebook Login Using an Identical Fake Login Page
 >

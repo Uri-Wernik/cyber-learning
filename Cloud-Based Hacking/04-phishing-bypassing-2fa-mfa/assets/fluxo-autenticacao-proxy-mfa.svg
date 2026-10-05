@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Fluxo de autenticação intermediada por proxy com MFA</title>
+  <desc id="desc">Infográfico em estilo cartoon mostrando um navegador de laboratório, o proxy Evilginx e uma aplicação controlada. Duas conexões HTTPS transportam credenciais sintéticas, desafio MFA e a resposta autenticada. A aplicação valida os fatores e emite o token de sessão, que pode ser observado pelo proxy.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef7ff"/>
+      <stop offset="1" stop-color="#fff8e8"/>
+    </linearGradient>
+    <linearGradient id="proxyBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9f68"/>
+      <stop offset="1" stop-color="#f27449"/>
+    </linearGradient>
+    <linearGradient id="appBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#77d6b1"/>
+      <stop offset="1" stop-color="#40ae89"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#17324d" flood-opacity=".16"/>
+    </filter>
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0 12 6 0 12Z" fill="#2878b8"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0 12 6 0 12Z" fill="#7655b5"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0 12 6 0 12Z" fill="#218c70"/>
+    </marker>
+    <style>
+      .ink { fill: #17324d; }
+      .outline { stroke: #17324d; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .label { font-family: "Segoe UI", Arial, sans-serif; fill: #17324d; }
+      .small { font-size: 24px; }
+      .medium { font-size: 29px; font-weight: 650; }
+      .heading { font-size: 38px; font-weight: 750; }
+      .step { font-size: 24px; font-weight: 750; fill: #fff; text-anchor: middle; dominant-baseline: middle; }
+      .flow { fill: none; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" rx="36" fill="url(#background)"/>
+  <circle cx="120" cy="110" r="70" fill="#dceeff"/>
+  <circle cx="1480" cy="120" r="82" fill="#fff0c8"/>
+  <path d="M70 825c105-42 173-25 255 20s164 50 259 7 177-40 267 10 180 46 291 0 220-42 388 5v133H70Z" fill="#dcefe8" opacity=".8"/>
+
+  <text x="800" y="75" text-anchor="middle" class="label" font-size="46" font-weight="800">Como o proxy intermedeia uma autenticação com MFA</text>
+  <text x="800" y="116" text-anchor="middle" class="label small">Visão conceitual de um laboratório autorizado com dados sintéticos</text>
+
+  <!-- Zone headers -->
+  <rect x="70" y="150" width="410" height="56" rx="28" fill="#2878b8"/>
+  <text x="275" y="187" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="750" fill="#fff">PARTICIPANTE AUTORIZADO</text>
+  <rect x="595" y="150" width="410" height="56" rx="28" fill="#e57247"/>
+  <text x="800" y="187" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="750" fill="#fff">PROXY DO LABORATÓRIO</text>
+  <rect x="1120" y="150" width="410" height="56" rx="28" fill="#218c70"/>
+  <text x="1325" y="187" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="26" font-weight="750" fill="#fff">APLICAÇÃO CONTROLADA</text>
+
+  <!-- User and browser -->
+  <g filter="url(#shadow)">
+    <rect x="85" y="245" width="380" height="345" rx="32" fill="#fff" class="outline"/>
+  </g>
+  <rect x="85" y="245" width="380" height="60" rx="32" fill="#cfe8fb"/>
+  <path d="M85 305h380" class="outline" fill="none"/>
+  <circle cx="123" cy="275" r="9" fill="#ef6b62"/>
+  <circle cx="153" cy="275" r="9" fill="#f4be4f"/>
+  <circle cx="183" cy="275" r="9" fill="#55b98a"/>
+  <rect x="220" y="262" width="215" height="26" rx="13" fill="#fff" stroke="#7ba9c9" stroke-width="3"/>
+  <path d="M241 274v-8a9 9 0 0 1 18 0v8m-21 0h24v17h-24Z" fill="#2878b8" transform="scale(.72) translate(83 101)"/>
+  <text x="345" y="282" text-anchor="middle" class="label" font-size="17">&lt;DOMINIO-DO-LAB&gt;</text>
+
+  <!-- Cartoon person -->
+  <circle cx="205" cy="385" r="55" fill="#f3c8a7" class="outline"/>
+  <path d="M157 368c5-47 24-66 55-66 29 0 52 26 52 65-26-19-55-27-107 1Z" fill="#5a3f7c" class="outline"/>
+  <circle cx="186" cy="388" r="5" class="ink"/>
+  <circle cx="226" cy="388" r="5" class="ink"/>
+  <path d="M190 414q17 14 34 0" fill="none" class="outline" stroke-width="4"/>
+  <path d="M126 547c9-70 33-104 79-104 48 0 75 35 83 104Z" fill="#5fa8dc" class="outline"/>
+  <rect x="280" y="348" width="140" height="168" rx="16" fill="#edf5fb" class="outline"/>
+  <path d="M310 395h80M310 430h80M310 465h55" stroke="#82abc8" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="389" cy="480" r="14" fill="#55b98a"/>
+  <text x="275" y="568" text-anchor="middle" class="label medium">Navegador</text>
+
+  <!-- Proxy cartoon -->
+  <g filter="url(#shadow)">
+    <rect x="625" y="250" width="350" height="335" rx="48" fill="url(#proxyBody)" class="outline"/>
+  </g>
+  <path d="M690 250v-36M910 250v-36" class="outline" fill="none"/>
+  <circle cx="690" cy="211" r="13" fill="#ffd66b" class="outline"/>
+  <circle cx="910" cy="211" r="13" fill="#ffd66b" class="outline"/>
+  <rect x="674" y="307" width="252" height="115" rx="24" fill="#fff4e9" class="outline"/>
+  <circle cx="740" cy="361" r="16" class="ink"/>
+  <circle cx="860" cy="361" r="16" class="ink"/>
+  <path d="M758 389q42 30 84 0" fill="none" class="outline"/>
+  <rect x="691" y="456" width="218" height="78" rx="18" fill="#fff" class="outline"/>
+  <path d="M729 476v-10a20 20 0 0 1 40 0v10" fill="none" class="outline"/>
+  <rect x="719" y="476" width="60" height="42" rx="8" fill="#ffd66b" class="outline"/>
+  <path d="M816 478h58M816 507h42" stroke="#e57247" stroke-width="10" stroke-linecap="round"/>
+  <text x="800" y="570" text-anchor="middle" class="label heading">Evilginx</text>
+
+  <!-- Controlled app cartoon -->
+  <g filter="url(#shadow)">
+    <rect x="1140" y="245" width="370" height="345" rx="34" fill="#fff" class="outline"/>
+  </g>
+  <rect x="1185" y="300" width="280" height="210" rx="30" fill="url(#appBody)" class="outline"/>
+  <path d="M1222 342h206M1222 385h206M1222 428h206M1222 471h206" stroke="#c9f3e2" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="1245" cy="342" r="8" fill="#17324d"/>
+  <circle cx="1245" cy="385" r="8" fill="#17324d"/>
+  <circle cx="1245" cy="428" r="8" fill="#17324d"/>
+  <circle cx="1245" cy="471" r="8" fill="#17324d"/>
+  <path d="M1354 330v-25a48 48 0 0 0-96 0v25" fill="none" stroke="#17324d" stroke-width="14" stroke-linecap="round"/>
+  <rect x="1242" y="326" width="128" height="112" rx="22" fill="#ffd66b" class="outline"/>
+  <circle cx="1306" cy="366" r="15" class="ink"/>
+  <path d="M1306 380v25" class="outline"/>
+  <text x="1325" y="555" text-anchor="middle" class="label medium">Servidor da aplicação</text>
+
+  <!-- HTTPS arrows -->
+  <path d="M475 330C520 285 555 285 610 330" class="flow" stroke="#2878b8" marker-end="url(#arrowBlue)"/>
+  <circle cx="545" cy="279" r="23" fill="#2878b8"/>
+  <text x="545" y="280" class="step">1</text>
+  <rect x="492" y="342" width="112" height="38" rx="19" fill="#fff" stroke="#2878b8" stroke-width="3"/>
+  <text x="548" y="369" text-anchor="middle" class="label small" fill="#2878b8">HTTPS</text>
+
+  <path d="M988 330C1035 285 1070 285 1125 330" class="flow" stroke="#218c70" marker-end="url(#arrowGreen)"/>
+  <circle cx="1057" cy="279" r="23" fill="#218c70"/>
+  <text x="1057" y="280" class="step">2</text>
+  <rect x="1005" y="342" width="112" height="38" rx="19" fill="#fff" stroke="#218c70" stroke-width="3"/>
+  <text x="1061" y="369" text-anchor="middle" class="label small" fill="#218c70">HTTPS</text>
+
+  <!-- Flow rail -->
+  <rect x="85" y="635" width="1430" height="250" rx="34" fill="#fff" stroke="#bed2df" stroke-width="4" filter="url(#shadow)"/>
+  <text x="125" y="681" class="label medium">O que atravessa o proxy em tempo real</text>
+
+  <path d="M180 738H1375" class="flow" stroke="#7655b5" marker-end="url(#arrowPurple)"/>
+  <circle cx="215" cy="738" r="27" fill="#7655b5"/>
+  <text x="215" y="739" class="step">3</text>
+  <rect x="255" y="701" width="240" height="74" rx="18" fill="#f2edff" stroke="#7655b5" stroke-width="3"/>
+  <text x="375" y="731" text-anchor="middle" class="label medium">Usuário + senha</text>
+  <text x="375" y="760" text-anchor="middle" class="label small">dados sintéticos</text>
+
+  <circle cx="553" cy="738" r="27" fill="#7655b5"/>
+  <text x="553" y="739" class="step">4</text>
+  <rect x="593" y="701" width="210" height="74" rx="18" fill="#f2edff" stroke="#7655b5" stroke-width="3"/>
+  <text x="698" y="731" text-anchor="middle" class="label medium">Desafio MFA</text>
+  <text x="698" y="760" text-anchor="middle" class="label small">pedido pelo app</text>
+
+  <circle cx="862" cy="738" r="27" fill="#7655b5"/>
+  <text x="862" y="739" class="step">5</text>
+  <rect x="902" y="701" width="220" height="74" rx="18" fill="#f2edff" stroke="#7655b5" stroke-width="3"/>
+  <text x="1012" y="731" text-anchor="middle" class="label medium">Resposta MFA</text>
+  <text x="1012" y="760" text-anchor="middle" class="label small">em tempo real</text>
+
+  <circle cx="1181" cy="738" r="27" fill="#218c70"/>
+  <text x="1181" y="739" class="step">6</text>
+  <rect x="1221" y="690" width="245" height="96" rx="18" fill="#e7f8f1" stroke="#218c70" stroke-width="3"/>
+  <text x="1343" y="722" text-anchor="middle" class="label medium">Aplicação valida</text>
+  <text x="1343" y="752" text-anchor="middle" class="label small">e emite o token</text>
+  <text x="1343" y="777" text-anchor="middle" class="label" font-size="20">de sessão</text>
+
+  <!-- Session return -->
+  <path d="M1325 822C1110 900 530 900 280 822" class="flow" stroke="#2878b8" marker-end="url(#arrowBlue)"/>
+  <circle cx="800" cy="887" r="27" fill="#2878b8"/>
+  <text x="800" y="888" class="step">7</text>
+  <rect x="555" y="907" width="490" height="58" rx="29" fill="#dceeff" stroke="#2878b8" stroke-width="3"/>
+  <text x="800" y="943" text-anchor="middle" class="label medium">Resposta autenticada retorna ao navegador</text>
+
+  <!-- Token observation callout -->
+  <path d="M800 585v43" stroke="#e57247" stroke-width="5" stroke-dasharray="10 10"/>
+  <rect x="588" y="605" width="424" height="54" rx="27" fill="#fff4e9" stroke="#e57247" stroke-width="3"/>
+  <text x="800" y="640" text-anchor="middle" class="label small">O proxy pode observar o token reconhecido</text>
+
+  <!-- Footer warning -->
+  <rect x="111" y="915" width="365" height="48" rx="24" fill="#fff7d8" stroke="#c49428" stroke-width="3"/>
+  <text x="293" y="947" text-anchor="middle" class="label" font-size="21" font-weight="700">⚠ Somente em ambiente autorizado</text>
+</svg>

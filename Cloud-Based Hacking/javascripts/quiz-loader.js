@@ -17,6 +17,13 @@
     "03-phishing/13-creating-a-fake-login-page-on-the-cloud/",
     "03-phishing/14-modifying-the-page-to-steal-login-information/",
     "03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page/",
+    "03-phishing/16-domain-name-and-dns-basics/",
+    "03-phishing/17-linking-domain-names-to-phishing-pages/",
+    "03-phishing/18-introduction-to-https/",
+    "03-phishing/19-enabling-https-on-phishing-pages/",
+    "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
+    "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
+    "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
   ]);
   let loadPromise;
 
@@ -88,9 +95,9 @@
     if (!root) return;
 
     if (!loadPromise) {
-      loadPromise = loadScript("quiz-fixation-data.js?v=20260924-2")
+      loadPromise = loadScript("quiz-fixation-data.js?v=20261005-2")
         .then(() => loadScript("quiz-exam-data.js?v=20260924-4"))
-        .then(() => loadScript("quiz.js?v=20260924-2"));
+        .then(() => loadScript("quiz.js?v=20261005-2"));
     }
 
     loadPromise.catch(showLoadError);

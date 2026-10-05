@@ -1,6 +1,6 @@
 # Publicando uma página de laboratório no Apache
 
-> **Status:** capítulo em revisão editorial.
+> **Status:** publicado.
 >
 > **Título original:** Creating a Fake Login Page on The Cloud
 >

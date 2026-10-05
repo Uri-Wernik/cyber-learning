@@ -8,7 +8,7 @@ A publicação será disponibilizada em:
 
 <https://uri-wernik.github.io/cyber-learning/>
 
-A primeira edição reúne as aulas 1 a 12. Os capítulos seguintes permanecem como rascunhos até passarem por revisão técnica, ética e editorial.
+A primeira edição reúne as aulas 1 a 22 e uma seção de preparação para a prova. Os capítulos seguintes permanecem como rascunhos até passarem por revisão técnica, ética e editorial.
 
 ## Executando localmente
 

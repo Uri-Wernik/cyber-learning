@@ -2812,6 +2812,798 @@ window.CYBER_QUIZ_QUESTIONS.push(
     ],
     "correct": 0,
     "explanation": "Uma senha usada no laboratório deve ser tratada como exposta. A evidência pública precisa ser omitida ou sanitizada, as cópias removidas, a senha alterada e sessões existentes encerradas."
+  },
+  {
+    "id": "fix-16-01",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "easy",
+    "topic": "IP, domínio e URL",
+    "lesson": "Aula 16: Do nome de domínio ao endereço IP",
+    "source": "03-phishing/16-domain-name-and-dns-basics/",
+    "question": "Qual alternativa diferencia corretamente endereço IP, domínio e URL?",
+    "choices": [
+      "IP identifica uma interface; domínio é um nome no DNS; URL também informa como e qual recurso acessar",
+      "IP identifica o conteúdo entregue; domínio define a porta do processo; URL existe somente com certificado TLS válido",
+      "IP e domínio são o mesmo identificador; URL apenas acrescenta uma extensão de arquivo",
+      "Domínio identifica uma interface física; IP é um nome hierárquico; URL substitui os dois"
+    ],
+    "correct": 0,
+    "explanation": "O IP identifica uma interface na rede, o domínio é um nome hierárquico administrado no DNS e a URL pode reunir esquema, host, porta e caminho do recurso."
+  },
+  {
+    "id": "fix-16-02",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "medium",
+    "topic": "Resolução recursiva",
+    "lesson": "Aula 16: Do nome de domínio ao endereço IP",
+    "source": "03-phishing/16-domain-name-and-dns-basics/",
+    "question": "Quando a resposta não está em cache, como o resolvedor recursivo encontra o endereço de um nome?",
+    "choices": [
+      "Ele solicita ao servidor web que publique um endereço temporário e o armazena como registro local",
+      "Ele percorre raiz e TLD até localizar o servidor autoritativo que responde pela zona",
+      "Ele abre uma conexão TCP na porta 443 e extrai o endereço do certificado apresentado",
+      "Ele consulta somente o registrador e recebe diretamente a página associada ao domínio"
+    ],
+    "correct": 1,
+    "explanation": "O resolvedor segue a hierarquia: raiz, servidores do TLD e servidor autoritativo. O DNS devolve dados de endereço; não transporta a página web."
+  },
+  {
+    "id": "fix-16-03",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "medium",
+    "topic": "Registros e TTL",
+    "lesson": "Aula 16: Do nome de domínio ao endereço IP",
+    "source": "03-phishing/16-domain-name-and-dns-basics/",
+    "question": "Por que uma alteração DNS pode aparecer em momentos diferentes para clientes distintos?",
+    "choices": [
+      "Porque o registro A precisa ser convertido em CNAME por cada navegador antes de ser usado",
+      "Porque o servidor web escolhe aleatoriamente qual endereço devolver a cada nova requisição",
+      "Porque caches podem conservar respostas anteriores até seus respectivos TTLs expirarem",
+      "Porque o protocolo DNS só aceita uma atualização mundial completa por dia"
+    ],
+    "correct": 2,
+    "explanation": "O TTL informa por quanto tempo uma resposta pode ficar em cache. Resolvedores com tempos de expiração diferentes podem usar respostas antigas durante períodos diferentes."
+  },
+  {
+    "id": "fix-16-04",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "hard",
+    "topic": "DNS e hospedagem virtual",
+    "lesson": "Aula 16: Do nome de domínio ao endereço IP",
+    "source": "03-phishing/16-domain-name-and-dns-basics/",
+    "question": "Por que resolver um domínio para o IP correto não garante que a página esperada aparecerá?",
+    "choices": [
+      "Porque o DNS precisa cifrar o HTML antes de entregar o endereço ao navegador",
+      "Porque todo endereço IP público pode hospedar somente um nome de domínio por vez",
+      "Porque o TTL impede o servidor de reconhecer o cabeçalho Host durante a primeira visita",
+      "Porque serviço, porta, firewalls e configuração do host no servidor ainda precisam estar corretos"
+    ],
+    "correct": 3,
+    "explanation": "DNS apenas localiza um endereço. O cliente ainda precisa alcançar a porta, encontrar o processo em execução e informar o host para que o servidor selecione a configuração correta."
+  },
+  {
+    "id": "fix-16-05",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "medium",
+    "topic": "Registro e publicação",
+    "lesson": "Aula 16: Do nome de domínio ao endereço IP",
+    "source": "03-phishing/16-domain-name-and-dns-basics/",
+    "question": "O que o pagamento do registro de um domínio ainda não realiza?",
+    "choices": [
+      "Não publica DNS nem configura o servidor que receberá conexões",
+      "Não concede ao registrante nenhum direito temporário de usar o nome durante a vigência",
+      "Não permite que o nome seja renovado segundo as condições comerciais do registrador",
+      "Não cria uma entrada na base administrativa correspondente ao TLD escolhido"
+    ],
+    "correct": 0,
+    "explanation": "Registrar concede o direito de uso do nome, mas o proprietário ainda precisa publicar os registros DNS e preparar o serviço que responderá naquele endereço."
+  },
+  {
+    "id": "fix-16-06",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "hard",
+    "topic": "Indicadores do navegador",
+    "lesson": "Aula 16: Do nome de domínio ao endereço IP",
+    "source": "03-phishing/16-domain-name-and-dns-basics/",
+    "question": "Qual interpretação separa corretamente HTTPS de um alerta de site enganoso?",
+    "choices": [
+      "HTTPS confirma a honestidade do conteúdo; o alerta apenas informa que o domínio é recente",
+      "HTTPS protege o transporte para o domínio; o alerta pode resultar de reputação ou conteúdo perigoso",
+      "HTTPS e o alerta medem a mesma propriedade, mas usam ícones diferentes conforme o navegador",
+      "O alerta aparece somente por falta de TLS e desaparece legitimamente ao instalar um certificado"
+    ],
+    "correct": 1,
+    "explanation": "TLS protege a comunicação com o host apresentado. Mecanismos de navegação segura avaliam outros sinais; um certificado válido não transforma conteúdo enganoso em legítimo."
+  },
+  {
+    "id": "fix-17-01",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "easy",
+    "topic": "Registro A",
+    "lesson": "Aula 17: Publicando registros DNS para o laboratório",
+    "source": "03-phishing/17-linking-domain-names-to-phishing-pages/",
+    "question": "O que um registro A publicado para o domínio do laboratório faz?",
+    "choices": [
+      "Produz uma resposta HTTP 302 que envia o navegador para outro endereço",
+      "Inicia o Apache e abre a porta 80 no firewall da instância",
+      "Associa o nome consultado a um endereço IPv4 informado na zona DNS",
+      "Emite um certificado TLS válido para todos os subdomínios existentes"
+    ],
+    "correct": 2,
+    "explanation": "Um registro A fornece um endereço IPv4 para um nome. Redirecionamento HTTP, processo web, firewall e certificado pertencem a outras camadas."
+  },
+  {
+    "id": "fix-17-02",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "medium",
+    "topic": "CNAME",
+    "lesson": "Aula 17: Publicando registros DNS para o laboratório",
+    "source": "03-phishing/17-linking-domain-names-to-phishing-pages/",
+    "question": "Qual valor deve ser usado como destino de um registro CNAME tradicional?",
+    "choices": [
+      "Uma porta TCP na qual o servidor web esteja escutando",
+      "Um nome canônico, não um endereço IPv4",
+      "O caminho HTTP que deverá aparecer depois do domínio",
+      "A chave pública contida no certificado do servidor"
+    ],
+    "correct": 1,
+    "explanation": "CNAME declara que um nome é alias de outro nome. O resolvedor segue o alvo canônico e então procura os registros de endereço correspondentes."
+  },
+  {
+    "id": "fix-17-03",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "hard",
+    "topic": "Cache DNS",
+    "lesson": "Aula 17: Publicando registros DNS para o laboratório",
+    "source": "03-phishing/17-linking-domain-names-to-phishing-pages/",
+    "question": "Por que um nome recém-criado pode continuar retornando NXDOMAIN em alguns resolvedores?",
+    "choices": [
+      "Porque o cache negativo pode preservar temporariamente a resposta anterior de que o nome não existia",
+      "Porque NXDOMAIN significa que o Apache recusou a conexão HTTP antes de responder ao resolvedor DNS com os dados completos da página",
+      "Porque um registro A precisa ser acompanhado de um redirecionamento HTTP para deixar de ser negativo",
+      "Porque resolvedores públicos não aceitam nomes criados no mesmo dia do registro do domínio"
+    ],
+    "correct": 0,
+    "explanation": "Além de respostas positivas, a inexistência de um nome pode ser armazenada em cache. Esse cache negativo precisa expirar antes de alguns resolvedores consultarem novamente."
+  },
+  {
+    "id": "fix-17-04",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "medium",
+    "topic": "Verificação DNS",
+    "lesson": "Aula 17: Publicando registros DNS para o laboratório",
+    "source": "03-phishing/17-linking-domain-names-to-phishing-pages/",
+    "question": "O que receber o IPv4 esperado em `Resolve-DnsName` ou `dig` comprova?",
+    "choices": [
+      "Que o certificado TLS foi aceito e cobre todos os nomes da zona",
+      "Que a página correta foi servida pelo VirtualHost configurado no Apache",
+      "Que o Security Group permite HTTP e HTTPS para qualquer origem",
+      "Que a resolução consultada devolveu aquele endereço, não que o serviço web esteja acessível"
+    ],
+    "correct": 3,
+    "explanation": "A consulta comprova a camada DNS naquele caminho. Serviço iniciado, porta liberada e conteúdo correto precisam de verificações próprias."
+  },
+  {
+    "id": "fix-17-05",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "medium",
+    "topic": "Teste HTTP",
+    "lesson": "Aula 17: Publicando registros DNS para o laboratório",
+    "source": "03-phishing/17-linking-domain-names-to-phishing-pages/",
+    "question": "O que `curl --head http://<DOMINIO-DO-LAB>` acrescenta à verificação de DNS?",
+    "choices": [
+      "Pede cabeçalhos HTTP e verifica se um servidor responde pelo caminho",
+      "Publica o registro A caso o domínio ainda não esteja presente na zona",
+      "Substitui o certificado do servidor por uma cadeia temporária confiável",
+      "Garante que o conteúdo recebido é legítimo e não contém comportamento perigoso"
+    ],
+    "correct": 0,
+    "explanation": "`curl --head` usa a resolução, conecta-se ao serviço HTTP e pede cabeçalhos. A resposta não garante HTTPS, conteúdo correto ou legitimidade."
+  },
+  {
+    "id": "fix-17-06",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "hard",
+    "topic": "Encerramento DNS",
+    "lesson": "Aula 17: Publicando registros DNS para o laboratório",
+    "source": "03-phishing/17-linking-domain-names-to-phishing-pages/",
+    "question": "Por que registros apontando para uma instância encerrada devem ser removidos?",
+    "choices": [
+      "Porque todo registro antigo bloqueia permanentemente a renovação do domínio principal",
+      "Porque o endereço pode ser reutilizado e passar a conduzir o nome para um sistema de outro responsável",
+      "Porque o DNS autoritativo deixa de responder para todos os outros nomes da zona",
+      "Porque registros inativos transformam automaticamente o domínio principal em um CNAME"
+    ],
+    "correct": 1,
+    "explanation": "Provedores podem reutilizar endereços públicos. Um apontamento esquecido pode mais tarde direcionar visitantes a uma máquina que já não pertence ao laboratório."
+  },
+  {
+    "id": "fix-18-01",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "easy",
+    "topic": "Propriedades do TLS",
+    "lesson": "Aula 18: O que o HTTPS protege",
+    "source": "03-phishing/18-introduction-to-https/",
+    "question": "Quais propriedades o TLS acrescenta ao transporte HTTP?",
+    "choices": [
+      "Anonimato do servidor, remoção de malware e autorização automática do usuário",
+      "Resolução DNS, roteamento IP e abertura automática da porta 443",
+      "Confidencialidade, integridade e autenticação do servidor apresentado",
+      "Validação do conteúdo, reputação do domínio e segurança do código da aplicação"
+    ],
+    "correct": 2,
+    "explanation": "TLS cifra o conteúdo em trânsito, detecta alterações e permite autenticar o servidor para o nome solicitado. Ele não avalia a honestidade da aplicação."
+  },
+  {
+    "id": "fix-18-02",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "medium",
+    "topic": "Handshake TLS",
+    "lesson": "Aula 18: O que o HTTPS protege",
+    "source": "03-phishing/18-introduction-to-https/",
+    "question": "O que acontece antes da primeira requisição HTTP protegida por TLS?",
+    "choices": [
+      "Negociam parâmetros, validam a identidade e derivam chaves de sessão",
+      "O navegador envia a senha em HTTP para solicitar uma chave pública ao servidor",
+      "O servidor consulta o registrador para descobrir se o conteúdo da página é legítimo",
+      "O Security Group cria uma chave privada diferente para cada pacote recebido"
+    ],
+    "correct": 0,
+    "explanation": "Depois da conexão de transporte, o handshake negocia parâmetros, apresenta e valida certificados e estabelece segredos dos quais derivam as chaves da sessão."
+  },
+  {
+    "id": "fix-18-03",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "medium",
+    "topic": "Certificado e chave privada",
+    "lesson": "Aula 18: O que o HTTPS protege",
+    "source": "03-phishing/18-introduction-to-https/",
+    "question": "Qual diferença entre certificado e chave privada está correta?",
+    "choices": [
+      "O certificado deve permanecer secreto; a chave privada é enviada a todos os navegadores",
+      "O certificado liga nomes à chave pública; a chave privada fica no servidor",
+      "O certificado abre a porta 443; a chave privada configura o registro A no DNS",
+      "O certificado cifra sozinho todo o tráfego; a chave privada serve apenas para renovação"
+    ],
+    "correct": 1,
+    "explanation": "O navegador recebe o certificado com nomes e chave pública. O servidor protege a chave privada usada para provar posse da identidade criptográfica."
+  },
+  {
+    "id": "fix-18-04",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "hard",
+    "topic": "CA, ACME e Certbot",
+    "lesson": "Aula 18: O que o HTTPS protege",
+    "source": "03-phishing/18-introduction-to-https/",
+    "question": "Como Let's Encrypt, ACME e Certbot se relacionam?",
+    "choices": [
+      "Let's Encrypt é o plugin do Apache, ACME é a chave privada e Certbot é o certificado",
+      "Let's Encrypt resolve DNS, ACME abre portas e Certbot avalia a reputação do domínio",
+      "Os três nomes representam versões diferentes do mesmo servidor web",
+      "Let's Encrypt é a CA, ACME é o protocolo de automação e Certbot é um cliente"
+    ],
+    "correct": 3,
+    "explanation": "A autoridade certificadora emite o certificado; ACME define a automação da validação e emissão; Certbot implementa esse protocolo como cliente."
+  },
+  {
+    "id": "fix-18-05",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "medium",
+    "topic": "Limites do HTTPS",
+    "lesson": "Aula 18: O que o HTTPS protege",
+    "source": "03-phishing/18-introduction-to-https/",
+    "question": "Por que um domínio fraudulento pode apresentar um certificado TLS válido?",
+    "choices": [
+      "Porque a validação pode comprovar controle técnico do domínio sem confirmar a honestidade do conteúdo",
+      "Porque autoridades certificadoras ignoram completamente o nome solicitado no certificado",
+      "Porque certificados válidos são emitidos somente depois que o navegador aprova a aparência da página",
+      "Porque TLS protege apenas domínios conhecidos e desativa suas verificações para os demais"
+    ],
+    "correct": 0,
+    "explanation": "A emissão demonstra controle sobre o domínio solicitado. Ela não comprova que o texto, a marca aparente ou a finalidade da página sejam legítimos."
+  },
+  {
+    "id": "fix-18-06",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "hard",
+    "topic": "Pré-condições de emissão",
+    "lesson": "Aula 18: O que o HTTPS protege",
+    "source": "03-phishing/18-introduction-to-https/",
+    "question": "Por que um site abrir localmente não garante que a autoridade certificadora conseguirá validá-lo?",
+    "choices": [
+      "Porque a autoridade exige que a página utilize exclusivamente endereços IPv6 privados",
+      "Porque DNS público, rota, porta e resposta ao desafio precisam funcionar a partir da Internet",
+      "Porque o navegador local precisa permanecer aberto durante toda a validade do certificado",
+      "Porque certificados públicos só podem ser emitidos para servidores instalados fora da nuvem"
+    ],
+    "correct": 1,
+    "explanation": "A autoridade realiza sua própria validação pública. Uma conexão local pode funcionar mesmo quando DNS, firewall ou roteamento impedem que os validadores alcancem o desafio."
+  },
+  {
+    "id": "fix-19-01",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "medium",
+    "topic": "Desafio HTTP-01",
+    "lesson": "Aula 19: Emitindo e instalando um certificado com Certbot",
+    "source": "03-phishing/19-enabling-https-on-phishing-pages/",
+    "question": "Por que a porta TCP 80 precisa estar acessível no desafio HTTP-01 descrito na aula?",
+    "choices": [
+      "Porque a autoridade busca por HTTP o token que valida o domínio",
+      "Porque o certificado final transporta todo o tráfego HTTPS pela porta 80",
+      "Porque o Certbot usa essa porta para atualizar os pacotes instalados pelo APT",
+      "Porque a chave privada só pode ser criada depois que o navegador abre uma página HTTP"
+    ],
+    "correct": 0,
+    "explanation": "No HTTP-01, o cliente disponibiliza uma resposta temporária e a autoridade tenta obtê-la publicamente por HTTP na porta 80."
+  },
+  {
+    "id": "fix-19-02",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "easy",
+    "topic": "Plugin Apache",
+    "lesson": "Aula 19: Emitindo e instalando um certificado com Certbot",
+    "source": "03-phishing/19-enabling-https-on-phishing-pages/",
+    "question": "Qual é a função do pacote `python3-certbot-apache` nesse procedimento?",
+    "choices": [
+      "Substituir o resolvedor DNS do sistema por um servidor autoritativo",
+      "Integrar o Certbot ao Apache na validação e instalação do certificado",
+      "Criar uma instância EC2 e configurar automaticamente seu Security Group",
+      "Converter certificados públicos em chaves privadas compartilháveis"
+    ],
+    "correct": 1,
+    "explanation": "O plugin permite ao Certbot trabalhar com a configuração do Apache durante a validação e a instalação. Ele não administra DNS nem recursos da nuvem."
+  },
+  {
+    "id": "fix-19-03",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "medium",
+    "topic": "Nomes solicitados",
+    "lesson": "Aula 19: Emitindo e instalando um certificado com Certbot",
+    "source": "03-phishing/19-enabling-https-on-phishing-pages/",
+    "question": "O que cada opção `-d` representa em `certbot --apache`?",
+    "choices": [
+      "Um diretório local onde uma cópia da chave privada será publicada",
+      "Uma distribuição Linux permitida para executar o cliente ACME",
+      "Um nome validado e incluído no certificado solicitado",
+      "Um destino HTTP para o qual todo acesso deverá ser redirecionado"
+    ],
+    "correct": 2,
+    "explanation": "Cada `-d` adiciona um hostname à solicitação. Todos os nomes informados precisam estar sob controle do operador e satisfazer a validação."
+  },
+  {
+    "id": "fix-19-04",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "hard",
+    "topic": "Arquivos do certificado",
+    "lesson": "Aula 19: Emitindo e instalando um certificado com Certbot",
+    "source": "03-phishing/19-enabling-https-on-phishing-pages/",
+    "question": "Qual comparação entre `fullchain.pem` e `privkey.pem` está correta?",
+    "choices": [
+      "Ambos podem ser publicados, pois contêm somente certificados assinados pela CA",
+      "`fullchain.pem` guarda a senha administrativa e os dados completos do domínio; `privkey.pem` guarda apenas o nome público do host solicitado",
+      "`fullchain.pem` configura DNS; `privkey.pem` abre a porta 443 no firewall",
+      "`fullchain.pem` reúne certificado e intermediários; `privkey.pem` é secreto e fica no servidor"
+    ],
+    "correct": 3,
+    "explanation": "O Apache apresenta a cadeia pública aos clientes. A chave privada correspondente prova posse da identidade e não deve ir para notas, repositórios ou diretórios web."
+  },
+  {
+    "id": "fix-19-05",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "medium",
+    "topic": "Security Group e serviço",
+    "lesson": "Aula 19: Emitindo e instalando um certificado com Certbot",
+    "source": "03-phishing/19-enabling-https-on-phishing-pages/",
+    "question": "Por que salvar uma regra de entrada TCP 443 não comprova que HTTPS está funcionando?",
+    "choices": [
+      "A regra permite a chegada dos pacotes, mas o Apache ainda precisa escutar e carregar a configuração TLS",
+      "A porta 443 só funciona depois que todos os registros DNS são convertidos para CNAME",
+      "O Security Group valida certificados, mas não consegue emitir uma chave privada para o navegador",
+      "HTTPS sempre usa UDP 443, enquanto a regra criada permite somente conexões TCP"
+    ],
+    "correct": 0,
+    "explanation": "O controle da nuvem e o processo local são camadas diferentes. Além da regra, serviço, configuração, chave e possíveis firewalls locais precisam estar corretos."
+  },
+  {
+    "id": "fix-19-06",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "hard",
+    "topic": "Renovação",
+    "lesson": "Aula 19: Emitindo e instalando um certificado com Certbot",
+    "source": "03-phishing/19-enabling-https-on-phishing-pages/",
+    "question": "O que `sudo certbot renew --dry-run` verifica?",
+    "choices": [
+      "Se o navegador armazenou em cache a cadeia completa do certificado atual",
+      "Se o método configurado consegue simular a renovação sem substituir o certificado ativo",
+      "Se todos os domínios registrados pelo usuário possuem renovação comercial automática",
+      "Se a chave privada pode ser recuperada publicamente após a expiração"
+    ],
+    "correct": 1,
+    "explanation": "O dry run usa o ambiente de teste para repetir o processo de renovação. Ele ajuda a detectar mudanças de DNS, firewall ou configuração antes da expiração."
+  },
+  {
+    "id": "fix-20-01",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "easy",
+    "topic": "Página estática e proxy",
+    "lesson": "Aula 20: Intermediando uma autenticação em tempo real",
+    "source": "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
+    "question": "Qual limitação de uma página estática motiva o uso conceitual de um proxy AiTM?",
+    "choices": [
+      "Ela não encaminha o desafio real da aplicação em tempo real",
+      "Ela não pode ser carregada por nenhum navegador quando o servidor usa um endereço IPv4",
+      "Ela sempre desativa a senha antes que o usuário envie o segundo fator",
+      "Ela cria automaticamente uma sessão válida sem conversar com a aplicação"
+    ],
+    "correct": 0,
+    "explanation": "Uma página estática pode receber valores, mas não participa automaticamente do diálogo real que conduz ao desafio MFA e à sessão emitida depois dele."
+  },
+  {
+    "id": "fix-20-02",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "medium",
+    "topic": "Duas conexões TLS",
+    "lesson": "Aula 20: Intermediando uma autenticação em tempo real",
+    "source": "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
+    "question": "Como o proxy consegue ler mensagens sem quebrar o TLS da aplicação?",
+    "choices": [
+      "Ele descobre a chave privada da aplicação observando o certificado público",
+      "Ele mantém uma conexão TLS com o navegador e outra conexão TLS com a aplicação",
+      "Ele desativa a criptografia no roteador antes que os pacotes alcancem a Internet",
+      "Ele usa o mesmo certificado da aplicação sem possuir nenhuma chave correspondente"
+    ],
+    "correct": 1,
+    "explanation": "O navegador encerra TLS no domínio do proxy, que controla sua chave. O proxy lê e transforma a mensagem antes de cifrá-la em outra conexão com a aplicação."
+  },
+  {
+    "id": "fix-20-03",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "medium",
+    "topic": "Phishlet",
+    "lesson": "Aula 20: Intermediando uma autenticação em tempo real",
+    "source": "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
+    "question": "Por que um phishlet pode deixar de funcionar quando a aplicação muda?",
+    "choices": [
+      "Porque arquivos YAML expiram automaticamente na mesma data do certificado TLS",
+      "Porque cada phishlet possui um endereço IP público fixo gravado pelo compilador",
+      "Porque as regras dependem de elementos específicos do fluxo web",
+      "Porque qualquer mudança visual apaga o código-fonte do Evilginx no servidor"
+    ],
+    "correct": 2,
+    "explanation": "O phishlet descreve elementos concretos que precisam ser reconhecidos e adaptados. Mudanças no fluxo da aplicação podem tornar essas regras incompatíveis."
+  },
+  {
+    "id": "fix-20-04",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "hard",
+    "topic": "Autenticação e sessão",
+    "lesson": "Aula 20: Intermediando uma autenticação em tempo real",
+    "source": "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
+    "question": "Qual diferença explica por que capturar somente a senha não equivale a obter a sessão autenticada?",
+    "choices": [
+      "A senha é sempre armazenada no DNS, enquanto a sessão existe apenas no certificado TLS",
+      "A senha identifica a porta, enquanto a sessão identifica o endereço IP do navegador",
+      "A senha expira após cada pacote, enquanto qualquer cookie permanece válido para sempre",
+      "A senha participa da autenticação; a sessão representa o estado criado depois que os fatores foram aceitos"
+    ],
+    "correct": 3,
+    "explanation": "A aplicação ainda pode exigir o segundo fator depois da senha. Somente após validar os fatores ela emite o estado de sessão que será usado nas requisições seguintes."
+  },
+  {
+    "id": "fix-20-05",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "medium",
+    "topic": "Limites de session replay",
+    "lesson": "Aula 20: Intermediando uma autenticação em tempo real",
+    "source": "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
+    "question": "Por que um cookie isolado não deve ser descrito automaticamente como controle total da conta?",
+    "choices": [
+      "A aplicação pode exigir vários tokens, vincular contexto, expirar ou revogar a sessão",
+      "Cookies são apenas elementos visuais do navegador e nunca representam estado nem participam de sessões autenticadas",
+      "Todo cookie precisa conter a senha e o código MFA em texto puro para funcionar",
+      "O navegador recusa qualquer cookie que tenha sido emitido depois de uma autenticação"
+    ],
+    "correct": 0,
+    "explanation": "Sessões variam por aplicação. Pode haver múltiplos elementos, estado no servidor, vínculo ao dispositivo, prazos e novas exigências de autenticação."
+  },
+  {
+    "id": "fix-20-06",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "hard",
+    "topic": "WebAuthn",
+    "lesson": "Aula 20: Intermediando uma autenticação em tempo real",
+    "source": "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
+    "question": "Por que passkeys e chaves WebAuthn são resistentes ao fluxo de phishing intermediado estudado?",
+    "choices": [
+      "Porque enviam o código secreto diretamente ao proxy somente depois de verificar o IP",
+      "Porque a operação criptográfica é vinculada à origem e não assina para um domínio semelhante",
+      "Porque substituem TLS por DNSSEC e impedem qualquer conexão HTTPS intermediária",
+      "Porque armazenam todos os cookies no servidor DNS autoritativo da aplicação"
+    ],
+    "correct": 1,
+    "explanation": "O navegador vincula a autenticação à origem legítima. Um domínio controlado pelo proxy não obtém uma assinatura válida para outra origem."
+  },
+  {
+    "id": "fix-21-01",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "hard",
+    "topic": "Delegação DNS",
+    "lesson": "Aula 21: Preparando o Evilginx em uma instância descartável",
+    "source": "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
+    "question": "Por que criar registros A para `ns1` e `ns2` não delega sozinho a zona ao Evilginx?",
+    "choices": [
+      "Porque registros A servem apenas para IPv6 e não podem representar nameservers",
+      "Porque a delegação também exige registros NS e pode exigir glue records no registrador",
+      "Porque todo servidor DNS autoritativo precisa usar exclusivamente nomes fora da própria zona",
+      "Porque registros A deixam de existir assim que a porta UDP 53 é aberta"
+    ],
+    "correct": 1,
+    "explanation": "A associa nomes a endereços; NS declara os servidores autoritativos. Quando o nameserver está na própria zona, glue records podem ser necessários para permitir sua localização."
+  },
+  {
+    "id": "fix-21-02",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "medium",
+    "topic": "Portas e processos",
+    "lesson": "Aula 21: Preparando o Evilginx em uma instância descartável",
+    "source": "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
+    "question": "Por que liberar 53, 80 e 443 no Security Group não inicia os serviços correspondentes?",
+    "choices": [
+      "Porque a regra apenas permite que pacotes cheguem; processos locais ainda precisam escutar nas portas",
+      "Porque Security Groups controlam somente armazenamento e não participam do tráfego de rede",
+      "Porque processos só podem ser iniciados pelo registrador depois que a zona é delegada",
+      "Porque essas portas funcionam somente quando o usuário permanece conectado por SSH"
+    ],
+    "correct": 0,
+    "explanation": "A regra da nuvem é um filtro de rede. DNS, HTTP e HTTPS dependem de processos ativos, configuração válida e ausência de conflitos nas portas."
+  },
+  {
+    "id": "fix-21-03",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "easy",
+    "topic": "Dependências de compilação",
+    "lesson": "Aula 21: Preparando o Evilginx em uma instância descartável",
+    "source": "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
+    "question": "Para que Git, Make e Go são usados na preparação mostrada?",
+    "choices": [
+      "Para emitir certificados, delegar DNS e abrir regras na nuvem, respectivamente",
+      "Para criar usuários, armazenar cookies e configurar o navegador, respectivamente",
+      "Para obter o repositório, executar as regras de build e compilar o código Go",
+      "Para resolver nomes, servir HTTP e cifrar o tráfego da aplicação, respectivamente"
+    ],
+    "correct": 2,
+    "explanation": "Git baixa o código, Make coordena as instruções de compilação do projeto e a toolchain Go transforma o código-fonte no executável."
+  },
+  {
+    "id": "fix-21-04",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "medium",
+    "topic": "Evidência de compilação",
+    "lesson": "Aula 21: Preparando o Evilginx em uma instância descartável",
+    "source": "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
+    "question": "Qual evidência é mais direta de que a compilação produziu o programa esperado?",
+    "choices": [
+      "O domínio aparece como registrado no painel do provedor",
+      "O executável existe em `build` e responde à consulta de versão",
+      "A porta 443 foi adicionada ao Security Group da instância",
+      "O repositório de phishlets contém pelo menos um arquivo YAML"
+    ],
+    "correct": 1,
+    "explanation": "A presença do binário e sua execução com a opção de versão verificam o artefato de build. DNS, firewall e phishlets são estados independentes."
+  },
+  {
+    "id": "fix-21-05",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "hard",
+    "topic": "Caminho de phishlets",
+    "lesson": "Aula 21: Preparando o Evilginx em uma instância descartável",
+    "source": "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
+    "question": "Como um caminho relativo fornecido em `-p` é interpretado?",
+    "choices": [
+      "Sempre a partir de `/root/.evilginx`, independentemente do usuário e do shell",
+      "A partir do repositório remoto original, mesmo depois que a rede é desligada",
+      "A partir do diretório do binário, ainda que o shell esteja em outro local",
+      "A partir do diretório atual do shell no momento em que o programa é iniciado"
+    ],
+    "correct": 3,
+    "explanation": "O sistema resolve o argumento relativo usando o diretório de trabalho atual. Arquivos baixados em outra pasta não são descobertos automaticamente."
+  },
+  {
+    "id": "fix-21-06",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "medium",
+    "topic": "Configuração interna",
+    "lesson": "Aula 21: Preparando o Evilginx em uma instância descartável",
+    "source": "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
+    "question": "O que `config domain` e `config ipv4` não fazem por conta própria?",
+    "choices": [
+      "Não salvam valores internos que podem ser revisados depois pelo console",
+      "Não publicam DNS, não abrem portas e não comprovam que TLS foi emitido",
+      "Não permitem que a ferramenta conheça o domínio-base e o endereço externo",
+      "Não diferenciam a configuração persistida entre usuários distintos do sistema"
+    ],
+    "correct": 1,
+    "explanation": "Os comandos alteram o estado interno da ferramenta. DNS, filtros de rede, processos e certificados precisam ser configurados e verificados em suas próprias camadas."
+  },
+  {
+    "id": "fix-04-01",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "medium",
+    "topic": "Diretório de phishlets",
+    "lesson": "Aula 22: Do phishlet carregado à sessão autenticada",
+    "source": "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
+    "question": "Ao executar `build/evilginx -p phishlets` dentro de `/home/kali/evilginx2`, onde a ferramenta procura os arquivos YAML?",
+    "choices": [
+      "No diretório `/home/kali/Evilginx-Phishlets`, porque foi a origem mais recente clonada com Git",
+      "No diretório `/home/kali/evilginx2/phishlets`, porque o argumento relativo parte do diretório atual",
+      "No diretório `/root/.evilginx/phishlets`, porque toda configuração é armazenada sob a conta root",
+      "No diretório `/usr/share/phishlets`, porque a opção `-p` sempre resolve caminhos pelo sistema"
+    ],
+    "correct": 1,
+    "explanation": "`-p` informa o diretório de phishlets. Como `phishlets` é um caminho relativo e o shell está em `/home/kali/evilginx2`, ele corresponde a `/home/kali/evilginx2/phishlets`."
+  },
+  {
+    "id": "fix-04-02",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "easy",
+    "topic": "Cópia de arquivos YAML",
+    "lesson": "Aula 22: Do phishlet carregado à sessão autenticada",
+    "source": "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
+    "question": "Qual mudança foi produzida pelo comando `cp /home/kali/Evilginx-Phishlets/*.yaml /home/kali/evilginx2/phishlets/`?",
+    "choices": [
+      "Os arquivos YAML da origem foram copiados para o diretório lido pelo Evilginx",
+      "O repositório remoto foi atualizado e recompilado dentro do diretório de configuração",
+      "Os registros DNS exigidos pelos phishlets foram criados no provedor do domínio",
+      "A blacklist em memória foi limpa sem reiniciar o processo que estava em execução"
+    ],
+    "correct": 0,
+    "explanation": "O shell expande `*.yaml`, e `cp` copia os arquivos encontrados para o destino. O comando não altera DNS, não compila o programa e não interfere na blacklist."
+  },
+  {
+    "id": "fix-04-03",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "hard",
+    "topic": "Blacklist persistente",
+    "lesson": "Aula 22: Do phishlet carregado à sessão autenticada",
+    "source": "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
+    "question": "Por que apagar `/root/.evilginx/blacklist.txt` e reiniciar ajudou quando o IP autorizado havia sido bloqueado?",
+    "choices": [
+      "A remoção corrigiu automaticamente os registros DNS e solicitou novos certificados válidos para todos os hostnames configurados",
+      "A remoção recompilou os phishlets e converteu regras incompatíveis para a versão instalada",
+      "O arquivo persistia os IPs bloqueados, e o reinício fez o processo carregar novamente uma lista vazia",
+      "O arquivo armazenava as sessões TLS, e apagá-lo obrigou o navegador a aceitar qualquer certificado"
+    ],
+    "correct": 2,
+    "explanation": "A blacklist é persistida em arquivo e também mantida em memória durante a execução. Remover o arquivo elimina as entradas persistidas; reiniciar faz a ferramenta recriar e carregar a lista sem aqueles IPs."
+  },
+  {
+    "id": "fix-04-04",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "medium",
+    "topic": "Phishlet e lure",
+    "lesson": "Aula 22: Do phishlet carregado à sessão autenticada",
+    "source": "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
+    "question": "Qual alternativa diferencia corretamente um phishlet de uma lure?",
+    "choices": [
+      "Phishlet é o certificado TLS; lure é o registro A criado para o endereço IPv4",
+      "Phishlet identifica a sessão do navegador; lure armazena credenciais e cookies capturados",
+      "Phishlet abre a porta no Security Group; lure inicia o serviço dentro do sistema Linux",
+      "Phishlet define regras do fluxo intermediado; lure fornece uma URL de entrada associada"
+    ],
+    "correct": 3,
+    "explanation": "O phishlet descreve hosts e elementos do fluxo que devem ser intermediados. A lure é a entrada associada a esse phishlet, com identificador e URL própria."
+  },
+  {
+    "id": "fix-04-05",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "medium",
+    "topic": "DNS e ativação de phishlet",
+    "lesson": "Aula 22: Do phishlet carregado à sessão autenticada",
+    "source": "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
+    "question": "O que `phishlets enable <PHISHLET-DO-LAB>` não faz por conta própria?",
+    "choices": [
+      "Não muda o estado do phishlet para habilitado dentro da ferramenta",
+      "Não cria no provedor DNS os registros exigidos pelos hostnames do phishlet",
+      "Não permite que a ferramenta procure certificados depois que os nomes resolvem",
+      "Não preserva a associação do phishlet ao hostname configurado anteriormente"
+    ],
+    "correct": 1,
+    "explanation": "Habilitar muda o estado interno do phishlet. A zona DNS continua sendo administrada separadamente e precisa fazer os hostnames necessários resolverem para a instância."
+  },
+  {
+    "id": "fix-04-06",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "hard",
+    "topic": "MFA e sessão autenticada",
+    "lesson": "Aula 22: Do phishlet carregado à sessão autenticada",
+    "source": "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
+    "question": "Por que a reutilização de uma sessão capturada não significa que o segundo fator foi quebrado criptograficamente?",
+    "choices": [
+      "Porque o participante resolveu o desafio real antes de a aplicação emitir a sessão autenticada",
+      "Porque o proxy calculou o código temporário sem receber nenhuma informação do navegador participante",
+      "Porque o certificado TLS desativou o MFA enquanto o domínio do laboratório permaneceu acessível",
+      "Porque qualquer cookie substitui permanentemente todos os fatores exigidos por qualquer aplicação web"
+    ],
+    "correct": 0,
+    "explanation": "O segundo fator é validado pela aplicação. O efeito aparente de bypass surge se outra parte reutiliza a sessão emitida depois dessa autenticação válida, sem repetir os fatores em cada requisição."
+  },
+  {
+    "id": "fix-04-07",
+    "scope": "lesson-fixation",
+    "fixationNumber": 7,
+    "difficulty": "medium",
+    "topic": "Interpretação de sessões",
+    "lesson": "Aula 22: Do phishlet carregado à sessão autenticada",
+    "source": "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
+    "question": "O que a indicação de tokens capturados em `sessions` comprova e o que ainda precisa ser testado?",
+    "choices": [
+      "Comprova controle permanente da conta em qualquer dispositivo; resta somente alterar o nome apresentado na interface do navegador",
+      "Comprova que o MFA foi desativado; resta apenas apagar os registros DNS temporários",
+      "Comprova que a ferramenta registrou os elementos reconhecidos; ainda falta testar se formam uma sessão reutilizável",
+      "Comprova que todos os cookies foram descriptografados; ainda é preciso descobrir a senha da conta"
+    ],
+    "correct": 2,
+    "explanation": "O registro mostra que o phishlet reconheceu e armazenou determinados elementos. Ele não prova sozinho que estejam completos, válidos ou aceitos em outro contexto."
+  },
+  {
+    "id": "fix-04-08",
+    "scope": "lesson-fixation",
+    "fixationNumber": 8,
+    "difficulty": "hard",
+    "topic": "Evidências e encerramento",
+    "lesson": "Aula 22: Do phishlet carregado à sessão autenticada",
+    "source": "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
+    "question": "Qual conjunto demonstra um encerramento mais completo do laboratório autorizado?",
+    "choices": [
+      "Fechar o SSH, manter a instância ligada e apagar somente o histórico de comandos do shell",
+      "Ocultar a lure, preservar as sessões e deixar os registros DNS disponíveis para testes futuros",
+      "Apagar a blacklist, manter cookies sintéticos e confiar que o certificado expirará automaticamente",
+      "Desabilitar entradas, revogar sessões, remover dados sensíveis, desfazer DNS e regras, e encerrar a instância"
+    ],
+    "correct": 3,
+    "explanation": "Encerrar exige desfazer o fluxo e a infraestrutura: desabilitar lures e phishlets, revogar sessões na aplicação, remover segredos e artefatos, retirar DNS e exposição de rede e terminar recursos sem função."
   }
 ]
 );

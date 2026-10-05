@@ -77,7 +77,7 @@ extra_css:
 
 extra_javascript:
   - javascripts/pwa.js?v=20260803
-  - javascripts/quiz-loader.js?v=20260924-4
+  - javascripts/quiz-loader.js?v=20261005-2
 
 extra:
   social:
@@ -108,9 +108,15 @@ nav:
       - 13. Publicando uma página no Apache: 03-phishing/13-creating-a-fake-login-page-on-the-cloud.md
       - 14. Entendendo o envio de formulários: 03-phishing/14-modifying-the-page-to-steal-login-information.md
       - 15. Arquivos, permissões e PHP: 03-phishing/15-stealing-facebook-login-using-an-identical-fake-login-page.md
+      - 16. Domínio, IP e resolução DNS: 03-phishing/16-domain-name-and-dns-basics.md
+      - 17. Publicando registros DNS: 03-phishing/17-linking-domain-names-to-phishing-pages.md
+      - 18. O que o HTTPS protege: 03-phishing/18-introduction-to-https.md
+      - 19. Certificado TLS com Certbot: 03-phishing/19-enabling-https-on-phishing-pages.md
+  - 4. Phishing e sessões autenticadas:
+      - 20. Intermediando uma autenticação: 04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx.md
+      - 21. Preparando o Evilginx: 04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud.md
+      - 22. Do phishlet à sessão autenticada: 04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa.md
 draft_docs: |
-  03-phishing/1[6-9]-*.md
-  04-phishing-bypassing-2fa-mfa/**
   05-accessing-cloud-server-desktop/**
   06-bitb-browser-in-browser-attack/**
   07-mobile-bitb/**
