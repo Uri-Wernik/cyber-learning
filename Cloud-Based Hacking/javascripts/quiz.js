@@ -22,34 +22,15 @@
     "03-phishing/17-linking-domain-names-to-phishing-pages/",
     "03-phishing/18-introduction-to-https/",
     "03-phishing/19-enabling-https-on-phishing-pages/",
+    "blue-team/01-da-exposicao-a-investigacao/",
     "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
     "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
     "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
   ];
-  const LEVELS = {
-    mixed: {
-      label: "Misto",
-      description: "Combina fundamentos, relações e cenários técnicos.",
-      marker: "M",
-    },
-    easy: {
-      label: "Fácil",
-      description: "Conceitos, siglas e funções essenciais.",
-      marker: "01",
-    },
-    medium: {
-      label: "Médio",
-      description: "Relações entre componentes e processos.",
-      marker: "02",
-    },
-    hard: {
-      label: "Difícil",
-      description: "Cenários, limites e raciocínio técnico.",
-      marker: "03",
-    },
-  };
+  const EXAM_DIFFICULTY = "easy";
+  const EXAM_DESCRIPTION =
+    "Conceitos, siglas e funções essenciais das 22 aulas.";
   const OPTION_LABELS = ["A", "B", "C", "D"];
-  const EXAM_DIFFICULTIES = ["easy", "medium", "hard"];
 
   const escapeHtml = (value) =>
     String(value).replace(
@@ -115,6 +96,8 @@
   };
 
   const getExamBestKey = (level, count) => `${level}:${count}`;
+  const formatQuestionCount = (count) =>
+    `${count} ${count === 1 ? "questão" : "questões"}`;
 
   const prepareQuestion = (question) => {
     const choices = shuffle(
@@ -163,9 +146,7 @@
         (question) => question.scope === "exam"
       );
       this.progress = readProgress();
-      this.selectedLevel = LEVELS[this.progress.lastLevel]
-        ? this.progress.lastLevel
-        : "mixed";
+      this.selectedLevel = EXAM_DIFFICULTY;
       this.selectedCount = Number.isInteger(this.progress.lastCount)
         ? this.progress.lastCount
         : DEFAULT_EXAM_LENGTH;
@@ -239,30 +220,25 @@
     }
 
     handleChange(event) {
-      if (event.target.name === "quiz-level") {
-        this.selectedLevel = event.target.value;
-        this.normalizeSelectedCount();
-      } else if (event.target.name === "quiz-count") {
-        this.selectedCount = Number.parseInt(event.target.value, 10);
-        this.normalizeSelectedCount();
-      } else {
-        return;
-      }
+      if (event.target.name !== "quiz-count") return;
 
-      this.progress.lastLevel = this.selectedLevel;
+      this.selectedCount = Number.parseInt(event.target.value, 10);
+      this.normalizeSelectedCount();
+
+      this.progress.lastLevel = EXAM_DIFFICULTY;
       this.progress.lastCount = this.selectedCount;
       saveProgress(this.progress);
       this.updateStartSummary();
     }
 
-    getExamQuestionPool(level = this.selectedLevel) {
+    getExamQuestionPool() {
       return this.examQuestions.filter(
-        (question) => level === "mixed" || question.difficulty === level
+        (question) => question.difficulty === EXAM_DIFFICULTY
       );
     }
 
-    getMaxQuestionCount(level = this.selectedLevel) {
-      return this.getExamQuestionPool(level).length;
+    getMaxQuestionCount() {
+      return this.getExamQuestionPool().length;
     }
 
     normalizeSelectedCount() {
@@ -280,37 +256,11 @@
       const best = this.getExamBest(level, count);
       return Number.isInteger(best)
         ? `Melhor resultado: ${best}/${count}`
-        : `Sem tentativa com ${count} questões`;
+        : `Sem tentativa com ${formatQuestionCount(count)}`;
     }
 
     buildExamSession(questionPool, count) {
-      if (this.selectedLevel !== "mixed") {
-        return shuffle(questionPool).slice(0, count);
-      }
-
-      const buckets = shuffle(EXAM_DIFFICULTIES).map((difficulty) =>
-        shuffle(
-          questionPool.filter((question) => question.difficulty === difficulty)
-        )
-      );
-      const selected = [];
-
-      while (selected.length < count) {
-        let foundQuestion = false;
-
-        for (const bucket of buckets) {
-          const question = bucket.pop();
-          if (!question) continue;
-
-          selected.push(question);
-          foundQuestion = true;
-          if (selected.length === count) break;
-        }
-
-        if (!foundQuestion) break;
-      }
-
-      return shuffle(selected);
+      return shuffle(questionPool).slice(0, count);
     }
 
     renderInvalidLesson() {
@@ -320,7 +270,7 @@
           <strong>Não encontramos o quiz solicitado.</strong>
           <span>O endereço da aula não corresponde a um capítulo publicado.</span>
           <a class="quiz-button quiz-button--primary" href="${escapeHtml(examUrl)}">
-            Abrir simulado <span aria-hidden="true">→</span>
+            Abrir quiz <span aria-hidden="true">→</span>
           </a>
         </div>`;
     }
@@ -411,64 +361,34 @@
 
     renderStart() {
       this.setSessionOpen(false);
-      const levelOptions = Object.entries(LEVELS)
-        .map(([value, level]) => {
-          const isChecked = value === this.selectedLevel;
-          const levelCount = Math.min(
-            this.selectedCount,
-            Math.max(this.getMaxQuestionCount(value), 1)
-          );
-
-          return `
-            <label class="quiz-level${isChecked ? " is-selected" : ""}">
-              <input type="radio" name="quiz-level" value="${value}"${
-                isChecked ? " checked" : ""
-              }>
-              <span class="quiz-level__marker" aria-hidden="true">${level.marker}</span>
-              <span class="quiz-level__copy">
-                <strong>${level.label}</strong>
-                <span>${level.description}</span>
-                <small data-quiz-level-best="${value}">${this.getExamBestLabel(
-                  value,
-                  levelCount
-                )}</small>
-              </span>
-            </label>`;
-        })
-        .join("");
       const availableCount = this.getMaxQuestionCount();
 
       this.root.innerHTML = `
         <div class="quiz-intro quiz-view">
           <header class="quiz-intro__header">
             <span class="quiz-kicker">Preparação para prova</span>
-            <h2 tabindex="-1">Monte seu simulado</h2>
-            <p>Escolha a dificuldade e o tamanho da rodada sobre os conceitos essenciais. Cada resposta recebe correção e uma explicação curta.</p>
+            <h2 tabindex="-1">Quiz das 22 aulas</h2>
+            <p>Escolha a quantidade de perguntas. Cada resposta recebe correção e uma explicação curta.</p>
           </header>
-
-          <fieldset class="quiz-levels">
-            <legend>Dificuldade da rodada</legend>
-            ${levelOptions}
-          </fieldset>
 
           <div class="quiz-count">
             <label for="quiz-count">
               <strong>Quantidade de questões</strong>
-              <span data-quiz-count-help>${availableCount} disponíveis nesta dificuldade.</span>
+              <span data-quiz-count-help>${availableCount} disponíveis.</span>
             </label>
             <div class="quiz-count__control">
               <input id="quiz-count" name="quiz-count" type="number" min="1" max="${availableCount}" step="1" value="${this.selectedCount}" inputmode="numeric">
-              <span>questões</span>
+              <span data-quiz-count-unit>${this.selectedCount === 1 ? "questão" : "questões"}</span>
             </div>
           </div>
 
           <div class="quiz-startbar">
             <div class="quiz-startbar__summary" aria-live="polite">
-              <strong data-quiz-start-level>${LEVELS[this.selectedLevel].label}, ${this.selectedCount} questões</strong>
-              <span data-quiz-start-description>${LEVELS[this.selectedLevel].description}</span>
+              <strong data-quiz-start-level>${formatQuestionCount(this.selectedCount)}</strong>
+              <span data-quiz-start-description>${EXAM_DESCRIPTION}</span>
             </div>
             <button class="quiz-button quiz-button--primary" type="button" data-quiz-action="start">
-              Começar simulado <span aria-hidden="true">→</span>
+              Começar quiz <span aria-hidden="true">→</span>
             </button>
           </div>
         </div>`;
@@ -477,30 +397,18 @@
     }
 
     updateStartSummary() {
-      this.root.querySelectorAll(".quiz-level").forEach((level) => {
-        const input = level.querySelector("input");
-        level.classList.toggle("is-selected", input.checked);
-      });
-
-      const selected = LEVELS[this.selectedLevel];
       const countInput = this.root.querySelector('[name="quiz-count"]');
       const availableCount = this.getMaxQuestionCount();
       countInput.max = availableCount;
       countInput.value = this.selectedCount;
+      this.root.querySelector("[data-quiz-count-unit]").textContent =
+        this.selectedCount === 1 ? "questão" : "questões";
       this.root.querySelector("[data-quiz-count-help]").textContent =
-        `${availableCount} disponíveis nesta dificuldade.`;
+        `${availableCount} disponíveis.`;
       this.root.querySelector("[data-quiz-start-level]").textContent =
-        `${selected.label}, ${this.selectedCount} questões`;
+        formatQuestionCount(this.selectedCount);
       this.root.querySelector("[data-quiz-start-description]").textContent =
-        selected.description;
-      this.root.querySelectorAll("[data-quiz-level-best]").forEach((label) => {
-        const level = label.dataset.quizLevelBest;
-        const levelCount = Math.min(
-          this.selectedCount,
-          Math.max(this.getMaxQuestionCount(level), 1)
-        );
-        label.textContent = this.getExamBestLabel(level, levelCount);
-      });
+        EXAM_DESCRIPTION;
     }
 
     startGame() {
@@ -518,7 +426,7 @@
         this.root.innerHTML = `
           <div class="quiz-error" role="alert">
             <strong>Não há perguntas disponíveis para esta configuração.</strong>
-            <span>Volte à preparação e escolha outra dificuldade.</span>
+            <span>Volte à preparação e escolha outra quantidade.</span>
             <button class="quiz-button quiz-button--secondary" type="button" data-quiz-action="levels">
               Voltar à configuração
             </button>
@@ -547,7 +455,7 @@
       const progress = Math.round((this.currentIndex / total) * 100);
       const quizLabel = this.isLessonQuiz
         ? "Quiz da aula"
-        : LEVELS[this.selectedLevel].label;
+        : "Quiz final";
       const choices = question.choices
         .map(
           (choice, index) => `
@@ -737,7 +645,7 @@
         : `<p class="quiz-result__perfect">Você acertou todas as perguntas desta rodada.</p>`;
       const context = this.isLessonQuiz
         ? `Quiz desta aula. Sua melhor marca é ${best}/${total}.`
-        : `Nível ${LEVELS[this.selectedLevel].label}, com ${total} questões. Sua melhor marca nesta configuração é ${best}/${total}.`;
+        : `Quiz com ${formatQuestionCount(total)}. Sua melhor marca nesta configuração é ${best}/${total}.`;
       const nextLessonPath = this.isLessonQuiz
         ? getNextLessonPath(this.lessonPath)
         : null;
@@ -756,7 +664,7 @@
             Refazer quiz
           </button>`
         : `<button class="quiz-button quiz-button--secondary" type="button" data-quiz-action="levels">
-            Configurar rodada
+            Escolher quantidade
           </button>`;
 
       this.root.innerHTML = `

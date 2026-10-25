@@ -1,0 +1,278 @@
+{
+  "01": {
+    "anchor": "autorização",
+    "diagram": "escopo",
+    "alt": "O limite do laboratório separa ativos autorizados de sistemas de terceiros. A permissão define ativos, período e ações; somente as evidências permitidas retornam ao responsável. Acesso pela Internet não amplia esse limite.",
+    "terms": [
+      {"term":"autorização","definition":"Permissão explícita de quem tem autoridade sobre o sistema. Deve indicar o que pode ser feito e em quais condições."},
+      {"term":"CTFs","definition":"Capture the Flag: desafios de treinamento preparados para estudar segurança em um ambiente com regras próprias."},
+      {"term":"credenciais","definition":"Dados que ajudam a comprovar uma identidade ou um direito de acesso. No laboratório, use somente valores fictícios e descartáveis."},
+      {"term":"MFA","definition":"Autenticação multifator: uso de fatores independentes para verificar a identidade. Uma demonstração específica não prova uma quebra universal desse mecanismo."}
+    ]
+  },
+  "02": {
+    "anchor": "Red Team",
+    "diagram": "modalidades",
+    "alt": "Hacking ético contém modalidades autorizadas diferentes. O pentest investiga vulnerabilidades e comprova impactos delimitados; Red Team avalia uma sequência de ações orientada a objetivos. Ambos dependem de autorização, escopo e tratamento das evidências.",
+    "terms": [
+      {"term":"Hacking ético","definition":"Uso autorizado de conhecimentos de segurança para identificar riscos, limitar impactos e entregar evidências ao responsável."},
+      {"term":"pentest","definition":"Teste de intrusão com escopo e período definidos. Busca vulnerabilidades e demonstra impactos apenas até o limite acordado."},
+      {"term":"Red Team","definition":"Avaliação autorizada orientada a objetivos, que relaciona ações de um adversário a controles, pessoas e processos da organização."},
+      {"term":"ativo","definition":"Recurso com valor para a organização, como informação, identidade, aplicação ou equipamento."},
+      {"term":"escopo","definition":"Conjunto de limites do teste. Especifica quais ativos, horários e métodos estão permitidos e quais estão fora do exercício."},
+      {"term":"token de sessão","definition":"Segredo associado a uma sessão autenticada. Enquanto for válido, pode representar acesso à conta sem revelar a senha."},
+      {"term":"sandbox","definition":"Ambiente de execução com restrições. No navegador, limita o acesso do conteúdo web ao restante do sistema."}
+    ]
+  },
+  "04": {
+    "anchor": "callback",
+    "diagram": "callback",
+    "alt": "Em uma conexão direta, o testador inicia a comunicação com um serviço do laboratório. Em um callback, um agente já executado no laboratório inicia a saída para o controle autorizado. Filtros e rotas continuam necessários nos dois casos, e o canal não aumenta os privilégios do agente.",
+    "terms": [
+      {"term":"Cliente","definition":"Programa que solicita um recurso ou inicia uma comunicação. O papel depende da relação com outro processo, não do tipo de computador."},
+      {"term":"servidor","definition":"Programa que aguarda comunicações, processa solicitações e produz respostas conforme um protocolo."},
+      {"term":"callback","definition":"Conexão iniciada de dentro do laboratório por um agente já em execução. Ainda depende de permissão, rota e controles de saída."},
+      {"term":"C2","definition":"Command and Control: infraestrutura de coordenação de agentes. Em um teste autorizado, transporta somente tarefas e resultados previstos no escopo."},
+      {"term":"rastreabilidade","definition":"Possibilidade de relacionar ações a horários, recursos e evidências. A nuvem não elimina os registros do provedor nem do destino."}
+    ]
+  },
+  "05": {
+    "anchor": "armazenamento",
+    "diagram": "ciclo",
+    "alt": "Parar a instância interrompe sua execução, mas o volume de armazenamento pode permanecer. Terminar a instância exige conferir separadamente volumes, snapshots, endereços e regras temporárias. Fechar a sessão SSH não realiza nenhuma dessas duas operações.",
+    "terms": [
+      {"term":"Console","definition":"Interface web para administrar recursos e chamar serviços do provedor. Não é a própria máquina virtual."},
+      {"term":"Região","definition":"Área geográfica do provedor na qual recursos regionais são criados e encontrados. Usar outra Região pode mudar o que aparece no painel."},
+      {"term":"MFA","definition":"Autenticação com fatores independentes. Protege a entrada na conta, mas não substitui permissões e configuração segura."},
+      {"term":"orçamento","definition":"Referência de custo acompanhada por alertas. Um alerta, por padrão, não desliga recursos nem bloqueia imediatamente a cobrança."},
+      {"term":"snapshots","definition":"Cópias de estado de armazenamento usadas para recuperação ou criação de volumes. Podem permanecer e gerar custos depois do exercício."},
+      {"term":"armazenamento","definition":"Recursos que mantêm dados, como volumes e snapshots. Sua cobrança é separada da capacidade computacional da instância."}
+    ]
+  },
+  "06": {
+    "anchor": "IAM",
+    "diagram": "identidades",
+    "alt": "As permissões da conta AWS e as do sistema Linux são planos diferentes. IAM autoriza chamadas às APIs da AWS; o usuário Linux controla ações dentro da instância. A identidade root da conta não é o usuário root do Kali.",
+    "terms": [
+      {"term":"AWS Management Console","definition":"Interface web de administração da AWS. Usa serviços e APIs para criar, consultar e configurar recursos."},
+      {"term":"AWS Region","definition":"Área geográfica independente da AWS que contém Zonas de Disponibilidade. Recursos regionais precisam ser procurados na Região correta."},
+      {"term":"IAM","definition":"Identity and Access Management: controle de quem pode executar quais ações sobre quais recursos da AWS."},
+      {"term":"MFA","definition":"Autenticação multifator. Exige fatores independentes e deve proteger tanto o acesso de maior privilégio quanto as identidades cotidianas."},
+      {"term":"Access keys","definition":"Credenciais usadas em acesso programático às APIs. São segredos e não devem ser criadas para o root como atalho de uso cotidiano."},
+      {"term":"orçamento","definition":"Acompanhamento de custos e limites desejados. Alertas dependem dos dados de cobrança e não equivalem a um desligamento automático."}
+    ]
+  },
+  "07": {
+    "anchor": "AMI",
+    "diagram": "instancia",
+    "alt": "Uma AMI fornece o sistema inicial; o tipo de instância fornece CPU e memória; um volume EBS mantém os dados. A instância é o recurso em execução criado com essas escolhas. A chave privada permanece local e a chave pública participa do acesso inicial.",
+    "terms": [
+      {"term":"Linux","definition":"Núcleo que administra processador, memória, dispositivos e processos. Uma distribuição reúne esse núcleo com ferramentas e aplicações."},
+      {"term":"distribuição Linux","definition":"Conjunto que combina o kernel Linux com ferramentas, pacotes, repositórios e configurações para um uso definido."},
+      {"term":"Kali Linux","definition":"Distribuição baseada em Debian e mantida para testes de segurança. A imagem de nuvem pode não trazer todas as ferramentas instaladas."},
+      {"term":"máquina virtual","definition":"Computador definido em software, com recursos apresentados por uma camada de virtualização sobre hardware físico."},
+      {"term":"AMI","definition":"Amazon Machine Image: modelo de inicialização com sistema e informações de armazenamento. Não é a instância já em execução."},
+      {"term":"EBS","definition":"Elastic Block Store: armazenamento persistente configurado separadamente da capacidade de CPU e memória da instância."},
+      {"term":"key pair","definition":"Par de chaves relacionadas: a pública participa da configuração da instância; a privada fica protegida no computador do usuário."}
+    ]
+  },
+  "08": {
+    "anchor": "chave de host",
+    "diagram": "chaves-ssh",
+    "alt": "Duas provas diferentes participam do SSH. O cliente verifica a chave de host para reconhecer o servidor. O servidor verifica uma assinatura do usuário com a chave pública autorizada. As duas chaves privadas permanecem em seus respectivos lados; não são enviadas pela rede.",
+    "terms": [
+      {"term":"SSH","definition":"Secure Shell: protocolo de aplicação que cria um canal criptografado entre cliente e servidor para shell remota e outros canais."},
+      {"term":"shell remota","definition":"Interpretador executado na outra máquina. O teclado pode estar no computador local, mas os comandos são processados no servidor."},
+      {"term":"sshd","code":true,"definition":"Processo servidor do SSH. Aguarda conexões e, depois das verificações e da autenticação, pode iniciar a shell do usuário."},
+      {"term":"TCP","definition":"Protocolo de transporte que entrega um fluxo de bytes confiável e ordenado. O SSH desta aula normalmente usa a porta TCP 22."},
+      {"term":"chave de host","definition":"Identidade criptográfica do servidor SSH. O cliente deve conferir sua chave pública por uma referência confiável."},
+      {"term":"chave do usuário","definition":"Chave que participa da autenticação para entrar. A privada assina dados da sessão; a pública autorizada permite verificar essa assinatura."},
+      {"term":"fingerprint","definition":"Resumo criptográfico de uma chave pública. Serve para comparar identidades, desde que o valor de referência venha de uma fonte confiável."}
+    ]
+  },
+  "09": {
+    "anchor": "argumento",
+    "diagram": "comando",
+    "alt": "Na linha ls -la /var/www/html, ls escolhe o programa, -la reúne opções e o caminho é o argumento sobre o qual ele trabalha. A shell interpreta a linha e inicia o programa. Em uma sessão SSH, essa execução acontece na máquina remota.",
+    "terms": [
+      {"term":"terminal","definition":"Aplicativo que apresenta entrada e saída textual. Ele não é, por si só, o interpretador dos comandos."},
+      {"term":"shell","definition":"Programa, como Bash ou Zsh, que interpreta a linha digitada e inicia comandos com suas opções e argumentos."},
+      {"term":"CLI","definition":"Command-Line Interface: forma de interação por instruções textuais, em vez de controles gráficos."},
+      {"term":"prompt","definition":"Indicação de que a shell aguarda uma instrução. Pode mostrar usuário, máquina e diretório atual; não deve ser digitado como parte do comando."},
+      {"term":"diretório raiz","definition":"Início da hierarquia de arquivos Linux, representado por /. É diferente do usuário root e de seu diretório pessoal."},
+      {"term":"argumento","definition":"Valor passado a um comando para indicar sobre o que trabalhar, como o caminho de um diretório."}
+    ]
+  },
+  "10": {
+    "anchor": "ação esperada",
+    "diagram": "decisao",
+    "alt": "Receber uma mensagem, visitar uma página e realizar a ação esperada são observações diferentes. A passagem por uma etapa não comprova a seguinte. Uma simulação autorizada define antecipadamente qual evento inofensivo pode ser registrado, sem pedir senhas reais.",
+    "terms": [
+      {"term":"engenharia social","definition":"Uso de comunicação, contexto e influência para induzir uma pessoa a agir. Pode ocorrer sem explorar uma falha de software."},
+      {"term":"phishing","definition":"Forma de engenharia social em que mensagem ou interface se apresenta como legítima para provocar uma ação."},
+      {"term":"pretexto","definition":"Narrativa que faz o contato parecer coerente: quem fala, qual relação aparenta ter e por que solicita uma ação."},
+      {"term":"isca","definition":"Elemento que atrai a atenção ou motiva uma resposta. É diferente da história usada para justificar o contato."},
+      {"term":"landing page","definition":"Página de destino aberta depois de um link. O termo também é usado por aplicações legítimas; não significa fraude por si só."},
+      {"term":"ação esperada","definition":"Comportamento definido antes da simulação, como uma visita ou um clique inofensivo. Determina qual evidência pode ser observada."}
+    ]
+  },
+  "11": {
+    "anchor": "HTTP",
+    "diagram": "apache",
+    "alt": "O caminho até uma página depende de uma regra de entrada permitir TCP 80 e de o Apache estar em escuta. Depois disso, o Apache interpreta o caminho solicitado e procura o recurso no document root. Abrir a regra não instala nem inicia o serviço.",
+    "terms": [
+      {"term":"Apache HTTP Server","definition":"Software servidor web que interpreta requisições HTTP e produz respostas. No Kali, seu pacote e serviço costumam se chamar apache2."},
+      {"term":"processo","definition":"Programa em execução com uma identidade e recursos administrados pelo sistema. Arquivos instalados no disco ainda não são um processo ativo."},
+      {"term":"serviço","definition":"Função de longa duração administrada pelo sistema, como o atendimento web. Pode utilizar um ou mais processos."},
+      {"term":"HTTP","definition":"Hypertext Transfer Protocol: regras de aplicação para trocar requisições e respostas web sobre um transporte."},
+      {"term":"document root","definition":"Diretório que o servidor usa como base para localizar o conteúdo publicado. Não concede ao navegador acesso livre ao sistema de arquivos."},
+      {"term":"APT","definition":"Conjunto de ferramentas de gerenciamento de pacotes usado no Kali e no Debian. Atualizar o índice não é o mesmo que atualizar todos os programas."}
+    ]
+  },
+  "12": {
+    "anchor": "SFTP",
+    "diagram": "transferencia",
+    "alt": "O FileZilla envia arquivos por SFTP dentro do SSH, normalmente em TCP 22. O navegador solicita conteúdo ao Apache por outro protocolo e outra porta. Um upload para o diretório pessoal não publica automaticamente a página no document root.",
+    "terms": [
+      {"term":"cópia estática local","definition":"Arquivos que o navegador conseguiu salvar para representar uma página. Não inclui automaticamente o back-end, o banco de dados nem a autenticação original."},
+      {"term":"SFTP","definition":"SSH File Transfer Protocol: manipulação de arquivos remotos dentro do SSH, com as permissões do usuário autenticado."},
+      {"term":"upload","definition":"Transferência de um arquivo do computador local para o destino remoto. Sucesso na transferência não comprova publicação na Web."},
+      {"term":"download","definition":"Transferência de um arquivo remoto para o computador local. A direção é oposta à do upload."},
+      {"term":"FileZilla Client","definition":"Programa cliente de transferência de arquivos. Nesta aula, roda no Windows e usa SFTP para conversar com a instância Kali."}
+    ]
+  },
+  "13": {
+    "anchor": "usuário proprietário",
+    "diagram": "permissao",
+    "alt": "O SFTP autentica o usuário kali, mas a escrita também depende da propriedade e das permissões do diretório. Uma conexão pode funcionar e a criação do arquivo ser recusada. Alterar a propriedade e atualizar a listagem é diferente de enviar o arquivo.",
+    "terms": [
+      {"term":"Permission denied","code":true,"definition":"Operação recusada por falta de permissão. A mensagem não implica, por si só, perda da conexão com o servidor."},
+      {"term":"SFTP","definition":"Protocolo de arquivos transportado pelo SSH. As operações remotas continuam sujeitas às permissões do usuário conectado."},
+      {"term":"usuário proprietário","definition":"Identidade à qual um arquivo ou diretório pertence. Suas permissões são avaliadas separadamente das permissões do grupo e dos demais usuários."},
+      {"term":"grupo proprietário","definition":"Grupo associado ao arquivo ou diretório. É um campo diferente do usuário proprietário, mesmo quando os dois nomes são iguais."},
+      {"term":"index.html","code":true,"definition":"Nome comum do arquivo de índice de um site. O servidor pode entregá-lo quando a raiz é solicitada, conforme sua configuração."}
+    ]
+  },
+  "14": {
+    "anchor": "PHP",
+    "diagram": "formulario",
+    "alt": "O navegador mantém os campos no DOM. Em um envio nativo, action escolhe o destino, method escolhe o método e name identifica cada valor. Um processador no servidor teria de receber e tratar a requisição. O exemplo do laboratório cancela o envio no navegador e usa somente dados fictícios.",
+    "terms": [
+      {"term":"DOM atual","definition":"Árvore de elementos mantida pelo navegador naquele momento. JavaScript pode modificá-la depois de o arquivo HTML ser carregado."},
+      {"term":"action","code":true,"definition":"Atributo do formulário que indica a URL de destino do envio nativo. Não contém sozinho a lógica que processa os dados."},
+      {"term":"method","code":true,"definition":"Atributo que seleciona o método HTTP do formulário. Ele não fornece criptografia nem substitui o TLS."},
+      {"term":"POST","code":true,"definition":"Método HTTP no qual formulários costumam enviar pares de nome e valor no corpo da requisição. Não significa conteúdo criptografado."},
+      {"term":"name","code":true,"definition":"Nome do controle que participa da representação dos dados do formulário. É diferente do id usado para identificar o elemento no documento."},
+      {"term":"PHP","definition":"Linguagem executada no servidor quando há um interpretador configurado. O navegador recebe a resposta produzida, não o programa PHP original."}
+    ]
+  },
+  "15": {
+    "anchor": "superglobal",
+    "diagram": "php",
+    "alt": "Apache encaminha uma requisição ao interpretador PHP. A execução usa a identidade do processo web, não a identidade da sessão SFTP. A escrita em arquivo e a resposta HTTP são saídas distintas; o exemplo seguro registra um evento fictício, nunca o conteúdo dos campos.",
+    "terms": [
+      {"term":"superglobal","definition":"Variável disponibilizada pelo ambiente PHP em diferentes escopos. Dados recebidos em $_POST continuam controlados pelo cliente e exigem validação."},
+      {"term":"fopen","code":true,"definition":"Função que tenta abrir um arquivo no modo solicitado. Retorna uma referência ao recurso ou false se a abertura falhar."},
+      {"term":"handle","definition":"Referência a um recurso aberto. Outras funções a utilizam para escrever, ler ou fechar aquele recurso."},
+      {"term":"fwrite","code":true,"definition":"Função que tenta gravar uma string usando o handle. Seu retorno deve ser conferido para saber quantos bytes foram escritos ou se houve falha."},
+      {"term":"fclose","code":true,"definition":"Função que solicita o fechamento do recurso aberto e encerra o uso daquela referência pelo programa."},
+      {"term":"locking","definition":"Coordenação do acesso concorrente a um recurso. Um bloqueio pode impedir que escritas de processos diferentes se misturem."},
+      {"term":"menor privilégio","definition":"Concessão apenas das permissões necessárias à tarefa. Permitir escrita a todos não substitui o diagnóstico de identidade e propriedade."}
+    ]
+  },
+  "16": {
+    "anchor": "resolvedor recursivo",
+    "diagram": "dns",
+    "alt": "Sem uma resposta válida em cache, o cliente consulta um resolvedor recursivo. Ele localiza a zona responsável pela hierarquia DNS e consulta o autoritativo. A resposta contém dados e TTL; a conexão HTTP ao servidor ocorre depois, em um caminho diferente.",
+    "terms": [
+      {"term":"DNS","definition":"Domain Name System: sistema distribuído que publica dados associados a nomes. Não transporta o conteúdo da página web."},
+      {"term":"nome de domínio","definition":"Nome hierárquico administrado no DNS. Pode ser relacionado a endereços, mas não é o próprio endereço IP."},
+      {"term":"URL","definition":"Endereço de um recurso com informações como esquema, host, porta e caminho. É mais do que apenas um nome de domínio."},
+      {"term":"TLD","definition":"Top-Level Domain: nível superior da hierarquia de nomes. No exemplo reservado portal.example.test, test ocupa essa posição."},
+      {"term":"resolvedor recursivo","definition":"Componente que procura uma resposta DNS em nome do cliente, usando cache ou consultando a hierarquia quando necessário."},
+      {"term":"servidor autoritativo","definition":"Servidor responsável por responder com os registros publicados para determinada zona DNS."},
+      {"term":"TTL","definition":"Time to Live: tempo pelo qual uma resposta DNS pode permanecer em cache. Caches distintos podem expirar em momentos diferentes."}
+    ]
+  },
+  "17": {
+    "anchor": "CNAME",
+    "diagram": "registros",
+    "alt": "Um registro A relaciona um nome a um IPv4. Um CNAME declara um alias para outro nome, cujo endereço ainda precisa ser resolvido. Nenhum dos registros cria um redirecionamento HTTP ou inicia o servidor web.",
+    "terms": [
+      {"term":"IPv4","definition":"Versão do protocolo IP cujos endereços possuem 32 bits. O registro A publica um endereço dessa versão."},
+      {"term":"TTL","code":true,"definition":"Tempo pelo qual uma resposta DNS pode ser mantida em cache. Alterar o painel não apaga imediatamente as respostas já armazenadas."},
+      {"term":"A","styled":true,"definition":"Tipo de registro DNS que associa um nome a um endereço IPv4. Não produz uma resposta de redirecionamento HTTP."},
+      {"term":"redirecionamento HTTP","definition":"Resposta que orienta o navegador a solicitar outra URL. É uma operação do servidor HTTP, não o efeito de criar um registro A."},
+      {"term":"CNAME","definition":"Canonical Name: registro que declara um nome como alias de outro nome. Seu valor não é um endereço IP."},
+      {"term":"cache negativo","definition":"Armazenamento temporário de uma resposta que informa a inexistência de um nome ou dado. Também pode influenciar o tempo de percepção de uma mudança."}
+    ]
+  },
+  "18": {
+    "anchor": "handshake TLS",
+    "diagram": "tls",
+    "alt": "O navegador verifica nome, validade e cadeia do certificado durante o handshake TLS e estabelece chaves de sessão. Depois disso, HTTP viaja protegido. O certificado autentica o domínio apresentado, mas não certifica honestidade do conteúdo nem elimina metadados de rede.",
+    "terms": [
+      {"term":"HTTPS","definition":"Uso de HTTP dentro de uma conexão protegida por TLS. Protege o transporte até o domínio apresentado, não a honestidade da página."},
+      {"term":"TLS","definition":"Transport Layer Security: protocolo que fornece confidencialidade, integridade e autenticação na comunicação."},
+      {"term":"handshake TLS","definition":"Negociação inicial de parâmetros e chaves da conexão. Inclui a verificação da identidade apresentada pelo servidor."},
+      {"term":"chave privada","definition":"Segredo criptográfico mantido sob controle do servidor. Não deve ser publicado junto de certificados, imagens ou notas."},
+      {"term":"CA","definition":"Certificate Authority: autoridade certificadora que assina certificados segundo regras reconhecidas por sistemas e navegadores."},
+      {"term":"forward secrecy","definition":"Propriedade de trocas de chaves efêmeras que evita depender apenas da chave privada do certificado para proteger sessões antigas capturadas."}
+    ]
+  },
+  "19": {
+    "anchor": "HTTP-01",
+    "diagram": "certificado",
+    "alt": "Na validação HTTP-01, a autoridade certificadora busca uma resposta temporária no domínio pela porta 80. Após comprovar controle, emite o certificado que o Apache apresenta em HTTPS na porta 443. A chave privada fica no servidor e a renovação precisa ser testada.",
+    "terms": [
+      {"term":"Certbot","definition":"Cliente que automatiza pedidos e administração de certificados por ACME. Com o plugin adequado, também ajusta a configuração do servidor web."},
+      {"term":"ACME","definition":"Automatic Certificate Management Environment: protocolo usado para automatizar a validação de domínio e a emissão de certificados."},
+      {"term":"HTTP-01","definition":"Desafio ACME que verifica uma resposta temporária por HTTP na porta 80. Abrir somente a porta 443 não satisfaz esse desafio."},
+      {"term":"VirtualHost","code":true,"definition":"Configuração do Apache que associa nomes e conexões ao conteúdo e às opções de um site."},
+      {"term":"Security Group","definition":"Controle de tráfego associado à interface da instância. Permitir TCP 443 não faz o Apache escutar nessa porta."},
+      {"term":"renovação","definition":"Obtenção de um novo certificado antes do vencimento. O método de validação e a automação precisam continuar funcionando e ser testados."}
+    ]
+  },
+  "20": {
+    "anchor": "proxy",
+    "diagram": "duas-conexoes",
+    "alt": "No modelo conceitual de laboratório existem duas conexões TLS: navegador para proxy e proxy para aplicação controlada. O intermediário termina uma conexão e inicia a outra. A aplicação continua responsável por validar fatores e emitir a sessão; o modelo não representa uma quebra da criptografia TLS.",
+    "terms": [
+      {"term":"Evilginx","definition":"Framework de intermediação web estudado aqui somente em ambiente próprio. Sua execução não comprova que um fluxo de autenticação foi validado."},
+      {"term":"AiTM","definition":"Adversary-in-the-Middle: posição de um intermediário que participa da conversa entre cliente e aplicação."},
+      {"term":"proxy","definition":"Processo que recebe uma comunicação e inicia outra para encaminhá-la. As duas conexões têm identidades e propriedades próprias."},
+      {"term":"phishlets","definition":"Arquivos de regras específicos de um fluxo web. Descrevem elementos a reconhecer e podem perder compatibilidade quando a aplicação muda."},
+      {"term":"sessão","definition":"Estado estabelecido pela aplicação após autenticar o usuário. Permite continuar a navegação sem reenviar os fatores em cada requisição."},
+      {"term":"session replay","definition":"Tentativa de reutilizar uma sessão em outro cliente. Sua aceitação depende de validade, vínculo e controles da aplicação."},
+      {"term":"passkeys","definition":"Credenciais criptográficas vinculadas à origem. O navegador relaciona a autenticação ao domínio, em vez de fornecer uma assinatura válida a qualquer nome semelhante."}
+    ]
+  },
+  "21": {
+    "anchor": "binário",
+    "diagram": "estados",
+    "alt": "Código-fonte baixado, binário compilado, processo em escuta e configuração validada são estados diferentes. Cada transição exige evidência própria. DNS correto, por exemplo, não comprova que o processo esteja ativo ou que TLS tenha sido validado.",
+    "terms": [
+      {"term":"AiTM","definition":"Posição de intermediação entre navegador e aplicação. Preparar os componentes não comprova que uma autenticação tenha sido reproduzida."},
+      {"term":"glue records","definition":"Dados de endereço usados na delegação quando os nameservers pertencem à própria zona, evitando uma dependência circular de resolução."},
+      {"term":"NS","code":true,"definition":"Tipo de registro DNS que indica os servidores autoritativos de uma zona. É diferente do registro A, que informa um endereço IPv4."},
+      {"term":"toolchain","definition":"Conjunto de ferramentas necessário para transformar código-fonte em programa executável, conforme a linguagem e o projeto."},
+      {"term":"compilação","definition":"Transformação do código-fonte em um programa executável. Não comprova, sozinha, conectividade, escuta ou configuração correta."},
+      {"term":"binário","definition":"Arquivo executável produzido pela compilação. Ele é diferente do código-fonte e dos arquivos de configuração persistente."},
+      {"term":"configuração persistente","definition":"Dados de configuração que permanecem no armazenamento entre execuções. Recompilar o programa não os apaga automaticamente."}
+    ]
+  },
+  "22": {
+    "anchor": "sessão autenticada",
+    "diagram": "sessao",
+    "alt": "Antes de validar todos os fatores, a aplicação ainda não emitiu uma sessão autenticada. Depois da validação, um token pode representar esse estado nas requisições seguintes. A aplicação verifica validade e outros controles; revogar a sessão interrompe sua aceitação. O fluxo completo permanece não reproduzido neste workspace.",
+    "terms": [
+      {"term":"phishlet","definition":"Arquivo YAML de regras para um fluxo web. Localização, sintaxe e compatibilidade precisam ser verificadas separadamente."},
+      {"term":"blacklist","definition":"Lista de bloqueio mantida pela ferramenta. Estado em arquivo e estado já carregado na memória não são a mesma coisa."},
+      {"term":"NAT","definition":"Network Address Translation: tradução de endereços. Clientes de uma rede podem aparecer para um servidor com o mesmo IP público de saída."},
+      {"term":"hostname","definition":"Nome que identifica um host no contexto de rede. Associar um nome na ferramenta não cria automaticamente seus registros DNS."},
+      {"term":"lure","definition":"Endereço de entrada associado a um fluxo configurado no laboratório. Só deve ser usado com aplicação e identidades sintéticas autorizadas."},
+      {"term":"sessão autenticada","definition":"Estado que a aplicação cria após validar os fatores exigidos. Não equivale a ter obtido apenas a senha antes da validação."},
+      {"term":"token","definition":"Valor que pode representar a sessão ou outra autorização. Deve ser protegido como segredo, e sua presença não comprova que outro cliente conseguirá reutilizá-lo."}
+    ]
+  }
+}

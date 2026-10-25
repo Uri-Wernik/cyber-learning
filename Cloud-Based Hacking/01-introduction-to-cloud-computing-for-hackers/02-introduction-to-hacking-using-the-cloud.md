@@ -2,72 +2,72 @@
 
 ## O que é hacking ético
 
-No sentido técnico, *hacking* envolve estudar sistemas, compreender seu funcionamento e encontrar maneiras não previstas de interagir com eles. A mesma habilidade pode ser usada de forma legítima ou abusiva.
+Duas pessoas podem usar o mesmo programa e realizar trabalhos de naturezas muito diferentes. Para entender essa diferença, comece pelo sentido de *hacking*: investigar como um sistema funciona e descobrir interações que não eram as esperadas por seus projetistas. A habilidade descreve uma forma de estudar e agir; por si só, não define legitimidade.
 
-O que torna uma avaliação ética não é a ferramenta utilizada nem a boa intenção declarada. São a autorização válida, o objetivo legítimo, os limites claros e a responsabilidade sobre os efeitos produzidos que separam uma avaliação de uma atividade abusiva.
+Hacking ético é essa investigação conduzida com permissão válida, finalidade legítima e compromisso com os efeitos do teste. Não basta anunciar uma boa intenção. O responsável pela avaliação precisa aceitar limites, evitar impactos desnecessários, proteger as informações encontradas e devolver evidências úteis a quem responde pelo sistema.
 
-**Hacking ético** é o uso autorizado de conhecimentos de segurança para identificar e demonstrar riscos. O profissional deve limitar-se ao escopo, reduzir impactos desnecessários, proteger os dados encontrados e entregar evidências ao responsável pelo sistema.
+O trabalho começa, portanto, antes da ferramenta: é preciso conferir quem autorizou e se essa pessoa tem autoridade sobre os recursos envolvidos. Uma conta de usuário permite usar determinadas funções de uma plataforma, não investigar livremente sua infraestrutura. Da mesma maneira, um programa de *bug bounty*, que recompensa relatos de falhas, concede somente a permissão descrita nas regras publicadas para seus ativos e métodos.
 
-Quem concede a permissão precisa ter autoridade sobre os ativos avaliados. Possuir uma conta em uma plataforma não autoriza testar a própria plataforma. Programas de *bug bounty* também autorizam somente os ativos e métodos descritos em suas regras.
+Essa distinção acompanha todo o curso. Uma descoberta tecnicamente interessante não justifica continuar quando o limite combinado foi atingido. Saber interromper e documentar o que foi observado também é parte da competência técnica.
 
 ## Pentest e Red Team
 
-Embora os termos sejam relacionados, eles não são sinônimos.
+Quando uma avaliação recebe um nome, esse nome deve ajudar a entender sua finalidade. Pentest e Red Team pertencem ao trabalho autorizado, mas organizam perguntas e evidências de maneiras diferentes; não são apenas duas etiquetas para qualquer atividade ofensiva.
 
 ### Pentest
 
-*Penetration test*, ou teste de intrusão, é uma avaliação delimitada por escopo e período. Seu objetivo é encontrar vulnerabilidades, confirmar de maneira controlada se elas podem ser exploradas e demonstrar o impacto ao responsável.
+No pentest, abreviação de *penetration test* ou teste de intrusão, a pergunta central é quais vulnerabilidades podem ser confirmadas nos recursos e no tempo combinados. Uma suspeita de falha precisa ser examinada com cuidado; quando houver demonstração de impacto, ela deve parar no ponto suficiente e previamente permitido.
 
-Um pentest normalmente termina com um relatório contendo metodologia, evidências, riscos e limitações. Ele não garante a descoberta de todas as vulnerabilidades. A exploração deve avançar somente até o ponto necessário e acordado para comprovar o risco.
+O resultado costuma ser um relatório que liga método, evidência, risco e limitações. Ele permite ao responsável compreender o problema sem exigir uma exploração maior do que a necessária. Como o teste cobre um recorte de sistemas, condições e tempo, a ausência de um achado não prova que todas as vulnerabilidades foram eliminadas ou sequer procuradas.
 
 ### Red Team
 
-Red Team é uma avaliação orientada por objetivos e inspirada no comportamento de adversários reais. Em vez de examinar vulnerabilidades isoladamente, procura verificar se uma organização consegue impedir ou perceber uma sequência plausível de ações contra seus ativos.
+Em Red Team, o exercício é organizado em torno de objetivos e de uma sequência plausível de ações inspiradas em adversários. A investigação não se limita a perguntar se uma falha existe: observa também se os controles e a organização conseguem impedir ou perceber o encadeamento previsto no exercício.
 
-Uma operação de Red Team costuma ter escopo, duração e coordenação mais amplos do que um pentest. Pode envolver tecnologia, identidades, processos e, quando explicitamente autorizado, simulações de engenharia social. Nem todo pentest é uma operação de Red Team, e usar esse nome não concede permissão adicional.
+Isso pode exigir coordenação e duração maiores e envolver aplicações, identidades e processos. A participação de pessoas por meio de engenharia social só entra quando estiver expressamente autorizada. Essa amplitude não é uma licença implícita: cada recurso e cada método continuam sujeitos ao acordo, e chamar uma atividade de Red Team não converte um pentest comum em uma operação sem restrições.
 
 ### Hacking ético como categoria geral
 
-Hacking ético é a categoria mais ampla. Pentest e Red Team são modalidades de trabalho autorizado, cada uma com objetivos e regras próprias.
+É útil pensar em níveis de classificação. Hacking ético nomeia o compromisso geral com investigação autorizada e responsável; pentest e Red Team descrevem modalidades dentro desse conjunto. Para distinguir uma da outra, examine a pergunta do trabalho, o acordo e as evidências esperadas, não apenas o nome da ferramenta escolhida.
 
 ## Alvo, ativo e autorização
 
-Um **ativo** é qualquer recurso que possua valor, como uma aplicação, banco de dados, identidade, estação ou informação. Quando esse ativo ou um de seus componentes é selecionado para a avaliação, ele se torna um **alvo** do teste.
+Antes de selecionar um destino, reconheça o que está em jogo. Um ativo é um recurso que tem valor para alguém: pode ser informação, uma identidade, uma aplicação, um banco de dados ou uma estação. O termo alvo indica o ativo, ou componente dele, que foi escolhido para ser examinado; não significa que qualquer recurso valioso esteja liberado para teste.
 
-O **escopo** define o limite: quais domínios, IPs, aplicações, contas, horários e técnicas estão incluídos ou excluídos. A **autorização** é a permissão explícita de quem possui autoridade sobre esses ativos. As **regras de engajamento** transformam essa permissão em instruções operacionais, registrando quem autoriza e executa, o período, os limites de volume e indisponibilidade, os contatos para incidentes, os critérios de interrupção e o tratamento das evidências.
+O escopo desenha a fronteira prática da avaliação. Ele identifica domínios, endereços IP, aplicações e contas permitidos e excluídos, além de horários e técnicas. Já a autorização é o ato de permitir o trabalho por parte de quem tem poder para isso. Uma lista de destinos sem essa permissão não basta, assim como uma permissão vaga não substitui limites claros.
 
-Pessoas envolvidas em simulações de engenharia social exigem autorização organizacional específica. Uma porta aberta, falha aparente ou serviço público não representa consentimento.
+As regras de engajamento tornam o acordo executável: registram responsáveis, período, volume permitido, limites de indisponibilidade, contatos de incidente, condições de interrupção e destino das evidências. Se uma simulação envolver pessoas, também é necessária a autorização organizacional específica correspondente. Encontrar uma porta aberta ou uma falha aparente demonstra uma condição técnica, jamais consentimento.
 
 ## Conta, navegador e sistema não são a mesma coisa
 
-A palavra “invadir” pode esconder resultados muito diferentes. Para avaliar corretamente o impacto, é necessário identificar qual camada foi realmente comprometida.
+Uma descrição como “conseguiu invadir” deixa sem resposta a pergunta mais importante: acesso a quê? Para atribuir impacto a uma observação, separe a identidade usada em um serviço, o ambiente do navegador e o sistema operacional do dispositivo. Evidência em uma dessas camadas não comprova automaticamente resultado nas outras.
 
 ### Comprometimento de conta
 
-Uma conta pode ser comprometida por exposição de senha, abuso da recuperação ou obtenção de um token de sessão. Um **token de sessão** é um segredo emitido pelo serviço depois da autenticação e frequentemente armazenado em um cookie. Enquanto estiver válido, pode permitir ações como aquela conta sem revelar a senha.
+No caso de uma conta, o problema pode estar na senha exposta, na recuperação de acesso ou na sessão já estabelecida. Depois de autenticar o usuário, o serviço pode emitir um token de sessão, um valor secreto que representa aquele estado e frequentemente fica em um cookie. Enquanto aceito pelo serviço, esse valor pode permitir ações da conta sem que a senha seja conhecida.
 
-Capturar uma sessão após autenticação legítima não significa quebrar criptograficamente o MFA. O resultado depende do tipo de autenticação, vínculo da sessão ao dispositivo, validade do token e outros controles.
+Por isso, observar uma sessão obtida depois de uma autenticação legítima é diferente de demonstrar uma quebra criptográfica de MFA. O alcance depende do método de autenticação, da validade do token, de eventual vínculo ao dispositivo e de outros controles. A evidência deve dizer quais ações a conta permitiu naquela condição, sem atribuir acesso a toda a máquina.
 
 ### Comprometimento do navegador
 
-Uma página comum executa código em um contexto limitado pelo navegador. A **política de mesma origem** separa conteúdos de origens diferentes, e a **sandbox** restringe o acesso direto ao sistema.
+Uma página aberta não recebe, por padrão, os mesmos poderes de um programa administrativo. O navegador impõe fronteiras: a política de mesma origem separa conteúdos de origens distintas, e uma sandbox restringe a interação direta do conteúdo web com o restante do sistema.
 
-Recursos como câmera, microfone e localização normalmente dependem de permissão do usuário ou de autorização já concedida. Carregar uma página não garante acesso automático a esses recursos.
+Câmera, microfone e localização normalmente passam por permissões do usuário, inclusive permissões que podem ter sido concedidas antes. Assim, ver uma página carregada não é evidência de acesso a esses recursos. É necessário identificar a ação, a permissão e o resultado observado, em vez de supor que todo código de página controla o dispositivo.
 
 ### Comprometimento do sistema
 
-Há comprometimento do sistema quando alguém obtém capacidade de executar código, usar uma conta local ou controlar um processo no dispositivo. O alcance inicial continua limitado pelos privilégios desse processo ou usuário.
+A camada do sistema é alcançada quando há execução de código, utilização de uma conta local ou controle de um processo no dispositivo. Ainda assim, o primeiro resultado herda as permissões da identidade ou do processo envolvido; execução não é sinônimo de administração.
 
-Controle administrativo, persistência e acesso a outros usuários são etapas distintas. Uma interface remota não cria privilégios que o processo não possui.
+Para afirmar poder administrativo, permanência após reinício ou acesso a outros usuários, seria necessária evidência própria de cada capacidade. Uma janela de controle remoto apenas apresenta funções disponíveis ao processo: a aparência dessa interface não aumenta seus privilégios.
 
 ### Uma camada pode levar a outra, mas não há equivalência
 
-Uma conta comprometida pode expor dados daquele serviço. Uma sessão web pode fornecer acesso a aplicações abertas. Uma vulnerabilidade no navegador pode, em situações específicas, ser combinada com outra falha para alcançar o sistema. Cada transição exige condições adicionais e deve ser comprovada separadamente.
+As camadas podem se relacionar sem serem equivalentes. O acesso a uma conta pode revelar dados do serviço, e uma sessão web pode permitir ações em aplicações autenticadas. Em situações específicas, uma falha do navegador pode ser combinada com outra para atingir o sistema. Cada passagem exige condições adicionais; documentar a primeira não permite declarar as seguintes como realizadas.
 
 ## Papel da nuvem no curso
 
-A nuvem fornecerá infraestrutura remota para os laboratórios. Ela poderá hospedar máquinas, aplicações e serviços de apoio, mas não altera os requisitos de autorização nem garante que uma técnica funcione.
+Neste curso, a nuvem será o lugar onde máquinas, aplicações e serviços auxiliares de laboratório poderão funcionar. Ela fornece infraestrutura remota, não uma autorização nova nem uma garantia de sucesso. A responsabilidade pelo uso e pelos dados continua com quem prepara e executa o exercício.
 
-Os fundamentos técnicos estão na [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md). A razão para utilizá-la em testes autorizados será aprofundada na [Aula 4: Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md).
+A [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md) apresenta os fundamentos dessa infraestrutura, enquanto a [Aula 4: Por que usar nuvem em testes](04-why-learn-cloud-computing-as-a-hacker.md) examina sua utilidade operacional.
 
-A nuvem não torna uma atividade ética, privada ou anônima. Também não existe técnica universal capaz de comprometer qualquer conta, navegador ou sistema. Quando alguém afirma ter “controle total”, ainda é necessário verificar privilégios, alcance, persistência e restrições. Descrever o resultado com precisão faz parte do trabalho técnico.
+Ao avaliar qualquer demonstração, mantenha as perguntas construídas aqui: qual recurso estava permitido, qual camada foi atingida, quais privilégios existiam e o que a evidência mostrou? “Controle total” não dispensa verificar alcance, persistência e restrições. Tampouco executar na nuvem torna a atividade automaticamente ética, privada ou anônima.

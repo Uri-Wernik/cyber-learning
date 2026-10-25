@@ -21,6 +21,7 @@
     "03-phishing/17-linking-domain-names-to-phishing-pages/",
     "03-phishing/18-introduction-to-https/",
     "03-phishing/19-enabling-https-on-phishing-pages/",
+    "blue-team/01-da-exposicao-a-investigacao/",
     "04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx/",
     "04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud/",
     "04-phishing-bypassing-2fa-mfa/22-bypassing-2fa-mfa/",
@@ -95,9 +96,9 @@
     if (!root) return;
 
     if (!loadPromise) {
-      loadPromise = loadScript("quiz-fixation-data.js?v=20261005-2")
-        .then(() => loadScript("quiz-exam-data.js?v=20260924-4"))
-        .then(() => loadScript("quiz.js?v=20261005-2"));
+      loadPromise = loadScript("quiz-fixation-data.js?v=20261005-3")
+        .then(() => loadScript("quiz-exam-data.js?v=20261006-1"))
+        .then(() => loadScript("quiz.js?v=20261006-2"));
     }
 
     loadPromise.catch(showLoadError);

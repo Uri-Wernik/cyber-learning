@@ -1,0 +1,40 @@
+{
+  "secao": "Phishing e sessões autenticadas",
+  "nota": "Procedência, referências e estado de validação separados da narrativa. Os limites éticos e as distinções entre demonstração e laboratório também permanecem na prosa.",
+  "aulas": [
+    {
+      "aula": 20,
+      "titulo_original": "Introduction to Evilginx",
+      "status": "Publicado; demonstração ainda não reproduzida em laboratório.",
+      "referencias": [
+        "https://github.com/kgretzky/evilginx2",
+        "../../03-phishing/18-introduction-to-https/",
+        "../../03-phishing/19-enabling-https-on-phishing-pages/"
+      ]
+    },
+    {
+      "aula": 21,
+      "titulo_original": "Installing Evilginx on the Cloud",
+      "status": "Compilação, DNS autoritativo, emissão TLS e autenticação exigem validação separada; não foi reproduzido integralmente neste workspace.",
+      "referencias": [
+        "https://github.com/kgretzky/evilginx2",
+        "https://help.evilginx.com/community",
+        "../../03-phishing/16-domain-name-and-dns-basics/",
+        "../../03-phishing/18-introduction-to-https/"
+      ]
+    },
+    {
+      "aula": 22,
+      "ilustracao_anterior_preservada": "../../04-phishing-bypassing-2fa-mfa/assets/fluxo-autenticacao-proxy-mfa.png",
+      "titulo_original": "Bypassing 2FA / MFA",
+      "status": "A carga dos phishlets e a correção da blacklist funcionaram segundo o relato do estudante; autenticação completa e reutilização de sessão ainda não foram reproduzidas.",
+      "referencias": [
+        "https://github.com/kgretzky/evilginx2",
+        "https://help.evilginx.com/community/guides/phishlets",
+        "https://help.evilginx.com/community/guides/blacklist",
+        "https://help.evilginx.com/community/guides/lures",
+        "https://help.evilginx.com/community/guides/sessions"
+      ]
+    }
+  ]
+}

@@ -1,43 +1,49 @@
 # Intermediando uma autenticação em tempo real
 
-> **Status:** publicado; demonstração ainda não reproduzida em laboratório.
->
-> **Título original:** Introduction to Evilginx
->
-> **Escopo:** compreensão conceitual de um proxy reverso adversário em ambiente próprio e isolado. Nenhuma conta, credencial, sessão ou serviço de terceiros deve participar do exercício.
+Você entra em uma aplicação, informa a senha, confirma o segundo fator e começa a navegar. Na página seguinte, ela não pede tudo de novo. Ainda bem: ninguém quer fazer uma prova de identidade a cada clique. Mas como o serviço sabe que aquele novo pedido continua sendo seu?
 
-Nas aulas anteriores, uma página estática recebia um formulário e podia registrar os valores enviados. Esse modelo ajuda a compreender requisições HTTP, processamento no servidor e armazenamento, mas para quando o site legítimo exige uma etapa adicional de autenticação. A pergunta desta aula é por que intermediar a autenticação **enquanto ela acontece** também pode expor a sessão criada depois do segundo fator.
+A resposta envolve uma sessão. E ela muda a pergunta desta aula: em vez de olhar apenas para a senha digitada, vamos acompanhar o que a aplicação cria **depois de aceitar o login**. É nesse momento que aparece um segredo diferente, capaz de representar o acesso já autorizado.
 
-O exemplo apresentado pelo instrutor utiliza **Evilginx**, um framework que assume a posição de **Adversary-in-the-Middle (AiTM)** entre o navegador e uma aplicação web. O nome do projeto vem de uma versão antiga baseada em uma modificação do Nginx; a versão atual do projeto é uma aplicação independente escrita em Go. Portanto, Evilginx não deve ser confundido com o servidor web Nginx instalado normalmente em milhares de serviços legítimos.
+O instrutor usou o **Evilginx** para apresentar essa relação. A ferramenta pode atuar como um intermediário entre navegador e aplicação, posição chamada **Adversary-in-the-Middle (AiTM)**. Aqui, estudaremos o mecanismo em ambiente próprio e isolado, com aplicação controlada e identidades sintéticas. Nenhuma conta, credencial, sessão ou serviço de terceiros faz parte do exercício. A demonstração ainda não foi reproduzida neste laboratório.
 
 ## O limite de uma página estática
 
-Em uma autenticação baseada somente em senha, copiar usuário e senha pode fornecer o segredo necessário para uma nova tentativa de login. Quando existe **Two-Factor Authentication (2FA)**, ou autenticação de dois fatores, o serviço exige duas categorias de evidência, como senha e código temporário. **Multi-Factor Authentication (MFA)** é o termo mais amplo para autenticação com dois ou mais fatores independentes.
+Uma página pode ter a aparência de uma tela de entrada sem participar da autenticação verdadeira. Receber o texto de um campo não faz a aplicação original aceitar aquela pessoa. A cópia visual e o serviço que verifica a identidade são coisas diferentes.
 
-Uma página estática consegue receber o que o participante digita, mas não participa automaticamente da conversa com o serviço legítimo. Se apenas armazenar a senha e mostrar um erro, ela não conduz o navegador ao desafio de MFA, não apresenta a resposta real do serviço e não recebe a sessão autenticada criada ao final.
+Isso fica mais claro quando existe um segundo fator. Na **Two-Factor Authentication (2FA)**, a aplicação exige duas categorias de evidência, como uma senha e a prova de posse de um dispositivo. **Multi-Factor Authentication (MFA)** é o nome mais amplo para o uso de dois ou mais fatores independentes. Duas telas de senha não viram dois fatores só porque ocupam páginas separadas.
 
-O proxy reverso muda essa arquitetura. Em vez de encerrar o fluxo na página controlada pelo operador, ele encaminha mensagens entre os dois lados em tempo real.
+Agora imagine uma página que guarda o primeiro valor e mostra um erro. Ela não recebe automaticamente o desafio verdadeiro, não entrega a resposta ao serviço e não ganha uma sessão autenticada por ter imitado o formulário. Falta a conversa com quem realmente decide se o login será aceito.
+
+O modelo apresentado nesta seção muda justamente essa conversa. Um intermediário acompanha as mensagens enquanto elas circulam. Não se trata apenas de guardar uma fotografia da entrada: há um programa recebendo pedidos de um lado e fazendo pedidos do outro.
 
 ## O que um proxy reverso faz
 
-Um **proxy** é um processo que recebe uma comunicação em nome de outro lado e inicia uma segunda comunicação para encaminhá-la. Em usos legítimos, proxies reversos podem distribuir carga, aplicar políticas ou publicar aplicações internas. O comportamento não é malicioso por natureza; finalidade, autorização e tratamento dos dados determinam o uso.
+Pense em um atendimento que recebe uma solicitação e precisa consultar outro serviço para responder. Há duas conversas: uma com quem pediu e outra com quem fornece a informação. Essa é uma aproximação útil para entender um **proxy**, processo que recebe uma comunicação e abre outra para encaminhá-la.
 
-No cenário estudado, o navegador se conecta ao domínio do laboratório, e o proxy abre outra conexão com a aplicação de destino. São duas conexões distintas:
+A comparação para aí: um proxy não é uma pessoa lendo recados. Ele trabalha com conexões, protocolos e mensagens. Proxies reversos são usados legitimamente para publicar aplicações, distribuir carga e aplicar políticas. O nome da arquitetura não determina sua finalidade; autorização e tratamento dos dados fazem parte dessa avaliação.
+
+No laboratório conceitual, os dois trechos são:
 
 1. navegador do participante para o proxy, usando o domínio e o certificado TLS do laboratório;
 2. proxy para a aplicação, usando o domínio e o certificado TLS da aplicação.
 
-O proxy decifra a primeira conexão porque controla sua própria chave TLS, lê ou transforma a mensagem e a cifra novamente na segunda conexão. Ele não quebra a criptografia TLS da aplicação. O navegador também não está conectado diretamente ao domínio legítimo: o nome completo exibido na barra de endereços continua sendo uma evidência essencial.
+Repare no detalhe: **duas conexões protegidas não significam uma única conexão de ponta a ponta entre navegador e aplicação**. O primeiro TLS termina no proxy. Por controlar a identidade criptográfica que apresenta nesse trecho, ele recebe ali o conteúdo decifrado. Depois, atua como cliente de outra conexão TLS até a aplicação. Não precisa quebrar a criptografia dela para ocupar essa posição.
 
-Para manter a navegação funcional, a ferramenta precisa adaptar hosts, links, cabeçalhos, formulários e cookies que atravessam o proxy. No Evilginx, as regras específicas de um fluxo são descritas por arquivos chamados **phishlets**. Um phishlet não é apenas uma cópia visual de uma página; ele define como determinados hosts e elementos do protocolo serão intermediados. Essas definições dependem do comportamento da aplicação e podem deixar de funcionar quando esse comportamento muda.
+O navegador continua mostrando o domínio ao qual se conectou: o do intermediário. O cadeado, ou outro indicador equivalente do navegador, não transforma esse nome no domínio da aplicação. A proteção vale para a conexão estabelecida, com a identidade apresentada naquele endereço.
+
+Há ainda um trabalho de compatibilidade. Uma aplicação usa hosts, links, cabeçalhos, formulários e cookies que precisam continuar fazendo sentido ao atravessar o intermediário. Os arquivos de regras específicos desse fluxo são chamados **phishlets**. Eles não são apenas uma página salva: descrevem elementos que a ferramenta deve reconhecer e adaptar. Se a aplicação muda, a regra pode deixar de corresponder a ela.
+
+O nome Evilginx também merece cuidado. Ele vem de uma versão antiga que modificava Nginx; a versão atual é uma aplicação independente escrita em Go. Não confunda o framework estudado com o servidor Nginx convencional, usado em muitos ambientes legítimos.
 
 ## Da senha à sessão autenticada
 
-Depois de validar os fatores exigidos, uma aplicação web normalmente cria uma **sessão**. A sessão permite que o usuário continue navegando sem reenviar senha e segundo fator a cada requisição.
+Depois de verificar os fatores, a aplicação precisa reconhecer os pedidos seguintes. Para isso, normalmente cria uma **sessão**: um estado que relaciona aquela navegação à identidade que acabou de ser autenticada.
 
-O navegador costuma guardar em um ou mais cookies um identificador ou token opaco associado a essa sessão. Enquanto esse segredo estiver válido, o servidor pode aceitar requisições como pertencentes à conta autenticada. Por isso, um token de sessão deve ser protegido como uma credencial, mesmo que não revele a senha.
+Uma comparação ajuda. A senha e o segundo fator participam da verificação na entrada; a sessão se parece com uma credencial temporária de circulação concedida depois dela. Não é um crachá literal: tecnicamente, o navegador costuma guardar um identificador ou token opaco em um ou mais cookies, e a aplicação verifica esses dados nas requisições posteriores.
 
-O fluxo conceitual demonstrado na aula foi este:
+“Opaco” quer dizer que o valor não precisa explicar seu significado para quem o lê. Uma sequência aparentemente sem sentido ainda pode representar um acesso importante. **Não conter a senha não torna o token inofensivo.** Enquanto aceito, ele pode relacionar um pedido à sessão da conta.
+
+O esquema abaixo descreve a sequência conceitual da demonstração, não uma autenticação já reproduzida neste workspace:
 
 ```mermaid
 sequenceDiagram
@@ -59,27 +65,29 @@ sequenceDiagram
 	P-->>B: Encaminha a sessão e a resposta
 ```
 
-O participante fornece a senha ao domínio do proxy. O proxy consegue observá-la antes de encaminhá-la. Se a aplicação solicitar um código temporário, o desafio retorna pelo mesmo caminho. Quando o participante responde corretamente, o proxy transmite a resposta ainda válida. A aplicação realiza a verificação legítima e, se todas as condições forem satisfeitas, emite os dados da sessão.
+Primeiro, as entradas da autenticação atravessam o intermediário. O desafio do segundo fator volta pelo mesmo caminho, e a resposta do participante segue enquanto ainda é válida. Até aqui, ninguém deve concluir que a sessão existe: **quem verifica os fatores e decide emitir a sessão é a aplicação**.
 
-Como esses dados também atravessam o intermediário, uma implementação configurada para reconhecê-los pode registrá-los. A tentativa posterior de apresentar uma sessão capturada em outro cliente é chamada de **session replay**, ou reutilização de sessão.
+Se essa decisão for favorável, a resposta que representa o estado autenticado também passa pelo proxy. Isso explica por que um intermediário capaz de reconhecer esses elementos pode observá-los. Apresentar posteriormente esses dados em outro cliente é uma tentativa de **session replay**, ou reutilização de sessão. Observar um token e conseguir reutilizá-lo são resultados distintos.
 
 ## Por que isso não quebra o MFA
 
-A expressão “bypass de MFA” descreve o resultado aparente de uma reutilização bem-sucedida: outro cliente acessa uma sessão sem digitar novamente o segundo fator. O mecanismo, porém, não descobre o código nem rompe a criptografia do MFA. O próprio participante resolveu o desafio correto, e o proxy aproveitou a sessão que o serviço emitiu depois dessa autenticação válida.
+Vamos separar dois momentos. Antes da validação, a aplicação está perguntando quem quer entrar. Depois, ela já pode ter concedido uma sessão. Atacar o estado criado no segundo momento não demonstra que o desafio do primeiro foi descoberto ou quebrado.
 
-Essa distinção explica por que obter somente a senha não produz o mesmo efeito. A senha atua durante a autenticação; o token representa o estado criado após a autenticação. O código temporário pode expirar em segundos, enquanto a sessão pode permanecer válida por outro período definido pelo serviço.
+É por isso que “bypass de MFA” pode descrever uma aparência sem explicar bem a causa. Se outro cliente é aceito com uma sessão já autenticada, ele parece ter pulado o segundo fator. Mas, no mecanismo estudado, o participante respondeu ao desafio verdadeiro, e a aplicação validou a resposta. O problema está na exposição e eventual aceitação posterior da sessão.
 
-Também não se deve concluir que qualquer cookie isolado concede “controle total”. Uma aplicação pode usar vários cookies, tokens adicionais e estado mantido no navegador ou no servidor. Ela pode vincular a sessão ao dispositivo, impor prazo curto, detectar mudança de contexto, exigir nova autenticação para ações sensíveis ou revogar a sessão. Cada resultado precisa ser comprovado no ambiente e na versão realmente testados.
+Os prazos também podem ser diferentes. Um código temporário pode vencer em segundos, enquanto a sessão continua válida pelo período escolhido pelo serviço. A senha é uma entrada do login; o token pode representar o estado resultante. Guardar uma não equivale automaticamente a obter o outro.
 
-Credenciais vinculadas à origem, como passkeys e chaves de segurança baseadas em WebAuthn, acrescentam outra limitação importante. O navegador relaciona a operação criptográfica ao domínio que está aberto. Um domínio semelhante controlado pelo proxy não recebe uma assinatura válida para a origem legítima, o que torna esse método resistente ao fluxo de phishing intermediado descrito aqui.
+Nem por isso qualquer cookie concede “controle total”. A aplicação pode exigir vários valores, estado no navegador ou no servidor, vínculo ao dispositivo e novas verificações para ações sensíveis. Expiração, revogação e mudanças de contexto também influenciam a aceitação. Um teste só sustenta uma conclusão sobre as condições realmente verificadas.
+
+As **passkeys** e chaves de segurança baseadas em WebAuthn acrescentam uma diferença importante: a operação criptográfica é vinculada à origem. O navegador considera o domínio aberto. Um nome parecido não recebe uma assinatura válida para a origem legítima só porque a página tem aparência convincente. Essa propriedade torna o método resistente ao fluxo de phishing intermediado descrito aqui, sem transformar todos os aspectos de uma conta em invulneráveis.
 
 ## O que foi observado na demonstração
 
-O instrutor mostrou duas situações. Na primeira, uma autenticação baseada em senha foi encaminhada e os valores apareceram no console da ferramenta. Na segunda, uma conta de demonstração com segundo fator concluiu o login através do proxy; depois, dados apresentados como pertencentes à sessão foram importados em outro navegador, que apareceu autenticado.
+No curso, o instrutor mostrou primeiro valores de um login por senha no console da ferramenta. Depois, apresentou uma conta que concluiu o segundo fator através do proxy. Dados descritos como de sessão foram levados a outro navegador, que apareceu autenticado.
 
-Essas são **observações da demonstração do curso**, não resultados validados neste workspace. Nenhum valor de senha, código temporário, cookie ou token mostrado na aula foi preservado. A demonstração também não prova que uma única técnica funcione contra todos os serviços, todos os tipos de MFA ou todos os controles de sessão.
+Esse é o tamanho da evidência disponível: **observações da demonstração do curso**. O fluxo não foi reproduzido neste workspace, e nenhum valor de senha, código, cookie ou token da apresentação foi preservado. Não há fundamento para transformar dois exemplos em garantia de funcionamento contra qualquer serviço ou fator.
 
-Uma validação autorizada teria de mostrar separadamente:
+Em um laboratório próprio, a investigação precisaria distinguir:
 
 - o domínio que o navegador realmente abriu;
 - as duas conexões TLS e seus destinos;
@@ -88,18 +96,12 @@ Uma validação autorizada teria de mostrar separadamente:
 - a aceitação ou recusa dessa sessão em outro contexto;
 - a revogação e remoção de todos os artefatos ao final.
 
-Logs e capturas destinados ao livro não devem conter os próprios segredos. Rótulos, horários e identificadores fictícios são suficientes para explicar a mudança de estado.
+Essas observações não exigem publicar o segredo. Um registro com rótulos e identificadores fictícios pode mostrar que o estado mudou. Exibir um token válido apenas acrescenta risco ao material que será compartilhado.
 
 ## Limites do laboratório autorizado
 
-Controlar o servidor do proxy não concede autorização sobre uma plataforma externa. Um teste seguro exige uma aplicação ou provedor de identidade criado para o laboratório, contas sintéticas e consentimento explícito de todos os participantes. Encaminhar logins de terceiros, mesmo usando uma conta pessoal, pode afetar infraestrutura fora do escopo e violar termos de serviço.
+Ter a chave de um laboratório não dá a chave de todos os prédios da rua. Da mesma forma, controlar o proxy não concede autorização sobre uma plataforma externa. A aplicação de destino, as identidades e os participantes precisam estar cobertos pelo exercício. Uma conta pessoal em um serviço não transfere ao estudante autoridade sobre a infraestrutura desse serviço.
 
-Fora de uma avaliação formalmente autorizada, coletar credenciais ou sessões permite assumir identidades e causa dano direto. O domínio, as mensagens e a infraestrutura também deixam rastros em DNS, certificados, logs da nuvem, registros HTTP e eventos da aplicação.
+Fora desse escopo, a coleta de credenciais ou sessões pode permitir assumir identidades e causar dano. Também não há invisibilidade: DNS, certificados, nuvem, requisições HTTP e eventos da aplicação deixam registros. Estudar o mecanismo exige reconhecer esses rastros, não prometer anonimato.
 
-A próxima aula separará as camadas necessárias para iniciar a ferramenta em uma instância descartável: código-fonte, compilação, portas, DNS autoritativo, TLS e configuração interativa. Instalar ou abrir o programa será apenas uma mudança de estado local; não provará que o DNS, os certificados ou um fluxo de autenticação estejam funcionando.
-
-## Referências
-
-- [Repositório oficial do Evilginx](https://github.com/kgretzky/evilginx2)
-- [O que o HTTPS protege](../03-phishing/18-introduction-to-https.md)
-- [Emitindo e instalando um certificado com Certbot](../03-phishing/19-enabling-https-on-phishing-pages.md)
+Na próxima aula, mudaremos a pergunta. Em vez de acompanhar a autenticação, vamos distinguir código baixado, programa compilado e serviços configurados. O console abrir será uma evidência útil, mas continuará longe de provar que uma autenticação completa funcionou.

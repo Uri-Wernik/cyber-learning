@@ -5,9 +5,22 @@
 
   document.documentElement.classList.toggle("is-standalone", standalone);
 
+  const syncThemeColor = () => {
+    const dark = document.body.dataset.mdColorScheme === "slate";
+    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+      meta.content = dark ? "#15211e" : "#e8ebe3";
+    });
+  };
+  syncThemeColor();
+  new MutationObserver(syncThemeColor).observe(document.body, {
+    attributes: true,
+    attributeFilter: ["data-md-color-scheme"],
+  });
+
   if (
     !("serviceWorker" in navigator) ||
-    ["localhost", "127.0.0.1"].includes(window.location.hostname)
+    (["localhost", "127.0.0.1"].includes(window.location.hostname) &&
+      !new URLSearchParams(location.search).has("offline-test"))
   ) {
     return;
   }
@@ -21,6 +34,8 @@
       .register(new URL("service-worker.js", appRoot), {
         scope: appRoot.pathname,
       })
-      .catch(() => {});
+      .catch((error) => {
+        console.error("Não foi possível ativar a leitura offline.", error);
+      });
   });
 })();

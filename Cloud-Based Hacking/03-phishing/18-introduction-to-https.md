@@ -6,29 +6,29 @@
 >
 > **Escopo:** fundamentos de HTTPS e TLS aplicados a um domínio e servidor próprios. Um certificado válido protege o transporte até o domínio apresentado; ele não torna legítima uma página criada para imitar terceiros.
 
-Na [aula anterior](17-linking-domain-names-to-phishing-pages.md), o DNS passou a fornecer o IPv4 público do servidor quando o domínio do laboratório era consultado. A página, porém, ainda era acessada por HTTP. Nesta aula, a pergunta muda: como navegador e servidor protegem as mensagens contra leitura e alteração durante o trânsito?
+Encontrar o servidor certo não impede que as mensagens sejam observadas no caminho. A [aula anterior](17-linking-domain-names-to-phishing-pages.md) tratou do DNS que fornece o IPv4 público da instância; o acesso web continuava por HTTP. Agora precisamos entender o que protege uma requisição entre o momento em que sai do navegador e sua chegada ao servidor, e o que essa proteção deixa de fora.
 
-A resposta é **HTTPS**, o uso do protocolo HTTP dentro de uma conexão protegida por **Transport Layer Security (TLS)**.
+Essa camada de proteção é **Transport Layer Security (TLS)**. Quando HTTP é transportado por uma conexão protegida por TLS, chamamos o conjunto de **HTTPS**. O conteúdo continua sendo uma conversa HTTP de requisições e respostas; muda a forma como essa conversa é protegida durante o transporte.
 
 ## Três propriedades do transporte protegido
 
-Em HTTP sem TLS, um participante que consiga observar ou modificar o caminho de rede pode ler requisições e respostas, alterar conteúdo ou capturar dados enviados. O método `POST` não resolve esse problema: ele muda a forma e a finalidade da requisição, não fornece criptografia.
+Sem TLS, quem tiver condições de observar ou interferir no caminho de rede poderá ler mensagens HTTP, capturar dados e modificar conteúdo. Escolher `POST` não elimina essa possibilidade. O método descreve a forma e a finalidade do pedido, mas não fornece um mecanismo criptográfico para proteger o que atravessa a rede.
 
-TLS acrescenta três propriedades principais ao transporte:
+Para responder a esse problema, TLS combina três propriedades do transporte, que precisam ser compreendidas separadamente:
 
 - **confidencialidade:** o conteúdo da comunicação é cifrado para que não seja compreendido apenas pela captura dos pacotes;
 - **integridade:** alterações feitas no tráfego podem ser detectadas, em vez de serem aceitas silenciosamente;
 - **autenticação do servidor:** o cliente verifica se o certificado apresentado é válido para o nome solicitado e se conduz a uma autoridade certificadora confiável.
 
-Essas garantias têm limites. HTTPS não confirma que o conteúdo é honesto, não impede que a própria aplicação armazene dados de forma insegura e não remove malware do servidor ou do cliente. Depois que a aplicação recebe e decifra a requisição, ela ainda precisa tratar os dados com segurança.
+As três garantias dizem respeito à comunicação, não à conduta das aplicações nas pontas. Depois de decifrar uma requisição, o servidor pode tratá-la corretamente ou armazenar dados de maneira insegura. HTTPS não corrige essa decisão, não comprova honestidade do conteúdo e não remove malware do cliente ou do servidor. Proteger o trajeto não equivale a proteger tudo o que acontece depois da chegada.
 
-Alguns metadados de rede também continuam observáveis, como os endereços IP e a quantidade aproximada de dados transferidos. Portanto, criptografar o conteúdo não torna a comunicação invisível.
+Há também informações que não desaparecem com a cifragem do conteúdo. Endereços IP e quantidade aproximada de dados transferidos podem continuar observáveis. A comunicação fica protegida em aspectos específicos, não invisível para todos os participantes da rede.
 
 ## Do TCP ao HTTP protegido
 
-No fluxo tradicional estudado aqui, o navegador resolve o domínio e abre uma conexão TCP com a porta `443` do servidor. A porta é um identificador lógico usado para entregar a conexão ao processo correto; liberar `443` no Security Group não inicia o Apache, e iniciar o Apache não abre sozinho o caminho na nuvem.
+No fluxo tradicional deste módulo, primeiro o navegador resolve o nome e abre TCP para a porta `443` do servidor. Porta é um identificador lógico de `0` a `65535`, não uma entrada física. A conexão precisa chegar ao processo que atende esse identificador. Permitir `443` no Security Group não inicia o Apache, assim como iniciar o Apache não libera automaticamente a regra de entrada na nuvem.
 
-Antes de transmitir a requisição HTTP, cliente e servidor executam o **handshake TLS**, uma negociação que define os parâmetros de segurança e estabelece chaves de sessão.
+Antes de enviar HTTP por essa conexão, os dois lados realizam o **handshake TLS**. Essa negociação inicial escolhe parâmetros de segurança, permite verificar a identidade apresentada e estabelece os segredos dos quais serão derivadas as chaves de sessão. Só depois vem a troca de mensagens HTTP protegidas.
 
 ```mermaid
 sequenceDiagram
@@ -45,38 +45,38 @@ sequenceDiagram
     S-->>B: Resposta HTTP cifrada
 ```
 
-O cliente anuncia versões e algoritmos compatíveis. O servidor escolhe parâmetros, apresenta sua cadeia de certificados e prova que controla a chave privada correspondente. O navegador verifica, entre outros pontos, se o nome da URL aparece no certificado, se o período de validade inclui a data atual e se as assinaturas formam uma cadeia até uma raiz confiável.
+A negociação começa com o cliente anunciando versões e algoritmos que aceita. O servidor seleciona parâmetros, fornece a cadeia de certificados e demonstra controle da chave privada correspondente. O navegador não deve aceitar apenas a existência de um certificado: verifica o nome da URL, o período de validade e as assinaturas que conduzem a uma raiz confiável. São essas relações que sustentam a autenticação do servidor.
 
-Em TLS moderno, a chave pública do certificado não é usada para cifrar diretamente todas as páginas, imagens e senhas. O handshake emprega criptografia assimétrica para autenticação e estabelecimento seguro de segredos; a partir deles, cliente e servidor derivam chaves simétricas temporárias para proteger os dados da sessão com eficiência.
+Em protocolos TLS modernos, não é a chave pública do certificado que cifra diretamente cada página ou imagem transmitida. A criptografia assimétrica participa da autenticação e do estabelecimento seguro de segredos no handshake. Desses segredos, cliente e servidor derivam chaves simétricas temporárias, adequadas à proteção eficiente dos dados da sessão. Separar esses papéis evita imaginar que um certificado seja um recipiente para todo o tráfego.
 
 ## Certificado e chave privada cumprem papéis diferentes
 
-Um certificado TLS é um documento digital que associa uma chave pública a um ou mais nomes. Entre seus campos estão os nomes válidos, o emissor, o período de validade e a chave pública. O navegador recebe esse certificado durante o handshake.
+O certificado TLS pode ser entendido como um documento digital assinado que relaciona uma chave pública a um ou mais nomes. Ele inclui esses nomes, o emissor, a validade e a própria chave pública. O servidor o apresenta no handshake para que o navegador consiga examinar essa associação e a cadeia que a sustenta.
 
-A **chave privada** correspondente permanece sob controle do servidor. Ela permite provar a posse da identidade criptográfica apresentada no certificado. Se essa chave for copiada por terceiros, eles podem tentar se passar pelo servidor enquanto o certificado for aceito; por isso, ela não deve ser enviada a repositórios, diretórios web, capturas ou notas.
+A **chave privada** é a contraparte secreta que deve permanecer sob controle do servidor. Ela permite demonstrar posse da identidade criptográfica associada ao certificado. Se for copiada por terceiros, poderá apoiar tentativas de se passar pelo servidor enquanto o certificado for aceito. Por isso, publicar o certificado e publicar a chave são situações completamente diferentes: a chave nunca deve aparecer em repositórios, diretórios web, capturas ou notas.
 
-A chave privada não é a única capaz de “decifrar todo o tráfego” em protocolos atuais. As chaves de sessão derivadas no handshake protegem os dados. Com mecanismos de troca efêmera, comprometer a chave privada no futuro não basta, por si só, para recuperar sessões antigas que foram capturadas; essa propriedade é chamada **forward secrecy**.
+Isso não significa que a chave privada atual seja uma chave universal para decifrar todo o histórico. As mensagens são protegidas pelas chaves de sessão derivadas na negociação. Com trocas efêmeras, obter futuramente a chave privada do certificado não basta, por si só, para recuperar sessões antigas capturadas. Essa propriedade, chamada **forward secrecy**, limita o efeito de um comprometimento posterior, sem tornar aceitável expor a chave.
 
 ## De onde vem a confiança no certificado
 
-Uma **Certificate Authority (CA)**, ou autoridade certificadora, assina certificados segundo regras que os navegadores reconhecem. O sistema ou navegador mantém um conjunto de raízes confiáveis. O servidor normalmente envia seu certificado e os certificados intermediários necessários para construir a cadeia até uma dessas raízes.
+A assinatura vem de uma **Certificate Authority (CA)**, ou autoridade certificadora, segundo regras reconhecidas pelos clientes. Navegador ou sistema operacional mantém raízes confiáveis. O servidor normalmente fornece seu certificado e os intermediários necessários para construir o caminho até uma dessas raízes. Portanto, a confiança não nasce de um texto dizendo “certificado válido”, mas de verificações sobre essa cadeia.
 
-A [Let's Encrypt](https://letsencrypt.org/) é uma autoridade certificadora pública e sem fins lucrativos. Ela emite certificados gratuitos após validar, por um desafio automatizado, que o solicitante controla o domínio. Essa validação não comprova que o solicitante representa a organização sugerida pelo texto ou pela aparência da página.
+Um exemplo de autoridade pública e sem fins lucrativos é a [Let's Encrypt](https://letsencrypt.org/). Ela oferece certificados gratuitos após um desafio automatizado de controle do domínio. O alcance dessa evidência é técnico: o solicitante demonstrou controlar o nome nas condições do desafio. Isso não comprova vínculo com a organização que uma página exibe ou imita.
 
-O **Certbot** é um cliente do protocolo **Automatic Certificate Management Environment (ACME)**. Ele pode solicitar o certificado, responder ao desafio de controle do domínio e, com o plugin apropriado, ajustar a configuração do Apache. Let's Encrypt é a entidade que emite; ACME é o protocolo de automação; Certbot é um programa cliente. Esses nomes não representam o mesmo componente.
+A automação usa o protocolo **Automatic Certificate Management Environment (ACME)**. Um de seus clientes é o **Certbot**, programa capaz de pedir certificados, atender ao desafio e, com o plugin adequado, configurar o Apache. Assim, Let's Encrypt é a entidade emissora, ACME define a conversa automatizada e Certbot é quem a conduz do lado do administrador. Confundir esses componentes dificulta localizar uma falha de emissão ou instalação.
 
 ## O indicador do navegador não é um selo de honestidade
 
-Interfaces de navegadores mudam com o tempo. Algumas versões mostravam um cadeado com grande destaque; versões atuais podem usar outro ícone de controles do site. O significado técnico não deve depender do desenho: a conexão foi protegida para o host exibido e o certificado passou pelas verificações do navegador.
+O ícone que representa a conexão pode mudar entre versões de navegador. O cadeado destacado em interfaces antigas pode dar lugar a controles do site em outras versões. A leitura técnica permanece: a comunicação foi protegida para o host exibido e o certificado passou pelas verificações daquele cliente. O desenho não acrescenta uma avaliação moral da página.
 
-Um domínio controlado por um fraudador também pode obter um certificado válido. Nesse caso, o TLS protege precisamente a conexão entre a vítima e a infraestrutura fraudulenta. Por isso, o usuário ainda precisa conferir o domínio completo, a finalidade da página e o contexto da solicitação.
+Um fraudador que controla um domínio também pode conseguir certificado válido para ele. Nesse cenário, TLS protege a conversa com a infraestrutura fraudulenta, exatamente como foi solicitado ao abrir aquele host. Conferir o domínio completo, a finalidade da página e o contexto da solicitação continua necessário; o transporte protegido não toma essa decisão pelo usuário.
 
-Da mesma forma, um aviso de **site enganoso** pode vir de serviços de reputação e navegação segura. Esse alerta é diferente do aviso de conexão HTTP. Instalar um certificado não deve ser tratado como forma de contornar uma classificação de conteúdo perigoso.
+Já a indicação de **site enganoso** pode vir de serviços de reputação e navegação segura. Ela trata de risco de conteúdo ou infraestrutura, não simplesmente da ausência de TLS. Instalar certificado não é uma forma legítima de contornar essa classificação, e os dois tipos de alerta devem ser interpretados separadamente.
 
 ## Condições para a próxima etapa
 
-Antes de solicitar um certificado no laboratório, o domínio precisa resolver publicamente para o servidor correto, o Apache deve responder ao nome e os desafios exigidos pela autoridade certificadora precisam alcançar a máquina. A emissão pode falhar mesmo quando o site abre localmente, por exemplo, se o DNS ainda aponta para outro IP ou se o firewall bloqueia a validação.
+Para avançar à emissão no laboratório, é necessário que o nome resolva publicamente para a instância correta, que o Apache reconheça o host e que a autoridade consiga alcançar o desafio exigido. Ver o site abrir localmente não prova essas condições externas. Um DNS apontando para outro IP ou uma filtragem que impeça a validação pode fazer o pedido falhar mesmo com uma página visível no computador do estudante.
 
-A instalação também precisa ser acompanhada por uma verificação real: conexão na porta `443`, certificado emitido para o host correto, cadeia aceita e renovação testada. A [próxima aula](19-enabling-https-on-phishing-pages.md) seguirá esse encadeamento com Let's Encrypt, Certbot, Apache e os controles de rede da nuvem.
+Depois de instalar, a evidência deve incluir conexão em `443`, nomes corretos no certificado, cadeia aceita e teste de renovação. A [próxima aula](19-enabling-https-on-phishing-pages.md) relaciona essas verificações à Let's Encrypt, ao Certbot, ao Apache e aos controles da nuvem. A mensagem de instalação concluída é um estado intermediário, não a comprovação de todo o ciclo.
 
-O objetivo do HTTPS não é fazer uma página “parecer 100% legítima”. É proteger a comunicação entre o cliente e o domínio ao qual ele decidiu se conectar. Confundir proteção de transporte com confiabilidade do conteúdo transforma um mecanismo de segurança em uma falsa garantia.
+A conclusão deve conservar esse limite: HTTPS protege a comunicação com o domínio que o cliente decidiu acessar. Ele não torna a página “100% legítima” nem substitui a análise do conteúdo. Entender o que foi autenticado e o que foi cifrado é justamente o que impede transformar uma proteção real em uma promessa que ela não faz.

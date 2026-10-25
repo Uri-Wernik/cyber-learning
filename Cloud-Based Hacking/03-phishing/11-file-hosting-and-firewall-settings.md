@@ -1,34 +1,34 @@
 # Apache, HTTP e exposição de um serviço web
 
-O laboratório deve usar somente uma instância própria e conteúdo inofensivo. Não hospede malware nem páginas que recebam credenciais reais.
+Por que uma página pode funcionar dentro do servidor e continuar inacessível no seu navegador? Essa pergunta exige separar o programa que atende, o arquivo solicitado e o caminho de rede. Trabalhe somente na sua instância de laboratório com conteúdo inofensivo, sem malware e sem páginas que recebam credenciais reais.
 
-Esta aula aplica máquina remota, IP e porta da [aula 3](../01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md), o acesso SSH da [aula 8](../02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh.md), os comandos e caminhos da [aula 9](../02-cloud-basics/09-linux-terminal-basics.md) e a distinção entre infraestrutura web e influência social da [aula 10](10-introduction-to-phishing.md).
+Reutilizaremos máquina remota, IP e porta da [aula 3](../01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md), o canal SSH da [aula 8](../02-cloud-basics/08-communicating-with-cloud-computers-remotely-using-ssh.md) e a interpretação de comandos e caminhos da [aula 9](../02-cloud-basics/09-linux-terminal-basics.md). A [aula 10](10-introduction-to-phishing.md) permite distinguir esse funcionamento web da influência sobre uma pessoa.
 
-Os comandos são executados no Kali remoto depois da conexão SSH.
+Execute os comandos desta aula no Kali remoto, depois de entrar por SSH. As respostas mencionadas são critérios de interpretação e verificação, não resultados produzidos durante esta reescrita. Nenhuma instalação ou abertura de porta na AWS foi executada aqui.
 
 ## O que é o Apache
 
-**Apache HTTP Server** é um software servidor web. No Kali e em outras distribuições baseadas em Debian, o pacote normalmente se chama `apache2`.
+Apache HTTP Server é o programa que interpreta solicitações web e produz respostas. No Kali e em distribuições da família Debian, o pacote usado para instalá-lo normalmente recebe o nome `apache2`.
 
-Uma **máquina servidora** é o computador ou a VM que fornece recursos. O **software servidor**, como Apache, implementa o protocolo. Quando esse programa é iniciado, surge um **processo** em execução; o sistema administra essa função de longa duração como um **serviço**.
+Aqui, “servidor” pode nomear duas coisas: a máquina, física ou virtual, que oferece recursos e o software que implementa o atendimento. Quando o software começa a executar, ele passa a existir como processo, com recursos e identidade administrados pelo sistema. A função duradoura de atendimento é gerenciada como serviço.
 
-O Apache instalado é um conjunto de arquivos no disco. Quando iniciado, cria um ou mais processos. O sistema gerencia essa função como o serviço `apache2`.
+Isso permite separar três estados: arquivos do Apache presentes no disco, processos do Apache executando e o serviço `apache2` sendo administrado pelo sistema. Instalação não é evidência suficiente de execução, e execução não é prova de alcance público.
 
-Um serviço pode possuir vários processos. Reiniciá-lo pode produzir novos IDs sem alterar o nome lógico.
+Um serviço pode usar mais de um processo. Ao reiniciá-lo, os identificadores dos processos podem mudar sem que a unidade lógica deixe de se chamar `apache2`. O nome do serviço permite administrar essa função sem depender de um ID fixo.
 
 ## HTTP sobre TCP e IP
 
-**HTTP**, ou *Hypertext Transfer Protocol*, é um protocolo da camada de aplicação usado para trocar requisições e respostas web.
+Para pedir um recurso, navegador e servidor precisam concordar sobre a forma da conversa. HTTP, de *Hypertext Transfer Protocol*, define essas requisições e respostas na camada de aplicação.
 
-Neste cenário, HTTP define a requisição e a resposta, TCP estabelece a conexão e transporta bytes ordenados, IP encaminha os pacotes e a porta identifica qual aplicação deve recebê-los.
+No cenário desta aula, os dados HTTP passam por TCP, que fornece o fluxo ordenado de bytes. IP permite o encaminhamento dos pacotes, e a porta de destino identifica a comunicação a ser atendida. São responsabilidades complementares, não nomes diferentes para o mesmo mecanismo.
 
-A porta padrão do HTTP é `80`. Assim:
+Uma porta é um identificador lógico, e a porta padrão de HTTP é `80`. Quando ela não aparece explicitamente em uma URL HTTP, o cliente usa esse padrão. Por isso, o endereço:
 
 ```text
 http://<IP-PUBLICO-DO-LAB>/
 ```
 
-equivale, quanto à porta, a:
+seleciona a mesma porta de destino que a forma explícita:
 
 ```text
 http://<IP-PUBLICO-DO-LAB>:80/
@@ -47,221 +47,219 @@ flowchart LR
     E -->|Resposta HTTP| A
 ```
 
-O navegador inicia TCP com o IP público na porta `80`, e a AWS encaminha o tráfego até a interface. O Security Group verifica a entrada; o sistema entrega a conexão ao processo em escuta; o Apache interpreta a requisição HTTP, localiza o conteúdo e devolve a resposta pela conexão.
+A iniciativa é do navegador: ele tenta estabelecer TCP com o endereço público na porta `80`. A AWS encaminha o tráfego até a interface, e o Security Group aplica as condições de entrada. Se houver passagem e um processo em escuta, o sistema entrega a comunicação ao Apache.
 
-Permitir tráfego no Security Group não cria o Apache. Iniciar Apache também não altera automaticamente o Security Group.
+O Apache então interpreta o pedido, procura ou produz o recurso correspondente e devolve uma resposta HTTP pelo canal. O conteúdo não sai do disco apenas porque uma regra foi criada: precisa existir software atendendo, configuração adequada e recurso disponível.
+
+Da mesma forma, iniciar o software não muda automaticamente o filtro da AWS. Ao diagnosticar o acesso, preserve essa separação entre permissão de tráfego e capacidade de atendimento.
 
 ## Requisição e resposta HTTP
 
-Requisição simplificada:
+Para entender o que chega ao Apache depois da conexão, considere este pedido simplificado de uma imagem. É um exemplo de mensagem HTTP, não um comando de shell:
 
 ```http
 GET /files/one.jpg HTTP/1.1
 Host: <IP-PUBLICO-DO-LAB>
 ```
 
-- `GET`: método que solicita recurso;
-- `/files/one.jpg`: caminho solicitado;
-- `HTTP/1.1`: versão do protocolo;
-- `Host`: servidor de destino.
+`GET` indica o método de solicitação do recurso, e `/files/one.jpg` informa seu caminho. `HTTP/1.1` identifica a versão da conversa; o campo `Host` informa o destino usado na requisição. Esse caminho não é, por si só, um caminho livre para qualquer arquivo do sistema.
 
-Resposta de sucesso pode começar assim:
+Se o recurso for atendido com sucesso, a resposta pode começar pelas linhas abaixo. O tipo declarado ajuda o cliente a interpretar o conteúdo recebido:
 
 ```http
 HTTP/1.1 200 OK
 Content-Type: image/jpeg
 ```
 
-Se o recurso não existir:
+Se o caminho não corresponder a um recurso disponível, o servidor pode responder:
 
 ```http
 HTTP/1.1 404 Not Found
 ```
 
-Um `404` é resposta HTTP: a comunicação chegou ao servidor web, mas o caminho não correspondeu a um recurso disponível.
+Observe o alcance dessa evidência: `404` é uma resposta do protocolo, portanto houve atendimento web, embora o recurso solicitado não tenha sido encontrado. Isso é diferente de uma falha que nem consegue estabelecer a comunicação.
 
-Erro de conexão ou timeout acontece antes de existir resposta HTTP e deve ser investigado em outra camada.
+Recusa de conexão ou tempo esgotado não são códigos HTTP. Nesses casos, a investigação começa no transporte, no listener e no caminho de rede, não na escolha do nome de um arquivo servido. Confundir essas camadas pode levar a alterar regras sem necessidade.
 
 ## Document root
 
-O **document root** é o diretório usado pelo Apache como ponto inicial para servir arquivos.
+O document root é o diretório que funciona como base para localizar o conteúdo publicado. Ele cria uma relação entre o caminho pedido pela Web e os arquivos que a configuração permite servir.
 
-No Kali ou Debian, uma configuração comum usa:
+Em uma configuração comum de Kali ou Debian, essa base é:
 
 ```text
 /var/www/html
 ```
 
-Uma requisição para `/` pode corresponder a `/var/www/html/index.html`. `/files/one.jpg` pode levar a `/var/www/html/files/one.jpg`, enquanto `/pagina.html` pode ser atendido por `/var/www/html/pagina.html`.
+Se essa for a configuração em uso, `/files/one.jpg` pode ser atendido pelo arquivo `/var/www/html/files/one.jpg`, e `/pagina.html`, por `/var/www/html/pagina.html`. Uma solicitação de `/` pode resultar na entrega de `/var/www/html/index.html`, conforme a regra de índice.
 
-Essa associação pode ser alterada. O navegador não recebe acesso livre ao sistema de arquivos; o Apache decide quais recursos servir.
+A relação não é universal nem dá ao navegador acesso irrestrito ao disco. A configuração do Apache determina a base e o atendimento dos recursos. Para diagnosticar um arquivo ausente, confira tanto o caminho solicitado quanto a base efetivamente configurada.
 
 ## O papel de `index.html`
 
-Quando a URL termina em `/`, solicita um diretório, não um arquivo específico. O Apache normalmente procura um arquivo de índice, frequentemente `index.html`.
+Quando o caminho pedido é um diretório, como `/`, não há um nome de arquivo explícito na solicitação. O Apache normalmente consulta sua configuração de índice e procura um nome como `index.html`.
 
-Assim, a requisição:
+Assim, esta URL:
 
 ```text
 http://<IP-PUBLICO-DO-LAB>/
 ```
 
-pode enviar:
+pode fazer o servidor entregar o conteúdo deste arquivo:
 
 ```text
 /var/www/html/index.html
 ```
 
-O nome e comportamento dependem da configuração.
+Isso depende da configuração de índice: o nome não é uma propriedade obrigatória de toda página web. Distinguir o caminho visível na URL do arquivo escolhido pelo servidor ajuda a compreender por que a página inicial pode aparecer sem que `index.html` seja digitado.
 
 ## APT e privilégios administrativos
 
-Kali usa APT para gerenciar pacotes.
+Antes de iniciar o Apache, o pacote precisa estar disponível no sistema. Kali usa APT para administrar pacotes e suas dependências. Essas operações modificam o sistema e podem exigir privilégio administrativo, mas ainda não representam publicação de uma página na Internet.
 
 ### Atualizar o índice
+
+Comece atualizando o conhecimento local sobre os pacotes oferecidos pelos repositórios configurados. No Kali remoto:
 
 ```bash
 sudo apt update
 ```
 
-`sudo` executa a operação com privilégio autorizado, `apt` é o gerenciador de pacotes e `update` atualiza os índices locais dos repositórios. Confirme a conclusão sem erros.
+`sudo` pede a execução do comando seguinte com privilégios permitidos pela política; `apt` é a ferramenta de pacotes, e `update` renova os índices locais. Leia o resultado e confirme a conclusão sem erros antes de seguir.
 
-`apt update` não atualiza automaticamente todos os programas. Obtém metadados recentes sobre pacotes disponíveis.
-
-`sudo` executa o comando seguinte com privilégios conforme a política. Não transforma permanentemente a sessão em `root`.
+O que mudou foram metadados sobre versões e pacotes disponíveis. Esse comando não atualiza automaticamente todos os programas já instalados. Também não torna a sessão inteira permanentemente `root`: o privilégio solicitado por `sudo` se aplica à operação autorizada.
 
 ### Instalar Apache
+
+Com os índices consultados, solicite a instalação do pacote do servidor:
 
 ```bash
 sudo apt install apache2
 ```
 
-Aqui, `install` solicita a instalação e `apache2` é o pacote escolhido. Leia dependências e espaço informado pelo APT antes de confirmar e consulte o serviço depois.
+Depois de `apt`, a operação `install` pede a instalação, e `apache2` identifica o pacote. O APT informa dependências e uso de espaço; examine essa proposta antes de confirmar. Ao concluir, ainda será necessário consultar o estado do serviço, porque a existência do pacote não basta para demonstrar atendimento.
 
-Leia dependências e espaço informado pelo APT antes de confirmar.
-
-PHP não é necessário para servir HTML estático e não precisa ser instalado nesta aula.
+Uma página HTML estática não precisa de um interpretador PHP. Não acrescente PHP a esta instalação apenas por estar trabalhando com um site: ele não é necessário ao conteúdo inofensivo e estático desta aula.
 
 ## Gerenciamento do serviço
 
-Em sistemas com `systemd`, `systemctl` gerencia serviços.
+Quando o sistema usa `systemd` para administrar serviços, `systemctl` é a ferramenta de consulta e controle dessas unidades. Iniciar, verificar e parar são operações diferentes; uma deve produzir a mudança e a outra deve conferir o resultado.
 
 ### Iniciar
+
+Para solicitar o início do atendimento pelo Apache no Kali remoto:
 
 ```bash
 sudo systemctl start apache2
 ```
 
-`systemctl` administra unidades do systemd, `start` solicita a inicialização e `apache2` identifica o serviço. Verifique o resultado com `systemctl is-active apache2`.
+Na linha, `systemctl` chama a administração de unidades, `start` solicita o início e `apache2` seleciona o serviço. A autorização administrativa vem de `sudo`. O comando pode terminar sem texto; isso não dispensa uma leitura separada do estado.
 
-Ausência de mensagem não é verificação suficiente.
+A próxima consulta, `systemctl is-active apache2`, é a verificação apropriada para saber se a unidade ficou ativa. Mesmo uma unidade ativa ainda não comprova que o navegador externo consegue alcançá-la.
 
 ### Verificar
+
+Consulte o estado ativo sem solicitar uma nova inicialização:
 
 ```bash
 systemctl is-active apache2
 ```
 
-Para detalhes sem paginador:
+Se precisar de contexto e mensagens recentes, peça o status sem abrir um paginador:
 
 ```bash
 systemctl --no-pager status apache2
 ```
 
-- `--no-pager`: imprime diretamente;
-- `status`: mostra estado e mensagens recentes;
-- `apache2`: unidade consultada.
+`--no-pager` mantém o texto diretamente na saída, `status` escolhe a consulta de estado e `apache2` indica a unidade. Leia as mensagens junto do estado informado para distinguir um serviço ativo de uma tentativa de início que falhou. Não presuma uma saída que ainda não foi observada no laboratório.
 
 ### Alternativa com `service`
+
+Existe também uma interface de compatibilidade para solicitar a mesma ação:
 
 ```bash
 sudo service apache2 start
 ```
 
-`service` é uma interface de compatibilidade. Não é necessário executar `service` e `systemctl` para a mesma ação. Prefira `systemctl` quando houver systemd.
+Aqui, `service` recebe o nome `apache2` e a ação `start`. Não é uma segunda etapa obrigatória depois de `systemctl`: ambos representam uma forma de pedir o início. Quando houver systemd, prefira `systemctl` e não duplique a solicitação sem motivo.
 
 ## Verificar a porta em escuta
+
+Além do estado do serviço, procure a condição de rede local: um socket TCP aguardando na porta `80`. Use:
 
 ```bash
 sudo ss -ltnp 'sport = :80'
 ```
 
-`ss` consulta sockets. As opções mostram apenas sockets em escuta, limitam o resultado a TCP, mantêm números e incluem o processo quando permitido. O filtro seleciona a porta local `80`; procure um listener associado ao servidor web.
+O programa `ss` consulta sockets. Em `-ltnp`, `-l` limita a escuta, `-t` seleciona TCP, `-n` mantém endereços e portas numéricos e `-p` inclui informação de processo quando permitida. O filtro `sport = :80` seleciona a porta local. Procure um listener associado ao atendimento web, sem supor antecipadamente qual linha aparecerá.
 
-Um listener `0.0.0.0:80` significa que o processo aceita conexões na porta `80` das interfaces IPv4 locais. Isso não é igual a `0.0.0.0/0` em Security Group.
+Se houver `0.0.0.0:80`, o significado é escuta na porta `80` das interfaces IPv4 locais. Esse endereço de escuta não é a faixa CIDR `0.0.0.0/0` usada em uma regra do Security Group: um descreve interfaces locais atendidas; o outro descreve origens de tráfego permitidas.
 
 ## Testar localmente
 
-Antes de investigar a AWS:
+Antes de atribuir uma falha à AWS, teste a conversa HTTP dentro da própria instância:
 
 ```bash
 curl -I http://127.0.0.1/
 ```
 
-`curl` é o cliente, `-I` solicita apenas os cabeçalhos e `127.0.0.1` aponta para a própria máquina. Como a URL usa HTTP sem indicar outra porta, o destino padrão é `80`. Procure uma linha de estado HTTP.
+`curl` atua como cliente, e `-I` solicita os cabeçalhos da resposta. O endereço `127.0.0.1` aponta para a própria máquina em que o comando executa, aqui o Kali. Como a URL usa HTTP e não declara outra porta, a tentativa utiliza `80`.
 
-Esse teste não atravessa Internet nem Security Group. Qualquer resposta HTTP demonstra que um servidor respondeu; o código informa o resultado.
+Uma linha de estado HTTP mostra que houve resposta de um servidor local; o código permite interpretar o atendimento. Esse caminho não passa pela Internet nem pelo Security Group. Portanto, sucesso local não é prova de acesso externo, mas ajuda a separar a aplicação do restante da rede.
 
 ## Examinar o document root
+
+Se a dúvida envolver o conteúdo publicado, examine o diretório usado nesta configuração:
 
 ```bash
 ls -la /var/www/html
 ```
 
-`ls` lista o conteúdo, `-l` usa o formato detalhado, `-a` inclui itens ocultos e `/var/www/html` é o document root examinado.
+`ls` lista, `-l` inclui detalhes e `-a` mostra também entradas ocultas. O argumento `/var/www/html` escolhe o diretório a consultar, sem mudar o diretório atual nem modificar os arquivos.
 
-Para `/files/one.jpg`:
+Para confrontar o pedido de `/files/one.jpg` com o arquivo correspondente nessa base, consulte:
 
 ```bash
 ls -l /var/www/html/files/one.jpg
 ```
 
-Não use `chmod 777` como correção genérica. Identifique qual usuário precisa de qual acesso.
+A existência do arquivo é apenas uma das condições; a identidade usada pelo servidor também precisa ter o acesso apropriado. Não aplique `chmod 777` como correção genérica. Primeiro identifique quem precisa acessar o quê e qual restrição está impedindo o atendimento.
 
 ## Security Group
 
-Um **Security Group** é um controle virtual de tráfego associado à interface da instância.
+O Security Group aplica regras de tráfego à interface da instância. Para este acesso HTTP, a regra deve corresponder ao tipo HTTP, ao protocolo TCP, à porta de destino `80` e à faixa CIDR das origens autorizadas.
 
-Para HTTP, uma regra normalmente seleciona o tipo HTTP, protocolo TCP, porta de destino `80` e uma faixa CIDR de origem autorizada.
+CIDR é uma forma de expressar um conjunto de endereços por um prefixo. A regra não diz qual arquivo será entregue nem instala ou inicia o Apache; ela apenas permite conexões que correspondam às condições.
 
-A regra permite que conexões compatíveis cheguem à instância. Não instala, inicia ou configura Apache.
-
-Security Groups mantêm o estado das conexões. Quando uma entrada é permitida, a resposta correspondente pode retornar.
+Como o controle acompanha o estado das conexões, a resposta correspondente à entrada aceita pode retornar. Isso resolve uma parte do caminho, mas não substitui endereço público, rota e controles do sistema operacional.
 
 ## O significado de `0.0.0.0/0`
 
-Em CIDR:
+Uma origem que exige atenção especial na configuração é:
 
 ```text
 0.0.0.0/0
 ```
 
-significa **qualquer endereço IPv4 de origem**.
+Em uma regra de entrada, essa faixa significa qualquer endereço IPv4 de origem. O prefixo `/0` não exige coincidência de nenhum bit; assim, toda a faixa IPv4 pode corresponder à regra.
 
-O prefixo `/0` fixa zero bits. Como nenhum precisa coincidir, toda a faixa IPv4 é abrangida.
+Ela não representa o endereço da instância e não seleciona automaticamente o computador do estudante. Usá-la é permitir a entrada de qualquer origem IPv4 compatível com o restante da regra. Essa exposição só é adequada quando o acesso público foi intencionalmente incluído na autorização.
 
-Essa origem:
-
-- não representa o IP da instância;
-- não seleciona automaticamente a própria máquina;
-- permite conexões de qualquer IPv4;
-- deve ser usada somente quando exposição pública for intencional e autorizada.
-
-Para somente um IPv4:
+Para limitar a um único IPv4, a forma é:
 
 ```text
 <SEU-IP-PUBLICO>/32
 ```
 
-O equivalente para qualquer origem IPv6 é `::/0`.
+O prefixo `/32` exige a coincidência dos 32 bits daquele IPv4. Substitua o marcador pelo endereço público atual do computador que fará o teste, não pelo endereço de destino da instância. Em IPv6, a faixa que abrange qualquer origem é `::/0`; ela também representa exposição ampla, não um atalho para acesso restrito.
 
 ## Configurando o acesso no laboratório AWS
 
-Abra o Security Group associado e edite suas regras de entrada. Adicione HTTP, confirme TCP e porta `80`, selecione uma origem adequada ao escopo e salve. Então teste com o IP público atual.
+No Console, encontre o Security Group realmente associado à instância e abra as regras de entrada. Acrescente HTTP e confira se o protocolo é TCP e a porta de destino é `80`. Escolha a origem conforme o escopo, salve e só então faça o teste usando o endereço público atual da máquina.
 
-Para teste somente do estudante, use o IP público atual com `/32`. Use `0.0.0.0/0` apenas se o objetivo autorizado exigir acesso público.
+Se o único participante for o estudante, restrinja ao seu IP público com `/32`. A opção `0.0.0.0/0` só deve ser escolhida quando o objetivo permitido exigir uma página publicamente acessível; ela não é necessária para provar o funcionamento a partir de uma origem conhecida.
 
-A instância ainda precisa de endereço público e rota válida. O Security Group é apenas uma condição.
+Mesmo uma regra correta não cria endereço público nem rota. Se a configuração do laboratório não fornecer esse caminho, a permissão do Security Group não será suficiente. Corrija a condição identificada, sem ampliar origens como tentativa genérica de resolver qualquer falha.
 
 ## Porta permitida versus serviço ativo
 
@@ -272,11 +270,13 @@ A instância ainda precisa de endereço público e rota válida. O Security Grou
 | Sim | Não | Tráfego chega, mas não há processo para atender |
 | Sim | Sim | Pode funcionar se endereço, rota e controles estiverem corretos |
 
-No painel AWS, a regra apenas permite tráfego. Para a porta responder, a conexão precisa alcançar um processo em escuta.
+A tabela separa duas condições independentes, mas não lista todas as dependências da rede. Mesmo com entrada permitida e Apache em escuta, endereço, rota e outros controles precisam estar corretos. O painel AWS mostra permissão de tráfego; a resposta da porta exige um processo alcançável que realmente atenda.
 
 ## Verificando uma camada de cada vez
 
-Comece confirmando que o pacote foi instalado e consulte `systemctl is-active apache2`. Use `ss` para procurar o listener TCP/80 e teste localmente com `curl`. Só então confira o Security Group, confirme o IP atual e abra `http://<IP-PUBLICO-DO-LAB>/`. Essa ordem separa problemas do Apache de problemas de rede.
+A investigação progride de dentro para fora. Confira a instalação e o estado com `systemctl is-active apache2`; em seguida, use `ss` para confirmar a escuta TCP/80 e `curl` para obter uma resposta local. Cada observação acrescenta uma prova que a anterior não fornecia.
+
+Depois examine o grupo associado, a origem da regra e o IP público atual, e tente abrir `http://<IP-PUBLICO-DO-LAB>/` do computador autorizado. Se o teste local respondeu e o externo não, há motivo para concentrar a investigação no caminho externo. Se nem o local responde, mudar a entrada na AWS não resolve primeiro a aplicação.
 
 ## Interpretação de falhas
 
@@ -290,14 +290,18 @@ Comece confirmando que o pacote foi instalado e consulte `systemctl is-active ap
 | `404 Not Found` | Apache respondeu, mas não encontrou o recurso |
 | `403 Forbidden` | Apache respondeu, mas recusou o recurso |
 
-Não altere várias camadas ao mesmo tempo. Faça uma mudança e repita a verificação correspondente.
+Essas interpretações são pontos de partida, não diagnósticos universais. Uma página padrão demonstra atendimento do caminho padrão, enquanto `403` ou `404` já são respostas HTTP com problemas de autorização ou de recurso. Recusa e tempo esgotado precisam de investigação anterior ao conteúdo.
+
+Altere uma condição por vez e repita a verificação que poderia demonstrar seu efeito. Trocar serviço, arquivo e regra ao mesmo tempo impede saber qual mudança corrigiu o problema e pode deixar uma exposição desnecessária sem ser percebida.
 
 ## Encerramento
+
+No fim do exercício, solicite a parada do serviço web no Kali:
 
 ```bash
 sudo systemctl stop apache2
 ```
 
-Depois, verifique o estado e a porta, remova a regra temporária TCP/80 e confirme que a exposição terminou. Pare ou termine a instância e verifique os custos.
+Nessa linha, `stop` pede ao `systemctl` que pare `apache2`, usando o privilégio autorizado por `sudo`. Confira depois o estado do serviço e a ausência da escuta que você pretendia encerrar. Retire também a regra temporária TCP/80 e confirme o fim da exposição; parar um processo e remover uma permissão são ações distintas.
 
-O termo correto é **document root**, e o caminho usado nesta aula é `/var/www/html`. `0.0.0.0/0` significa qualquer origem IPv4, não o IP da instância. Liberar TCP/80 não inicia Apache, iniciar Apache não garante acesso público, PHP não é necessário para um `index.html` estático e um `404` comprova que houve resposta HTTP, embora o recurso não tenha sido encontrado.
+Por último, pare ou termine a instância conforme a continuidade do laboratório e revise recursos restantes e cobrança. O que deve ficar compreendido é o encadeamento completo: regra permite tráfego, processo atende a porta, HTTP identifica o recurso e document root relaciona a solicitação ao conteúdo publicado. Uma evidência em qualquer elo não substitui a conferência dos demais.

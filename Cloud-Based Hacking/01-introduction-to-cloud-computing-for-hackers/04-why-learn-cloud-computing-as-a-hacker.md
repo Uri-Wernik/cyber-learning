@@ -1,91 +1,63 @@
 # Por que usar nuvem em testes de segurança autorizados?
 
-Os fundamentos de rede, hospedagem e exposição estão na [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md). Autorização e escopo estão na [Aula 2: Hacking ético, pentest e Red Team](02-introduction-to-hacking-using-the-cloud.md).
+Que vantagem há em usar uma máquina distante se o testador já possui um computador? A resposta depende do papel que cada programa terá no laboratório. Para acompanhar esse raciocínio, use a [Aula 3: O que é computação em nuvem](03-what-is-the-cloud.md) como referência de rede e hospedagem e a [Aula 2: Hacking ético, pentest e Red Team](02-introduction-to-hacking-using-the-cloud.md) como referência dos limites do teste.
 
 ## Arquitetura cliente-servidor
 
-**Cliente** e **servidor** são papéis exercidos por programas durante uma comunicação.
+Cliente é o programa que pede algo ou inicia uma comunicação; servidor é o programa que espera essa comunicação e atende conforme suas regras. Esses nomes descrevem papéis de software, não classes fixas de computadores. Um mesmo dispositivo pode exercer ambos em relações diferentes.
 
-O cliente normalmente inicia uma conexão ou envia uma solicitação. O servidor aguarda comunicações em um endereço e porta lógica, processa os dados e produz uma resposta. Protocolos definem como as mensagens são estruturadas.
+Para receber uma solicitação, o servidor precisa aguardar em um endereço e em uma porta lógica. O protocolo estabelece como interpretar os dados e construir a resposta. Na Web, por exemplo, o navegador solicita recursos e o software servidor web responde; nenhum dos dois papéis depende de a máquina ser grande ou pequena.
 
-Em uma aplicação web, o navegador atua como cliente e o servidor web responde às requisições. Aplicações podem ser:
+Isso ajuda a distinguir aplicações locais, remotas e híbridas. Nas locais, a maior parte do trabalho ocorre no dispositivo do usuário; nas remotas, o funcionamento depende principalmente de um serviço externo; nas híbridas, processamento e armazenamento são repartidos entre os lados. O que interessa é onde cada tarefa acontece, não apenas o lugar onde a janela aparece.
 
-- **locais:** realizam a maior parte do trabalho no próprio dispositivo;
-- **remotas:** dependem principalmente de um serviço externo;
-- **híbridas:** dividem processamento e armazenamento entre cliente e servidor.
-
-Um dispositivo pode ser cliente em uma comunicação e servidor em outra. Os papéis descrevem a relação entre processos, não uma categoria permanente de computador.
-
-Ter acesso à Internet não comprova que um aplicativo utiliza nuvem. Ele pode comunicar-se com infraestrutura convencional, serviços de terceiros ou outros dispositivos.
+Também não basta observar tráfego de Internet para concluir que existe nuvem. A comunicação pode terminar em infraestrutura convencional, em outro dispositivo ou em um serviço de terceiro. Identificar o destino e sua função é uma verificação mais precisa do que classificar toda aplicação conectada como aplicação em nuvem.
 
 ## Infraestrutura remota de testes
 
-Em um laboratório autorizado, a infraestrutura em nuvem ocupa uma posição intermediária. O operador administra essa infraestrutura com uma identidade autenticada; os serviços de teste comunicam-se somente com os ativos previstos no escopo; respostas e evidências retornam ao ambiente controlado.
+No exercício autorizado, o operador entra na infraestrutura remota usando uma identidade autenticada. A partir dela, os serviços previstos se comunicam exclusivamente com os ativos permitidos e devolvem resultados ao ambiente controlado. A nuvem separa essa infraestrutura da estação pessoal, mas não separa o operador de sua responsabilidade.
 
-Essa organização pode oferecer:
+A principal conveniência é poder criar uma máquina temporária sem adquirir hardware. Imagens e configurações documentadas ajudam a repetir o ambiente; estações autorizadas podem administrá-lo à distância; e a capacidade pode ser aumentada quando houver necessidade. Se o exercício exigir alcance público, uma hospedagem remota também pode fornecer conectividade estável. Ao concluir o trabalho, esses recursos podem ser removidos.
 
-- provisionamento rápido de máquinas temporárias;
-- conectividade estável quando o laboratório exigir alcance público;
-- acesso remoto por estações autorizadas;
-- separação entre o computador pessoal e o exercício;
-- repetição do ambiente por imagens e configurações documentadas;
-- aumento temporário de capacidade;
-- encerramento dos recursos ao final.
+Para que isso seja vantagem e não exposição adicional, é preciso restringir interfaces administrativas, proteger a autenticação e isolar os dados do exercício. Um serviço publicado recebe potencialmente tráfego que não pertence ao laboratório. Não se deve interpretar toda conexão recebida como participação autorizada.
 
-Essas vantagens não surgem automaticamente. Interfaces administrativas precisam de autenticação forte, regras de rede devem ser restritas e dados de laboratório devem permanecer isolados. Serviços públicos também recebem tráfego inesperado da Internet.
-
-O provedor pode restringir varreduras, testes de carga, distribuição de código nocivo e outras atividades. A autorização do alvo não substitui os termos do provedor.
+Antes do provisionamento, confira também a política do provedor sobre varreduras, carga, distribuição de código nocivo e outras atividades. São verificações independentes: o proprietário do alvo pode autorizar o teste, enquanto o contrato de hospedagem ainda restringe a maneira de executá-lo.
 
 ## Callback e C2: visão conceitual
 
-Em uma conexão direta, o sistema do testador inicia a comunicação com o serviço existente no alvo autorizado. Dependendo da arquitetura, conexões de entrada podem não alcançar o ativo por causa de NAT, firewall ou ausência de rota pública.
+Imagine primeiro uma ligação direta: o testador procura um serviço que já existe no alvo autorizado. Para funcionar, essa entrada precisa ter um caminho válido. NAT, que traduz endereços, filtros de firewall ou a inexistência de rota pública podem impedir a chegada, mesmo quando o ativo consegue navegar para fora.
 
-Um **callback** ocorre quando um agente previamente executado no sistema de laboratório inicia uma conexão de saída para um serviço de controle autorizado. Como a comunicação parte do agente, a sessão pode seguir regras de saída diferentes das aplicadas a conexões de entrada.
+No modelo chamado callback, a iniciativa muda de lado. Um agente que já está em execução no sistema do laboratório abre uma conexão de saída para um serviço de controle autorizado. Regras de saída podem diferir das de entrada, mas isso não significa atravessar qualquer barreira: o agente ainda precisa de permissão para executar e de resolução, rota e comunicação permitida até o destino.
 
-Isso não significa que um callback atravesse qualquer controle. O agente precisa estar executando, possuir permissão, resolver e alcançar o destino e utilizar comunicação permitida.
+C2 significa *Command and Control*, ou comando e controle. O nome descreve a infraestrutura que coordena agentes e transporta tarefas e resultados. No modelo autorizado, o operador autentica-se no serviço, uma conexão do agente é associada ao exercício e apenas as tarefas previstas no acordo são encaminhadas. A resposta volta pelo canal estabelecido.
 
-**Command and Control**, abreviado como **C2**, é a infraestrutura usada para coordenar agentes e trocar tarefas e resultados. Em uma simulação autorizada, o operador autentica-se no serviço de controle e o agente de laboratório inicia o callback. O serviço associa a conexão ao exercício; o operador envia somente tarefas previstas no escopo; o agente executa com os privilégios que já possui; e os resultados retornam pelo canal estabelecido.
+O canal não altera a identidade com que o agente executa. Se o processo tem poderes limitados, suas tarefas continuam limitadas pelo usuário, pelo sistema, pela rede e pelos demais controles. Uma conexão ativa é evidência de comunicação; não é, sozinha, evidência de privilégios administrativos ou de controle completo.
 
-C2 descreve comunicação e coordenação; não concede automaticamente controle total. O agente continua limitado pelo usuário, processo, sistema operacional, rede e controles existentes.
+Vale separar duas siglas visualmente próximas: Amazon EC2 nomeia um serviço de capacidade computacional da AWS; C2 nomeia a função de coordenação descrita aqui. Uma instância EC2 não se torna C2 por existir.
 
-**EC2** e **C2** não são sinônimos. Amazon EC2 é um serviço de computação da AWS. C2 significa Command and Control.
-
-Esta explicação permanece conceitual porque implantar infraestrutura de controle exige laboratório isolado, autorização específica e medidas contra conexões externas acidentais.
+Nesta aula, o assunto termina no mecanismo conceitual. Implantar controle de agentes exigiria um ambiente isolado, permissão específica e proteção contra conexões externas acidentais. Não há aqui uma execução validada desse fluxo nem instruções adicionais para ampliá-lo.
 
 ## Escalabilidade aplicada aos testes
 
-A nuvem permite aumentar temporariamente memória, processamento ou quantidade de instâncias. Isso pode ajudar em tarefas autorizadas que possam ser divididas.
+Outra utilidade é ajustar a capacidade ao período do exercício. Mais memória, processamento ou instâncias podem ajudar quando a tarefa admite divisão. Essa possibilidade é chamada escalabilidade; ela não garante que dobrar máquinas dobre o resultado.
 
-Mais recursos não garantem resultado proporcional. Rede, armazenamento, algoritmo, limites do provedor e capacidade do alvo podem ser gargalos. Aumentar concorrência amplia custo e impacto.
+O limite pode estar na rede, no disco, no algoritmo, nas cotas do provedor ou na capacidade do próprio alvo. Aumentar atividades simultâneas nessas condições pode elevar apenas a cobrança e o impacto. Por isso, a decisão precisa considerar o gargalo real e não apenas a disponibilidade de recursos para alugar.
 
-Em avaliações, a escala precisa obedecer a limites de taxa e concorrência, listas exatas de destinos, orçamento, cotas, horários autorizados, critérios de interrupção e monitoramento do impacto.
-
-Escalar sem esses limites pode causar indisponibilidade ou atingir sistemas fora do escopo.
+O acordo deve definir destinos exatos, taxa, concorrência, duração e horários. Orçamento e cotas delimitam recursos, enquanto monitoramento e critérios de interrupção delimitam efeitos sobre o alvo. Sem essas verificações, a expansão pode causar indisponibilidade ou levar comunicação para fora do escopo, contrariando a finalidade do teste.
 
 ## Nuvem não significa anonimato
 
-Executar uma atividade a partir da nuvem pode alterar o IP observado pelo alvo, mas não elimina rastros nem rompe a relação com a conta do cliente.
+Se o tráfego sai de uma máquina na nuvem, o destino pode observar o IP dessa infraestrutura em vez do IP da estação pessoal. Isso muda uma observação de rede, não apaga a ligação do recurso com a conta que o criou.
 
-O provedor pode registrar:
+O provedor pode manter informações de identidade, autenticação, cobrança e verificação da conta. Também pode registrar chamadas administrativas, criação e exclusão de recursos, mudanças de regras, endereços atribuídos e seus horários, além de metadados de conexão e eventos de abuso. Desligar uma instância não significa apagar esses registros.
 
-- identidade da conta e métodos de autenticação;
-- cobrança e verificação;
-- chamadas no plano de controle;
-- criação, alteração e exclusão de recursos;
-- IPs atribuídos e horários de uso;
-- mudanças em regras de rede;
-- metadados de conexão e eventos de abuso.
+Do outro lado, o alvo pode guardar origem, horário, protocolo, requisições e resultados. DNS e registro de domínios acrescentam outras informações. VPNs e proxies alteram trechos do caminho, mas não justificam uma promessa geral de anonimato nem garantem eliminação das evidências já produzidas.
 
-O alvo pode registrar endereço de origem, horário, protocolo, requisições e resultados. DNS e registro de domínio também produzem registros.
-
-VPNs e proxies modificam parte do caminho observado pelo destino, mas não oferecem anonimato garantido. Excluir a máquina virtual não apaga necessariamente os registros mantidos pelo provedor ou alvo.
-
-Em um teste legítimo, essa rastreabilidade ajuda a demonstrar que as ações ocorreram dentro do período e escopo autorizados.
+Em vez de tratar registros como algo a desaparecer, o exercício legítimo deve aproveitar a rastreabilidade: a possibilidade de relacionar ação, recurso e horário. Essa relação ajuda a demonstrar o cumprimento do acordo e a distinguir o tráfego do teste de eventos que não pertencem a ele.
 
 ## Preparando e encerrando o laboratório
 
-Antes de criar recursos, é necessário obter autorização escrita, confirmar o escopo e consultar as políticas atuais do provedor. Um projeto ou conta de laboratório separado reduz confusões. Identidades, chaves e regras de rede devem ser restritas, enquanto cotas, orçamento, volume e duração limitam o impacto. Dados e credenciais precisam ser fictícios, e os recursos e horários devem ser registrados.
+A preparação começa com autorização escrita, escopo confirmado e leitura das políticas vigentes. Uma conta ou projeto separado ajuda a não misturar o laboratório com outros trabalhos. Identidades, chaves e regras devem conceder somente o necessário; dados e credenciais devem ser fictícios. Registre recursos e horários e defina antecipadamente duração, volume, cotas e orçamento.
 
-O encerramento faz parte do exercício. Primeiro terminam processos e sessões; depois são removidos serviços, regras e credenciais temporárias. Dados são eliminados conforme o acordo, e instâncias, discos, endereços e outros recursos cobrados precisam ser excluídos. A verificação final confirma que nenhum serviço público permaneceu ativo e que apenas evidências autorizadas foram preservadas.
+Ao terminar, interrompa processos e sessões e retire serviços, regras e credenciais temporárias. Elimine dados conforme o acordo e confira a remoção de instâncias, discos, endereços e demais recursos cobrados. Uma máquina ausente da lista não comprova, sozinha, que toda a infraestrutura associada desapareceu.
 
-Nem toda aplicação conectada à Internet usa nuvem, callback não atravessa universalmente controles de rede e C2 não cria privilégios administrativos. A nuvem oferece conveniência operacional, mas continua exigindo autorização, limites, controle de custos e limpeza completa.
+A verificação final tem duas perguntas diferentes: restou algum serviço público sem finalidade e restou algum recurso gerando custo? Preserve apenas evidências permitidas. Assim, o benefício da nuvem fica claro sem exageros: ela facilita montar, administrar e desfazer infraestrutura, mas não substitui autorização, controles nem comprovação do resultado.

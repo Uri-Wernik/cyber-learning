@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">Cyber Learning</title>
+  <desc id="desc">Monograma geométrico original: duas páginas abertas formam um caminho central, como um livro e uma conexão.</desc>
+  <rect width="160" height="160" rx="32" fill="#215342"/>
+  <g fill="none" stroke="#f0efda" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M80 119V51L39 35v68l41 16 41-16V35L95 45"/>
+    <path d="M54 58l11 5m-11 14l11 5m30-13l11-5m-11 23l11-5"/>
+  </g>
+</svg>

@@ -6,24 +6,24 @@
 >
 > **Escopo:** configuração de DNS para um domínio neutro, uma página de treinamento e um servidor sob controle do estudante. Nomes que imitam marcas e páginas destinadas a enganar terceiros ficam fora do laboratório.
 
-Na [aula anterior](16-domain-name-and-dns-basics.md), o domínio foi separado do endereço IP e da URL, e o caminho entre o resolvedor recursivo e o servidor DNS autoritativo foi apresentado. Agora esse modelo será aplicado: um registro será publicado na zona DNS para que um nome sob controle do estudante resulte no IPv4 público do servidor do laboratório.
+O que precisa ser publicado para que um nome encontre a instância certa? A [aula anterior](16-domain-name-and-dns-basics.md) separou domínio, IP e URL e acompanhou a procura pelo DNS autoritativo. Agora o foco é o conteúdo da zona: os registros que permitem resolver um nome controlado pelo estudante para o IPv4 público do laboratório, sem atribuir ao DNS o trabalho do servidor web.
 
 ## O estado inicial
 
-Registrar um domínio concede o direito de usá-lo durante determinado período, mas não escolhe sozinho qual servidor atenderá cada nome. Antes da configuração, são necessários dois valores:
+O registro fornece um direito de uso com prazo, mas não escolhe a máquina que atenderá um host. Para preparar o apontamento, precisamos conferir dois dados independentes:
 
 - um domínio neutro administrado pelo estudante, representado aqui por `<DOMINIO-DO-LAB>`;
 - o IPv4 público atual da instância, representado por `<IP-PUBLICO-DO-LAB>`.
 
-O endereço não deve ser copiado de uma aula antiga sem conferência. Instâncias de nuvem podem receber outro IP público depois de serem interrompidas e iniciadas, a menos que se use um endereço estático configurado para esse fim. Um registro desatualizado pode levar visitantes ao sistema errado se o provedor reutilizar o endereço.
+O IP deve ser conferido no estado atual da instância, não copiado de uma anotação antiga. Ao parar e iniciar uma máquina de nuvem, seu endereço público pode mudar, salvo quando há um endereço estático configurado para isso. Se o valor antigo continuar publicado e for reutilizado pelo provedor, o nome poderá conduzir a um sistema que já não pertence ao laboratório.
 
-O painel varia entre provedores, mas normalmente solicita **tipo**, **nome ou host**, **valor ou resposta** e **TTL**. Esses campos representam dados DNS padronizados; apenas os rótulos e a aparência da interface mudam.
+O painel é uma interface para publicar dados DNS padronizados. Normalmente pede **tipo**, **nome ou host**, **valor ou resposta** e **TTL**, o tempo de cache. Os rótulos variam entre provedores, mas compreender o papel de cada campo permite reconhecer a mesma configuração em outra interface.
 
 ## Associando o domínio ao IPv4 com um registro A
 
-Um registro **A** informa qual endereço IPv4 corresponde a um nome. Para representar o domínio principal no painel, muitos provedores usam `@` ou deixam o campo de nome vazio. Essa convenção pertence à interface de gerenciamento; o caractere `@` não passa a fazer parte do domínio consultado.
+Para associar um nome a um IPv4, usamos o tipo de registro **A**. Muitos painéis representam o domínio principal com `@` ou com o campo de nome vazio. Isso é uma convenção de gerenciamento da raiz da zona, não uma instrução para acrescentar `@` ao domínio que o visitante consultará.
 
-Uma configuração conceitual para o laboratório seria:
+Este exemplo conceitual relaciona os campos ao efeito esperado, mantendo os dados reais do ambiente substituídos por marcadores:
 
 | Campo | Valor ilustrativo | Significado |
 |---|---|---|
@@ -32,15 +32,15 @@ Uma configuração conceitual para o laboratório seria:
 | Valor | `<IP-PUBLICO-DO-LAB>` | Interface pública que deverá receber a conexão |
 | TTL | valor oferecido pelo provedor | Tempo durante o qual a resposta pode permanecer em cache |
 
-É comum dizer que esse registro “redireciona todas as solicitações” para o servidor, mas isso mistura duas operações. O DNS apenas responde com dados, neste caso um IPv4. Um **redirecionamento HTTP** é uma resposta do servidor, como `301`, `302` ou `303`, que orienta o navegador a solicitar outra URL. Criar um registro A não produz nenhuma dessas respostas.
+Dizer que o registro “redireciona todas as solicitações” sugere um efeito que ele não produz. A resposta DNS fornece o endereço. Um **redirecionamento HTTP**, por outro lado, vem do atendimento web: um status como `301`, `302` ou `303` orienta o navegador a solicitar outra URL. Publicar um endereço no DNS não cria esse status nem troca sozinho a URL exibida.
 
-Depois de obter o IP pelo DNS, o cliente ainda precisa alcançar a rede, passar pelos controles de entrada, conectar-se à porta do serviço e enviar uma requisição ao servidor web. Se o Apache estiver parado ou a porta estiver bloqueada, o DNS poderá estar correto e a página ainda assim não abrirá.
+Depois da resolução, o cliente ainda precisa alcançar a rede de destino, passar pelos controles de entrada e conectar-se à porta atendida pelo processo web. Um Apache parado ou uma porta bloqueada impede a página mesmo quando o DNS está correto. Essa independência orienta o diagnóstico: corrigir um registro não inicia um serviço.
 
 ## Criando um nome alternativo com CNAME
 
-Um registro **Canonical Name (CNAME)** declara que um nome é um alias de outro nome. Em vez de repetir um endereço IP, o resolvedor segue o alvo canônico e procura os registros de endereço associados a ele.
+Quando a intenção é fazer um nome acompanhar outro nome, entra o registro **Canonical Name (CNAME)**. Ele declara um alias, não um endereço. O resolvedor segue o alvo canônico e procura seus registros de endereço, evitando repetir diretamente o mesmo IPv4 em cada alias. Ainda é necessário que o nome de destino possa ser resolvido.
 
-Para um subdomínio neutro, o painel poderia receber:
+No exemplo de subdomínio neutro abaixo, o alvo continua sendo um nome administrado pelo estudante:
 
 | Campo | Valor ilustrativo | Significado |
 |---|---|---|
@@ -48,54 +48,54 @@ Para um subdomínio neutro, o painel poderia receber:
 | Nome | `portal-lab` | Forma `portal-lab.<DOMINIO-DO-LAB>` |
 | Valor | `<DOMINIO-DO-LAB>` | Nome canônico controlado pelo estudante |
 
-O valor de um CNAME deve ser um **nome**, não um endereço IP. Também não se deve combinar um CNAME com outros registros de dados no mesmo nome. Por esse motivo, o CNAME tradicional costuma ser usado em subdomínios; alguns provedores oferecem recursos próprios, como flattening, para obter comportamento semelhante no domínio principal.
+O alvo deve ser um **nome**. Um IP não é valor de CNAME, e o nome que declara esse alias não deve reunir outros registros de dados. Por isso, o CNAME tradicional é comum em subdomínios. Alguns provedores oferecem flattening ou recursos semelhantes no domínio principal, mas essas soluções não apagam a diferença entre alias e registro de endereço.
 
-Ao acessar `portal-lab.<DOMINIO-DO-LAB>`, o navegador continua tratando esse nome como o host solicitado, mesmo que o DNS o tenha conduzido ao mesmo IP do domínio principal. O Apache precisa reconhecer o host ou possuir uma configuração padrão apropriada. DNS compartilhado não significa configuração web compartilhada automaticamente.
+Se o visitante pede `portal-lab.<DOMINIO-DO-LAB>`, esse continua sendo o host solicitado pelo navegador. A resolução pode conduzi-lo ao mesmo IP do domínio principal sem trocar o nome usado na camada web. O Apache precisa reconhecer esse host ou dispor de uma configuração padrão apropriada. Compartilhar um destino DNS não configura automaticamente o conteúdo de ambos os nomes.
 
 ## Por que a mudança pode parecer demorada
 
-O painel costuma atualizar os servidores autoritativos rapidamente, mas resolvedores intermediários podem conservar respostas anteriores até o TTL terminar. Também pode existir **cache negativo**, que preserva por algum tempo a informação de que um nome não existia.
+Salvar o registro e perceber a mudança no computador são momentos diferentes. A fonte autoritativa costuma ser atualizada rapidamente; resolvedores podem, porém, conservar respostas anteriores até expirar o TTL. Existe ainda **cache negativo**, que armazena temporariamente uma resposta de inexistência. Assim, um nome recém-criado pode continuar parecendo ausente para quem o consultou antes.
 
-Esse comportamento é frequentemente chamado de “propagação DNS”. Não significa que o novo registro seja copiado para todos os servidores DNS do mundo. Na prática, diferentes caches expiram em momentos diferentes e voltam a consultar a fonte autoritativa quando precisam de uma resposta nova.
+A expressão “propagação DNS” costuma descrever essa diferença de percepção. Não significa copiar o registro novo para todos os servidores DNS do mundo. Cada cache tem seu momento de expiração e volta a consultar quando precisa de informação nova. Dois clientes podem, portanto, discordar temporariamente sem que o painel tenha perdido a configuração.
 
-Repetir alterações durante esse intervalo dificulta o diagnóstico. Primeiro, confira no painel se tipo, nome e valor foram salvos corretamente. Depois, compare a resposta autoritativa com a resposta do resolvedor usado pelo computador.
+Mudar os valores repetidamente durante a espera mistura estados e dificulta explicar a resposta recebida. Primeiro, confira tipo, nome e valor salvos no painel. Depois, diferencie o que responde a fonte autoritativa do que responde o resolvedor do computador. A existência de cache é uma hipótese a verificar, não uma explicação automática para qualquer falha.
 
 ## Verificando cada camada
 
-No Windows, `Resolve-DnsName` permite consultar o registro sem depender do carregamento da página:
+A verificação inicial deve isolar o DNS. No PowerShell do Windows, `Resolve-DnsName` consulta o registro sem depender de o navegador conseguir carregar o site:
 
 ```powershell
 Resolve-DnsName <DOMINIO-DO-LAB> -Type A
 ```
 
-`Resolve-DnsName` é o programa consultado pelo PowerShell; `<DOMINIO-DO-LAB>` é o nome sob teste; e `-Type A` limita a resposta ao mapeamento IPv4. O resultado esperado é o IP público atual do laboratório. Uma resposta antiga sugere cache; `NXDOMAIN` informa que o nome consultado não existe segundo aquela resolução; timeout indica ausência de resposta e não prova que o registro está incorreto.
+O cmdlet `Resolve-DnsName` recebe em `<DOMINIO-DO-LAB>` o nome próprio a testar; `-Type A` seleciona o mapeamento IPv4. Compare a resposta com o endereço público atual da instância. Um valor antigo pode indicar cache. `NXDOMAIN` informa inexistência segundo aquela resolução, enquanto timeout indica que não houve resposta no prazo e não demonstra um registro incorreto.
 
-Em Linux, a consulta equivalente pode ser feita com `dig` quando o pacote correspondente estiver instalado:
+Se a consulta ocorrer em Linux, `dig` oferece a verificação equivalente, desde que o pacote correspondente esteja instalado:
 
 ```bash
 dig A <DOMINIO-DO-LAB>
 ```
 
-O comando consulta DNS; a seção `ANSWER` deve ser interpretada junto com o servidor consultado, o TTL e o código de status. Receber o endereço esperado comprova a resolução naquele caminho, mas ainda não comprova que o serviço web está acessível.
+Nesse comando, `A` escolhe o tipo e o argumento seguinte representa o nome consultado. Leia `ANSWER` junto com o servidor que respondeu, o TTL e o status. O endereço esperado comprova a resolução por aquele caminho, mas o teste ainda não conversou com o Apache nem demonstrou que a porta web está acessível.
 
-Depois do DNS, uma requisição de cabeçalhos testa a camada HTTP sem enviar dados de formulário:
+Com a resolução examinada, uma requisição de cabeçalhos pode avançar para HTTP sem preencher nem transmitir formulário:
 
 ```bash
 curl --head http://<DOMINIO-DO-LAB>
 ```
 
-`curl` atua como cliente; `--head` solicita apenas os cabeçalhos; a URL define HTTP e o host. Uma resposta HTTP demonstra que resolução, rota, porta e servidor participaram do fluxo. Ela não garante que o conteúdo esteja correto, que HTTPS esteja configurado ou que o site seja confiável.
+Aqui `curl` é o cliente, `--head` pede cabeçalhos e a URL escolhe HTTP e o host do laboratório. Receber uma resposta mostra que o teste avançou pela resolução, pela rota e pela porta até um serviço que respondeu. A conclusão para aí: não valida o conteúdo completo, não configura HTTPS e não atesta confiabilidade.
 
 ## Um alerta de reputação não é um teste bem-sucedido
 
-Na demonstração, o domínio carregou uma página copiada e o navegador exibiu um aviso de site enganoso. Isso mostrou que o nome resolvia e que algum servidor respondeu, mas também indicou que mecanismos de proteção classificaram o conteúdo ou a infraestrutura como perigoso.
+O instrutor mostrou o domínio carregando uma página copiada e recebendo um alerta de site enganoso. Essa observação registra resolução e resposta de algum servidor, mas também uma classificação de perigo pelos mecanismos de proteção. Ler a tela apenas como sucesso de publicação apagaria parte essencial da evidência.
 
-O aviso não aparece simplesmente porque a conexão usa HTTP, e habilitar HTTPS não é uma forma legítima de removê-lo. Em um laboratório próprio que receba esse bloqueio, a atitude segura é interromper a publicação, remover o conteúdo problemático e revisar a infraestrutura. Não se deve orientar visitantes a ignorar a proteção.
+O alerta não deve ser atribuído simplesmente ao uso de HTTP. Reputação de conteúdo e proteção do transporte são verificações diferentes; instalar um certificado não é correção legítima da primeira. Caso o laboratório receba esse bloqueio, interrompa a publicação, retire o material problemático e revise o ambiente, sem pedir a visitantes que ignorem a proteção.
 
-O curso também propôs subdomínios e variações ortográficas de marcas para aumentar a credibilidade da página. Fora de um teste formalmente autorizado, isso caracteriza impersonação e pode viabilizar fraude. Mesmo em conscientização interna, participantes, escopo, coleta de dados, retenção e encerramento precisam de aprovação prévia; credenciais reais não devem ser solicitadas nem armazenadas.
+A proposta do curso de aproximar subdomínios e grafias de marcas também exige limite explícito. Fora de autorização formal, essa impersonação pode viabilizar fraude; ela não é necessária ao estudo dos registros. Mesmo uma campanha interna precisa de aprovação prévia quanto a participantes, escopo, coleta, retenção e encerramento. Credenciais reais não devem ser solicitadas ou armazenadas.
 
 ## Encerrando sem deixar apontamentos ativos
 
-Ao concluir o exercício, remova os registros A e CNAME que não serão mais usados, desligue a página de treinamento, restrinja as portas abertas e confira se o domínio possui renovação automática. Se a instância for encerrada, elimine imediatamente qualquer registro que ainda aponte para seu antigo IP.
+O apontamento deve acompanhar o ciclo de vida da infraestrutura. Ao concluir, retire registros A e CNAME sem uso, desligue a página, restrinja portas e confira a renovação automática do domínio. Se encerrar a instância, remova imediatamente as referências ao IP antigo, para que o nome não continue anunciando um destino que deixou de representar o laboratório.
 
-A evidência central desta aula deve ser construída em camadas: primeiro o nome retorna o IP esperado; depois a conexão alcança o serviço; por fim o servidor responde ao host solicitado. Essa separação evita atribuir ao DNS funções que pertencem à rede, ao firewall, ao Apache ou ao protocolo HTTP.
+A conclusão depende de uma cadeia de evidências: o nome retorna o endereço esperado, a conexão alcança a porta e o servidor responde ao host solicitado. Se uma parte falhar, não declare a anterior incorreta sem investigar. Manter essas verificações separadas preserva os papéis de DNS, rede, firewall, Apache e HTTP.

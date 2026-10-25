@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="650" viewBox="0 0 900 650" role="img" aria-labelledby="title desc">
+  <title id="title">Um laboratório para entender a segurança na nuvem</title>
+  <desc id="desc">Composição original em tinta verde sobre papel bege. Um notebook com terminal se conecta, através de um controle de rede, a um datacenter desenhado em perspectiva. Uma nuvem representa a administração por software, sem esconder os servidores físicos. Uma chave protegida, um caderno de evidências e uma conexão de retorno representam acesso autorizado e documentação. Não há números nem dados reais.</desc>
+  <rect width="900" height="650" rx="18" fill="#fff8eb"/>
+  <g fill="none" stroke="#c9d5c4" stroke-width="1.5">
+    <path d="M64 510 Q220 550 392 512 T802 516 M70 536 Q242 566 415 538 T817 540"/>
+    <path d="M90 94 Q117 67 145 85 M101 103 Q120 84 139 94 M739 70 l15 -17 m-1 30 22 -4"/>
+  </g>
+  <g stroke="#263b35" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M422 213 Q388 193 410 162 Q396 125 433 110 Q450 64 495 85 Q526 44 569 76 Q619 61 636 104 Q681 101 690 142 Q720 171 686 201 Q687 227 652 230 H452 Q429 230 422 213Z" fill="#edf3e8"/>
+    <path d="M459 158 l21 -18 21 18 m-21 -17 v46 M552 145 h60 m-60 18 h45 m-45 18 h58" fill="none" stroke="#286957"/>
+    <path d="M508 235 V272" fill="none" stroke="#286957" stroke-dasharray="7 8"/>
+    <path d="M99 295 L277 278 L278 417 L99 433Z" fill="#dceade"/>
+    <path d="M113 307 L263 293 L263 402 L113 416Z" fill="#fffef9"/>
+    <path d="M99 433 L64 466 L260 486 L312 447 L278 417 M64 466 L65 479 L259 500 L312 460 L312 447" fill="#e7e1d2"/>
+    <path d="M138 335 l12 10 -12 12 M164 354 h43 M136 378 h87 M136 391 h53" fill="none" stroke="#286957"/>
+    <path d="M91 460 L250 476 L278 455 L119 441Z" fill="#edf3e8" stroke-width="1.7"/>
+    <path d="M136 452 l101 11 m-85 -20 -9 16 m33 -13 -9 16 m32 -14 -9 16 m33 -13 -9 15" fill="none" stroke="#9ab39e" stroke-width="1.5"/>
+    <path d="M320 352 H383 Q404 352 404 331 V306 H461" fill="none" stroke="#286957" stroke-width="4"/>
+    <path d="M449 297 l14 9 -14 9" fill="none" stroke="#286957"/>
+    <path d="M356 376 v-48 q0 -17 16 -17 h15" fill="none" stroke="#9ab39e" stroke-width="2"/>
+    <path d="M372 288 l25 -10 25 10 v34 q-1 24 -25 36 q-24 -12 -25 -36Z" fill="#edf3e8"/>
+    <path d="M384 315 l10 11 16 -23" fill="none" stroke="#286957" stroke-width="4"/>
+    <path d="M479 298 L650 253 L775 310 L775 484 L603 533 L479 474Z" fill="#eee6d5"/>
+    <path d="M479 298 L603 352 L775 310 L650 253Z" fill="#f8f3e7"/>
+    <path d="M603 352 V533 L775 484 V310Z" fill="#d8e7d9"/>
+    <path d="M499 324 L580 360 V485 L499 450Z" fill="#fffef9"/>
+    <path d="M622 368 L674 355 V485 L622 500Z M692 350 L750 336 V464 L692 481Z" fill="#fffef9"/>
+    <g fill="#e4eee1" stroke-width="1.7">
+      <path d="M509 339 l61 27 v29 l-61 -27Z M509 382 l61 27 v28 l-61 -27Z M509 425 l61 27 v18 l-61 -27Z"/>
+      <path d="M631 380 l34 -9 v25 l-34 9Z M631 417 l34 -9 v25 l-34 9Z M631 454 l34 -9 v25 l-34 9Z"/>
+      <path d="M703 362 l36 -9 v25 l-36 9Z M703 399 l36 -9 v25 l-36 9Z M703 436 l36 -9 v25 l-36 9Z"/>
+    </g>
+    <g fill="#286957" stroke="none">
+      <ellipse cx="555" cy="379" rx="3" ry="4"/><ellipse cx="555" cy="421" rx="3" ry="4"/>
+      <circle cx="653" cy="383" r="3"/><circle cx="653" cy="421" r="3"/><circle cx="727" cy="365" r="3"/><circle cx="727" cy="402" r="3"/>
+    </g>
+    <g fill="none" stroke="#9ab39e" stroke-width="2">
+      <path d="M632 392 l10 -3 M632 429 l10 -3 M704 374 l11 -3 M704 411 l11 -3 M519 354 l22 10 M519 397 l22 10"/>
+      <path d="M528 293 l109 -28 58 26 -110 28Z M546 293 l39 17 M571 286 l40 17 M596 280 l40 16"/>
+    </g>
+    <path d="M555 545 H357 Q337 545 337 525 V502 H286" fill="none" stroke="#286957" stroke-width="3"/>
+    <path d="M298 492 l-14 10 14 10" fill="none" stroke="#286957"/>
+    <path d="M123 166 q0 -27 27 -27 q27 0 27 27 v20 h-54Z" fill="none" stroke="#286957" stroke-width="5"/>
+    <rect x="111" y="180" width="78" height="63" rx="8" fill="#e6dba9"/>
+    <circle cx="150" cy="205" r="7" fill="#286957" stroke="none"/>
+    <path d="M150 210 v13" fill="none" stroke="#286957" stroke-width="5"/>
+    <path d="M171 251 q22 11 38 34" fill="none" stroke="#9ab39e" stroke-dasharray="5 7" stroke-width="2"/>
+    <path d="M697 548 l71 -18 62 29 -72 20Z M697 548 v44 l61 30 72 -20 v-43 M758 579 v43" fill="#fffef9"/>
+    <path d="M709 552 l45 22 M720 549 l45 22 M772 553 l40 16 M768 563 l25 -7" fill="none" stroke="#9ab39e" stroke-width="2"/>
+    <path d="M720 581 l10 5 18 -4" fill="none" stroke="#286957" stroke-width="3"/>
+  </g>
+  <g font-family="Arial, sans-serif" fill="#286957" text-anchor="middle">
+    <text x="551" y="50" font-size="23">Nuvem, mas com infraestrutura real</text>
+    <text x="176" y="539" font-size="22">Aprender e testar</text>
+    <text x="176" y="569" font-size="19">somente com autorização</text>
+    <text x="450" y="626" font-size="20">Conectar, verificar, compreender</text>
+    <text x="151" y="121" font-size="19">Acesso protegido</text>
+  </g>
+</svg>

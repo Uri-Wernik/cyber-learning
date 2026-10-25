@@ -1,20 +1,16 @@
 # Do phishlet carregado à sessão autenticada
 
-> **Status:** publicado. A carga dos phishlets e a correção da blacklist funcionaram no laboratório do estudante; o fluxo completo de autenticação e a reutilização de sessão ainda não foram reproduzidos neste workspace.
->
-> **Título original:** Bypassing 2FA / MFA
->
-> **Escopo:** estudo em infraestrutura própria, com aplicação e identidades sintéticas. Credenciais, códigos MFA e sessões de serviços de terceiros não devem ser usados, mesmo quando a conta pertence ao operador do laboratório.
+Você colocou os arquivos na máquina, abriu o programa e esperou que ele os encontrasse. Só que baixar e encontrar não são a mesma coisa. Um livro guardado na estante errada continua existindo; quem procura na estante indicada pode não vê-lo. Com arquivos, o endereço da busca tem um papel parecido.
 
-Nas aulas preparatórias, vimos por que um proxy **Adversary-in-the-Middle (AiTM)** consegue observar a autenticação enquanto ela acontece e como preparar o executável, o domínio e os serviços de rede. Restava transformar esses componentes separados em um fluxo: carregar regras compatíveis, associá-las ao domínio do laboratório, ativá-las, criar um endereço de entrada e observar o estado da sessão.
+Esta aula começa por dois problemas relatados no laboratório: as regras estavam em uma pasta diferente da examinada pelo programa, e uma lista de bloqueio interferia no próprio acesso autorizado. O estudante informou que a carga e a correção do bloqueio funcionaram; a autenticação completa e a reutilização de sessão ainda não foram reproduzidas. O estudo pertence a infraestrutura própria, com aplicação e identidades sintéticas. Credenciais, códigos MFA e sessões de serviços de terceiros ficam fora dele, mesmo quando a conta é do operador.
 
-A aula chamou esse resultado de “bypass de 2FA/MFA”. Tecnicamente, o segundo fator não é quebrado. O participante conclui a autenticação verdadeira através do proxy, e a aplicação emite uma sessão já autenticada. Se os dados dessa sessão forem capturados e aceitos em outro cliente, este poderá aparentar ter “pulado” o MFA porque o serviço não solicita novamente os fatores em cada requisição.
+Precisamos manter as duas histórias separadas. Corrigir a carga de arquivos e um bloqueio não comprova uma autenticação completa. E o título “bypass de 2FA/MFA” também precisa de tradução técnica: no modelo estudado, o participante resolve o desafio verdadeiro; a exposição possível vem da sessão que a aplicação emite **depois** dessa validação.
 
 ## Carregando as regras que faltavam
 
-Um **phishlet** é um arquivo YAML com as regras usadas pelo Evilginx para intermediar um fluxo web. Ele descreve hosts, parâmetros e elementos da sessão que a ferramenta precisa reconhecer. Não é apenas uma cópia visual de uma página, e não existe garantia de que continue compatível depois que a aplicação de destino muda.
+O objeto procurado pelo programa é um **phishlet**, arquivo YAML com regras de um fluxo web. Ele descreve hosts, parâmetros e elementos de sessão que a ferramenta deve reconhecer. Não é apenas o desenho de uma tela de login, nem uma regra que serve para qualquer aplicação. Se o comportamento do destino muda, sua compatibilidade pode mudar também.
 
-No laboratório, o executável estava em `/home/kali/evilginx2/build/evilginx`, enquanto os phishlets adicionais foram clonados em outro diretório. O histórico que levou ao funcionamento foi normalizado abaixo, sem os números do `history` e sem os caracteres `\n` que representavam apenas quebras de linha:
+No relato do estudante, o executável estava em `/home/kali/evilginx2/build/evilginx`. Os arquivos adicionais haviam sido obtidos em outra pasta. O histórico abaixo foi normalizado apenas para retirar os números do `history` e os caracteres `\n` usados como quebras de linha. É um registro do que foi executado, não uma recomendação de regras para serviços de terceiros.
 
 ```bash
 cd /home/kali
@@ -25,98 +21,106 @@ cd ../evilginx2
 build/evilginx -p phishlets
 ```
 
-`git clone` criou `/home/kali/Evilginx-Phishlets` com uma cópia do repositório remoto. `ls` permitiu observar o conteúdo baixado. Depois, `cd ../evilginx2` deixou o shell no diretório do código compilado.
+Vamos localizar os objetos antes de tirar conclusões. A partir de `/home/kali`, `git clone` criou `/home/kali/Evilginx-Phishlets`. O estudante entrou nessa pasta e usou `ls` para consultar o conteúdo. Depois, `cd ../evilginx2` levou o shell para a pasta do projeto compilado.
 
-O último comando tem duas partes importantes. `build/evilginx` é o caminho relativo até o executável, e `-p phishlets` informa onde procurar os arquivos YAML. Como `phishlets` também é um caminho relativo, ele é resolvido a partir do diretório atual. Nesse caso, aponta para `/home/kali/evilginx2/phishlets`.
+Agora leia a última linha como duas perguntas. **Onde está o programa?** Em `build/evilginx`, a partir da pasta atual. **Onde procurar as regras?** No diretório indicado por `-p phishlets`, também a partir da pasta atual. Portanto, aquela execução procurava `/home/kali/evilginx2/phishlets`, não a pasta recém-clonada.
 
-Executar a ferramenta antes da cópia ajudou a separar o problema: ter arquivos em `/home/kali/Evilginx-Phishlets` não fazia o processo carregá-los automaticamente. Eles precisavam estar no diretório indicado por `-p`, ou esse argumento precisaria apontar diretamente para outro diretório compatível.
+Esse era o desencontro. Os YAML podiam existir e continuar fora da busca. O programa não estava obrigado a percorrer o computador procurando o que o operador talvez quisesse usar. O local indicado precisava corresponder ao local dos arquivos.
 
-O ajuste realizado no laboratório foi:
+O ajuste registrado foi:
 
 ```bash
 cp /home/kali/Evilginx-Phishlets/*.yaml /home/kali/evilginx2/phishlets/
 build/evilginx -p phishlets
 ```
 
-O shell expande `*.yaml` para os arquivos YAML encontrados no diretório de origem. `cp` copia esses arquivos para o diretório que o Evilginx examina na inicialização. O segundo comando reinicia a ferramenta e provoca uma nova leitura das regras.
+O shell expande `*.yaml` para os nomes encontrados na origem. `cp` copia esses arquivos para o destino, e a nova execução lê o diretório informado. O efeito dessa mudança é a localização das regras. Ela não publica DNS, não emite certificado e não realiza uma autenticação.
 
-Essa origem de phishlets é comunitária e não pertence ao repositório oficial do Evilginx. Arquivos de terceiros podem estar desatualizados, conter regras incompatíveis ou introduzir transformações que não foram auditadas. Eles devem ser examinados e associados a um hash de commit conhecido antes de qualquer laboratório. A cópia também pode sobrescrever arquivos de mesmo nome no destino; por isso, esse procedimento pertence a uma instância descartável, nunca a um ambiente de produção.
+Há uma ressalva importante sobre a origem: esse repositório é comunitário, não o projeto oficial do Evilginx. Sua presença no histórico não é um selo de auditoria. Regras podem estar antigas, incompatíveis ou conter transformações não revisadas. Elas exigem leitura e associação a um commit conhecido antes de qualquer exercício próprio.
+
+A cópia também pode sobrescrever arquivos de mesmo nome. Esse é mais um motivo para o relato pertencer a uma instância descartável, nunca a um ambiente de produção. O aprendizado duradouro aqui é relacionar **pasta atual, caminho relativo e diretório de carga**, não aprovar automaticamente tudo o que foi baixado.
 
 ## Quando o próprio IP entra na blacklist
 
-Depois da cópia, ainda havia um segundo estado persistente interferindo no teste. O Evilginx mantém uma **blacklist**, ou lista de bloqueio, no diretório de configuração do usuário que iniciou o processo. Como a ferramenta estava sendo executada como `root`, o arquivo usado era:
+Depois dos arquivos, surgiu outro tipo de estado. O Evilginx mantém uma **blacklist**, lista de bloqueio armazenada no diretório de configuração de quem iniciou o processo. Nessa execução, a identidade era `root`, e o arquivo estava em:
 
 ```text
 /root/.evilginx/blacklist.txt
 ```
 
-Na configuração padrão atual, uma requisição considerada não autorizada pode adicionar o endereço IP de origem a esse arquivo. Isso pode acontecer, por exemplo, quando alguém abre uma URL que não corresponde a uma lure ativa ou tenta acessar uma lure cujo phishlet está desabilitado ou oculto. Assim, visitar diretamente o domínio durante a preparação do laboratório pode bloquear o próprio IP público usado no teste.
+O nome lista de bloqueio já sugere sua finalidade, mas é preciso observar o efeito real. Na configuração padrão descrita para a ferramenta, uma requisição considerada não autorizada pode registrar o IP de origem. Isso pode ocorrer ao visitar um endereço sem correspondência com uma entrada ativa ou relacionada a uma regra desabilitada ou oculta.
 
-Um endereço IP identifica uma interface na comunicação de rede. Quando o navegador sai para a Internet através de um roteador com **Network Address Translation (NAT)**, o servidor normalmente observa o IP público compartilhado, não o endereço privado do computador. Portanto, bloquear esse IP pode afetar outros clientes que saem pelo mesmo roteador.
+Assim, uma tentativa de conferir o domínio durante a preparação pode alterar o ambiente: o endereço do próprio teste entra na lista. “Eu só abri a página” não garante que o sistema permaneceu no mesmo estado.
 
-O histórico mostra a limpeza que permitiu continuar:
+Qual IP o servidor vê? Muitas redes usam **Network Address Translation (NAT)**, tradução de endereços no roteador. O computador pode ter um IP privado, enquanto o destino observa o IP público de saída compartilhado por vários clientes. Bloquear esse endereço pode alcançar mais de uma máquina da mesma rede.
+
+Isso explica uma consequência do bloqueio; não é uma orientação para mudar de origem e contorná-lo. No diagnóstico autorizado, o trabalho é identificar a entrada indevida e sua causa. A correção relatada pelo estudante incluiu:
 
 ```bash
 rm /root/.evilginx/blacklist.txt
 build/evilginx -p phishlets
 ```
 
-`rm` removeu o arquivo persistente inteiro, incluindo qualquer outro IP ou faixa que estivesse nele. Na inicialização seguinte, o Evilginx recriou um arquivo vazio e carregou a blacklist novamente. Reiniciar é importante porque o processo também mantém os endereços já lidos em memória; apagar o arquivo enquanto a mesma execução continua não limpa esse estado interno.
+O detalhe decisivo está no alcance de `rm`: foi removido o **arquivo inteiro**, não apenas o endereço do estudante. Outras entradas existentes também seriam apagadas. Na inicialização seguinte, a ferramenta recriou o arquivo vazio e carregou novamente a lista.
 
-Essa remoção não é uma correção geral para falhas de DNS, TLS ou parsing de YAML. Ela só é coerente quando o operador confirma que o próprio IP autorizado foi bloqueado por engano. Antes de remover o arquivo, o correto é parar a ferramenta, inspecionar o conteúdo, confirmar a origem do bloqueio e preservar somente as entradas que ainda façam sentido. Se o processo fosse iniciado como o usuário `kali`, o diretório de configuração padrão estaria sob `/home/kali/.evilginx`, e não sob `/root`.
+Há dois lugares para o estado existir: disco e memória. Apagar o arquivo não garante que um processo ainda aberto esqueça os endereços que já leu. Por isso, a nova execução faz parte da explicação do resultado. É semelhante a corrigir uma anotação enquanto alguém continua consultando uma cópia antiga, mas aqui a distinção técnica é entre armazenamento persistente e estado do processo.
 
-O resultado informado pelo estudante foi que, após copiar os YAML, limpar a blacklist e iniciar novamente com `-p phishlets`, a ferramenta passou a funcionar no laboratório. Sem a saída do console, esse histórico comprova a sequência executada, mas não permite afirmar sozinho quais arquivos foram aceitos nem qual mensagem específica desapareceu.
+Não transforme esse histórico em receita para qualquer erro. A remoção não corrige DNS, TLS nem sintaxe de YAML. Só faz sentido investigar essa causa depois de confirmar um bloqueio indevido do acesso autorizado. O cuidado é parar, inspecionar e preservar as entradas ainda necessárias, não adotar exclusão total como solução padrão.
+
+O caminho também depende do usuário. Uma execução como `kali` usaria normalmente `/home/kali/.evilginx`, não `/root/.evilginx`. Arquivo com o mesmo nome em diretórios de usuários diferentes não é o mesmo arquivo.
+
+Segundo o relato do estudante, a ferramenta passou a funcionar depois da cópia, da limpeza e da nova execução com `-p phishlets`. Sem a saída detalhada do console, não podemos afirmar quais YAML foram aceitos ou qual mensagem específica desapareceu. O relato sustenta o diagnóstico dessas condições, não um login completo já comprovado.
 
 ## Associando um phishlet ao domínio do laboratório
 
-Dentro do console interativo do Evilginx, o comando `phishlets` lista as regras reconhecidas. A tradução automática da aula transformou *phishlet* em expressões como “lista de peixes”, “fenda de peixe” e “fish lit”; todas se referiam ao mesmo componente.
+Uma regra encontrada ainda precisa corresponder à configuração do exercício. No console interativo, `phishlets` lista as regras reconhecidas. Expressões estranhas da tradução, como “lista de peixes” ou “fish lit”, eram tentativas de reconhecer esse mesmo nome técnico.
 
-Antes de ativar uma regra, a versão mostrada pelo instrutor exigia associá-la a um hostname:
+Na versão apresentada, o instrutor associou a regra a um **hostname**, nome do host usado na configuração, e mudou seu estado:
 
 ```text
 phishlets hostname <PHISHLET-DO-LAB> <DOMINIO-DO-LAB>
 phishlets enable <PHISHLET-DO-LAB>
 ```
 
-O primeiro comando vincula o phishlet ao domínio controlado pelo laboratório. O segundo muda seu estado para habilitado. Habilitar não cria registros DNS: a zona do domínio ainda precisa fazer cada hostname exigido pelo phishlet resolver para o IP público da instância.
+Essas linhas pertencem ao console da ferramenta, não ao shell Linux. A primeira define a associação com o domínio controlado; a segunda habilita a regra. São mudanças internas. Habilitar não cria registros no DNS nem garante uma porta em escuta.
 
-Na demonstração, a primeira ativação falhou durante a obtenção do certificado TLS e revelou dois subdomínios sem registros correspondentes. O erro foi útil porque mostrou quais nomes a regra tentava publicar. O instrutor criou registros DNS para esses nomes, apontando-os para o mesmo servidor, aguardou a propagação e tentou novamente.
+No curso, uma tentativa inicial de ativação falhou ao obter o certificado e revelou dois subdomínios sem os registros esperados. O erro trouxe uma pista: aquela regra dependia de nomes que ainda não apontavam corretamente. O instrutor criou os registros correspondentes, aguardou a atualização observada no DNS e tentou de novo.
 
-Essa falha não acontece obrigatoriamente na primeira execução. Ela ocorre quando algum pré-requisito ainda não foi satisfeito, como resolução DNS incorreta, propagação incompleta, porta necessária bloqueada ou configuração incompatível. Os hostnames exatos também dependem do phishlet; não existe uma lista universal de subdomínios.
+O erro não é uma cerimônia obrigatória da primeira execução. Ele aparece quando há uma condição ausente ou incompatível. E os subdomínios não formam uma lista universal: dependem das regras e do ambiente. Copiar nomes de outra apresentação sem ler o diagnóstico pode apenas criar uma configuração sem relação com o problema.
 
-Um registro `A` relaciona um nome a um endereço IPv4. Quando o navegador consulta esse nome, o DNS devolve o IP da instância; o tráfego pode então chegar ao Security Group da nuvem, ao firewall do sistema e, por fim, ao processo que escuta a porta correspondente. Abrir uma porta no Security Group não inicia o serviço, e iniciar o Evilginx não garante que DNS e firewalls permitam alcançá-lo.
+Um registro `A` fornece um IPv4 associado ao nome. Depois vêm rota, Security Group, firewall local e processo em escuta. Se a resolução funciona, mas o filtro bloqueia, o serviço não é alcançado. Se o filtro permite, mas não existe processo atendendo, o resultado também não está completo. Cada camada tem uma pergunta própria.
 
-Para HTTPS, ainda é necessário um certificado válido para os nomes publicados. A emissão automática pela autoridade certificadora comprova controle técnico sobre o domínio solicitado, não que a página seja confiável. O navegador estabelece TLS com o domínio do proxy, enquanto o proxy estabelece outra conexão com a aplicação controlada no laboratório. São duas conexões separadas.
+O HTTPS acrescenta a identidade criptográfica de cada nome. A emissão de certificado comprova condições de controle do domínio conforme o desafio, não honestidade do conteúdo. E continuam existindo dois trechos: TLS do navegador até o proxy e TLS do proxy até a aplicação. Nenhuma confirmação no console transforma esses trechos em uma quebra da criptografia do serviço.
 
 ## Criando a rota de entrada
 
-Um phishlet habilitado define como o tráfego será intermediado, mas ainda não fornece necessariamente uma URL de entrada. O Evilginx chama essa entrada de **lure**. Na versão apresentada na aula, o instrutor usou:
+“A regra está habilitada; qual endereço representa a entrada do teste?” Na ferramenta, esse objeto recebe o nome **lure**. As linhas mostradas pelo instrutor para criar e consultar a entrada foram:
 
 ```text
 lures create <PHISHLET-DO-LAB>
 lures
 ```
 
-O primeiro comando cria uma lure associada ao phishlet. O segundo lista as lures e seus identificadores. Na demonstração, a primeira recebeu o ID `0` e um caminho aleatório. O ID identifica o objeto dentro do Evilginx; ele não é porta de rede, endereço IP nem parte da autenticação.
+`create` cria o objeto associado à regra, e a consulta lista entradas e identificadores. No exemplo, a primeira recebeu ID `0` e um caminho aleatório. Esse zero não é uma porta, um IP ou uma indicação de que alguém já se autenticou: é apenas a referência interna daquele objeto.
 
-O caminho foi alterado e a URL consultada com comandos equivalentes a:
+O curso também mostrou a edição do caminho e a consulta da URL:
 
 ```text
 lures edit 0 path <CAMINHO-DO-LAB>
 lures get-url 0
 ```
 
-Personalizar o caminho muda a parte da URL que aparece depois do domínio. Não altera o destino DNS, o certificado, o phishlet associado nem as permissões da aplicação. Em um exercício autorizado, o caminho deve apenas identificar a rota de teste. Torná-lo parecido com uma marca para induzir terceiros ao erro ultrapassa o escopo do laboratório.
+`path` é a parte da URL depois do domínio. Trocar o caminho muda a rota da entrada; não troca o endereço resolvido pelo DNS, o certificado, a regra associada ou o escopo autorizado. Identificadores parecidos não tornam essas operações equivalentes.
 
-A URL só deve ser aberta por participantes autorizados e deve usar um domínio de laboratório. O instrutor demonstrou um phishlet relacionado a um serviço externo; este capítulo não transforma essa demonstração em autorização para intermediar uma plataforma real. Nem mesmo uma conta pessoal concede permissão para colocar a infraestrutura do provedor no fluxo do teste.
+Aqui, a entrada pertence exclusivamente ao domínio e aos participantes do laboratório. O uso de uma regra de serviço externo pelo instrutor não concede permissão para reproduzir esse serviço como destino. Uma conta pessoal também não basta: quem autoriza o teste precisa ter autoridade sobre os componentes envolvidos.
+
+O caminho de laboratório deve identificar uma rota de teste, não imitar uma marca para induzir terceiros ao erro. A aplicação de destino e as identidades sintéticas precisam existir dentro do ambiente autorizado.
 
 ## O que acontece durante a autenticação
 
-Ao abrir a lure válida, o navegador inicia uma sessão de phishing registrada pela ferramenta. A sequência conceitual é:
+Um registro de visita aparece. Isso significa que a conta está autenticada? Não. O programa pode ter registrado uma interação antes de a aplicação aceitar qualquer fator. Para entender a sequência, acompanhe quem toma cada decisão.
 
-![Infográfico em estilo cartoon mostrando o navegador do participante, o proxy Evilginx e a aplicação controlada durante uma autenticação com MFA](assets/fluxo-autenticacao-proxy-mfa.svg)
-
-*O navegador e o Evilginx encerram uma conexão HTTPS, enquanto o Evilginx inicia outra conexão HTTPS com a aplicação controlada. Credenciais sintéticas e a resposta MFA atravessam o proxy, mas somente a aplicação valida os fatores e emite o token que representa a sessão autenticada.*
+O navegador conversa por HTTPS com o intermediário, que abre outro trecho HTTPS até a aplicação controlada. As entradas sintéticas e as respostas passam por esse caminho; a decisão de validar os fatores e emitir a sessão continua na aplicação.
 
 1. o navegador se conecta por HTTPS ao domínio do laboratório;
 2. o Evilginx abre outra conexão com a aplicação controlada;
@@ -126,24 +130,28 @@ Ao abrir a lure válida, o navegador inicia uma sessão de phishing registrada p
 6. a aplicação valida os fatores e emite os dados da sessão autenticada;
 7. o proxy encaminha a resposta ao navegador e pode registrar os elementos que o phishlet reconhece como tokens.
 
-Depois da senha, mas antes do segundo fator, a captura da credencial ainda não representa uma sessão autenticada. Somente a aplicação de destino decide se os fatores são válidos. Depois da validação, cookies ou outros tokens podem representar o estado autenticado sem conter a senha nem o código MFA.
+A fronteira importante está entre **apresentar os fatores** e **ter os fatores aceitos**. Antes da validação, observar uma senha não comprova uma **sessão autenticada**. Depois, a aplicação pode emitir um **token** que representa esse estado nas próximas requisições.
 
-O console apresentado pelo instrutor permitia listar e detalhar o histórico com:
+O token não precisa conter a senha ou o código MFA. Pense nele como uma referência temporária que o serviço reconhece, não como a gravação de todo o formulário. É por representar acesso que ele precisa permanecer secreto.
+
+No console da apresentação, os registros podiam ser consultados assim:
 
 ```text
 sessions
 sessions <ID-DA-SESSAO>
 ```
 
-`sessions` mostra registros como phishlet, horário, IP de origem e indicação de tokens capturados. `sessions <ID-DA-SESSAO>` abre os detalhes de um registro específico. Esses dados podem incluir credenciais e cookies válidos; portanto, são segredos e não devem aparecer em screenshots, commits ou notas públicas.
+`sessions` lista informações como regra, horário, IP e indicação de tokens reconhecidos. O identificador seleciona um registro para detalhamento. Esse detalhe pode conter credenciais e cookies válidos: não deve ser copiado para uma captura pública só porque apareceu em uma ferramenta de estudo.
 
-Na demonstração do curso, dados apresentados como cookies da sessão foram importados em outro navegador, que apareceu autenticado sem repetir usuário, senha e MFA. Essa é uma observação do instrutor, não um resultado reproduzido neste workspace. Também não prova que qualquer cookie isolado seja suficiente: uma aplicação pode exigir vários tokens, manter estado no servidor, vincular a sessão ao dispositivo, detectar mudança de contexto, expirar o acesso ou solicitar nova autenticação.
+O instrutor apresentou cookies sendo importados em outro navegador, que apareceu autenticado sem repetir os fatores. Esse resultado pertence à demonstração do curso, não a uma reprodução feita aqui. A diferença é essencial: ter o valor de um token e conseguir que outro cliente seja aceito não são a mesma observação.
+
+A aplicação pode exigir vários tokens, manter estado no servidor, vincular a sessão ao dispositivo, considerar mudanças de contexto, impor prazo ou pedir nova autenticação. O teste de aceitação depende dessas condições. Por isso, “encontrei um cookie” não permite concluir “tenho controle total”.
 
 ## O que foi e o que não foi validado
 
-O laboratório do estudante confirmou que a localização dos arquivos e o estado persistido da blacklist eram relevantes. A sequência final carregou os YAML no diretório indicado por `-p`, removeu a lista de bloqueio criada sob a conta `root` e reiniciou o processo.
+Vamos voltar às evidências disponíveis. O estudante relatou funcionamento depois de colocar os YAML no local indicado, remover o bloqueio sob `root` e reiniciar a ferramenta. Esse é o resultado registrado do laboratório. Não há uma saída detalhada que permita estendê-lo automaticamente a cada regra ou a todo o fluxo.
 
-O relato não inclui evidências suficientes para afirmar que também foram validados:
+O material ainda não comprova:
 
 - todos os phishlets copiados e sua compatibilidade com a versão compilada;
 - resolução DNS de cada hostname necessário;
@@ -152,20 +160,12 @@ O relato não inclui evidências suficientes para afirmar que também foram vali
 - captura de uma sessão sintética;
 - aceitação ou recusa da sessão em outro navegador.
 
-Cada item representa uma mudança de estado diferente. Ver o executável abrir não comprova DNS; resolver o domínio não comprova que a porta esteja acessível; receber uma página por HTTPS não comprova que o phishlet reconheça o fluxo; e registrar um token não comprova que ele possa ser reutilizado.
+Essa lista não diminui o valor do diagnóstico. Ela impede que uma descoberta pequena e útil vire uma conclusão grande demais. Abrir o programa confirma execução; resolver um nome confirma uma resposta DNS; receber HTTPS confirma condições daquele trecho; nenhum desses fatos substitui a evidência dos outros.
 
 ## Encerrando sem deixar credenciais ou infraestrutura expostas
 
-Ao final de um laboratório autorizado, as lures e os phishlets devem ser desabilitados, e o processo precisa ser encerrado. Registros de sessão, credenciais sintéticas, cookies, arquivos YAML de terceiros e bancos de dados locais devem ser revisados e removidos conforme o plano do exercício. As sessões da aplicação precisam ser revogadas, não apenas apagadas do Evilginx.
+A última pergunta do exercício não é “funcionou?”, mas “o que ficou ligado ou guardado?”. Desabilite as entradas e regras temporárias, pare o processo e revise registros de sessão, YAML de terceiros, banco local e dados sintéticos. Se houver sessão na aplicação, sua revogação precisa acontecer lá: apagar um arquivo da ferramenta não faz o servidor esquecer um acesso já concedido.
 
-Também é necessário remover os registros DNS temporários, fechar as regras de entrada abertas para o teste e terminar a instância quando ela não tiver mais função. Sair do SSH encerra apenas o terminal remoto; a máquina virtual pode continuar ligada e gerando custos.
+Depois, confira DNS, portas e instância. Remova apontamentos temporários, feche regras sem função e termine a máquina quando ela não for mais necessária. Sair do SSH encerra a conversa com o terminal remoto; não desliga automaticamente a VM nem sua cobrança.
 
-Os principais artefatos deixados por essa prática são registros DNS, certificados emitidos, regras de firewall ou Security Group, logs da instância, histórico da aplicação, banco de sessões e o arquivo de blacklist. Eles ajudam a reconstruir o que ocorreu, mas qualquer material destinado ao livro deve substituir IPs, domínios, identidades e tokens por valores fictícios.
-
-## Referências
-
-- [Evilginx — repositório oficial](https://github.com/kgretzky/evilginx2)
-- [Evilginx Community — Phishlets](https://help.evilginx.com/community/guides/phishlets)
-- [Evilginx Community — Blacklist](https://help.evilginx.com/community/guides/blacklist)
-- [Evilginx Community — Lures](https://help.evilginx.com/community/guides/lures)
-- [Evilginx Community — Sessions](https://help.evilginx.com/community/guides/sessions)
+Certificados, mudanças de rede, logs, histórico e lista de bloqueio podem ajudar a reconstruir o exercício. Para o livro, preserve somente as evidências autorizadas e substitua identidades, IPs, domínios e tokens por valores fictícios. O objetivo é mostrar **o que cada resultado comprova**, sem publicar o segredo que produziria o risco estudado.

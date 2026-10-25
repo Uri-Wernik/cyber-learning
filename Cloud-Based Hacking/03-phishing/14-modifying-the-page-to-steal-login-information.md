@@ -6,38 +6,38 @@
 >
 > **Escopo:** estudo conceitual e simulação autorizada com dados fictícios. A coleta de credenciais reais demonstrada pelo instrutor não foi reproduzida.
 
-Na [aula anterior](13-creating-a-fake-login-page-on-the-cloud.md), um arquivo chamado `index.html` foi colocado em `/var/www/html`, diretório servido pelo Apache. Esta aula parte desse arquivo para investigar uma pergunta nova: quando alguém preenche campos de uma página e pressiona o botão de entrada, quais elementos determinam para onde os valores vão?
+Uma página pode estar visível no navegador sem que esteja claro o destino dos valores digitados nela. Na [aula anterior](13-creating-a-fake-login-page-on-the-cloud.md), o Apache passou a entregar `index.html` a partir de `/var/www/html`. Agora acompanharemos o que liga os campos desse documento a uma possível requisição: quem inicia o envio, como o destino é escolhido e em que momento o navegador ainda pode cancelar a ação.
 
-O instrutor apresentou essa estrutura no contexto de uma página de phishing e direcionou o formulário a um arquivo PHP que receberia credenciais. No laboratório documentado aqui, o mesmo fluxo foi estudado sem capturar, transmitir ou armazenar dados. A página foi adaptada para descartar valores fictícios no próprio navegador.
+No curso, o instrutor direcionou um formulário de phishing a um arquivo PHP destinado a receber credenciais. O laboratório registrado tomou outro caminho: compreender a estrutura sem repetir a coleta. A adaptação validada descarta valores fictícios dentro do navegador, sem capturá-los, transmiti-los ou armazená-los. A distinção entre o relato do curso e o comportamento testado acompanha toda a explicação.
 
 ## Abrindo o arquivo que o Apache entrega
 
-No painel remoto do FileZilla, o arquivo relevante era `/var/www/html/index.html`. Ele precisava ser editado porque esse era o documento entregue pelo Apache quando o navegador acessava a raiz do servidor.
+Para alterar a página efetivamente publicada, era necessário localizar `/var/www/html/index.html` no painel remoto do FileZilla. Esse arquivo importava porque correspondia ao documento servido na raiz do site. Editar outra cópia, sem enviá-la a esse destino, não mudaria a resposta que o Apache estava entregando.
 
-Ao escolher **Editar** no FileZilla, o programa baixou uma cópia temporária para o Windows e a abriu no editor associado à extensão `.html`. O editor não trabalhou diretamente dentro do servidor. Depois que a cópia local foi salva, o FileZilla detectou a alteração e perguntou se o arquivo deveria ser enviado de volta para substituir a versão remota.
+A opção **Editar** não abriu um editor dentro do Kali. Primeiro, o FileZilla trouxe uma cópia temporária ao Windows e acionou o programa associado a `.html`. A gravação feita nesse editor aconteceu localmente. Ao detectar a mudança, o cliente perguntou se deveria transferir o resultado de volta, substituindo o arquivo remoto. Portanto, o diálogo de confirmação era parte necessária do percurso entre editar e publicar a edição.
 
-Esse fluxo possui duas operações diferentes:
+Podemos distinguir as duas direções envolvidas sem confundi-las com uma única edição remota:
 
 1. **Download temporário:** o FileZilla traz o arquivo remoto para o computador local.
 2. **Upload da alteração:** após a confirmação, o FileZilla envia a cópia editada para `/var/www/html/index.html`.
 
-Salvar no editor modifica primeiro a cópia temporária. A página publicada só muda quando o upload termina com sucesso.
+Essa diferença explica um sintoma comum: o editor pode mostrar a versão nova enquanto o site continua antigo. A conclusão do upload, e não apenas o ato de salvar, é que coloca a alteração no caminho lido pelo Apache.
 
 ## Relacionando a página visível ao código
 
-O arquivo baixado continha uma quantidade grande de HTML, CSS, dados de configuração e JavaScript. Em vez de ler tudo desde o início, o instrutor abriu as ferramentas de desenvolvimento do navegador e usou **Inspecionar** sobre a região de entrada.
+Encontrar o trecho correto em um arquivo extenso exige relacionar a tela ao documento. Havia HTML, CSS, configurações e JavaScript misturados no material baixado. O instrutor começou pela região de entrada visível e usou **Inspecionar**, nas ferramentas de desenvolvimento, para reduzir a busca a elementos que participavam daquela interface.
 
-O painel **Elements** mostra a árvore do documento que o navegador construiu. Quando o ponteiro passa por um elemento dessa árvore, a área correspondente fica destacada na página. Isso permite relacionar uma parte visual ao elemento HTML responsável por representá-la.
+No painel **Elements**, o navegador apresenta sua árvore de elementos. Ao apontar para um nó, uma marcação na página permite reconhecer a região correspondente. Essa ligação é útil para sair de uma pergunta visual, como “qual é este campo?”, e chegar ao elemento que o representa, sem adivinhar apenas pela posição no arquivo.
 
-Depois de encontrar um texto ou atributo suficientemente específico, é possível procurá-lo no arquivo com `Ctrl+F`. Essa busca reduz o problema: em vez de compreender imediatamente todo o documento, procura-se primeiro o contêiner que controla a região relevante.
+Um texto ou atributo característico encontrado ali pode orientar uma busca com `Ctrl+F` no editor. O propósito não é assumir que todo resultado é o correto, mas localizar um contêiner plausível e verificar sua relação com a área inspecionada. Assim, o arquivo grande passa a ser investigado a partir de uma referência concreta.
 
-Uma página moderna, porém, pode modificar o documento com JavaScript depois do carregamento. Por isso, o HTML exibido pelo inspetor nem sempre é uma cópia literal do arquivo salvo. O inspetor mostra o **DOM atual**, enquanto o editor mostra o **código-fonte armazenado**. Essa diferença explica por que uma busca pode encontrar uma estrutura semelhante, mas não exatamente igual.
+É preciso considerar também quando cada representação foi produzida. O inspetor mostra o **DOM atual**, a árvore que existe no navegador naquele instante. O editor mostra o **código-fonte armazenado**. Se JavaScript acrescentou ou alterou elementos depois do carregamento, as duas versões podem divergir. Uma busca sem correspondência literal não prova, sozinha, que o arquivo investigado seja o errado; pode refletir essa transformação em tempo de execução.
 
 ## O papel do elemento `form`
 
-O elemento HTML `<form>` agrupa controles cujos valores podem ser enviados juntos. Campos de texto, seletores e botões podem pertencer ao mesmo formulário.
+O agrupamento que interessa ao envio é o elemento `<form>`. Ele reúne controles que podem participar de uma mesma operação, como caixas de texto, seletores e botões. Estar perto visualmente de um campo não é o mesmo que compreender a relação desse controle com o formulário.
 
-Uma versão fictícia e inofensiva dessa estrutura seria:
+A estrutura pode ser observada com nomes fictícios e sem qualquer destino de coleta, como no exemplo seguro já adotado:
 
 ```html
 <form action="#" method="post" onsubmit="event.preventDefault()">
@@ -51,45 +51,45 @@ Uma versão fictícia e inofensiva dessa estrutura seria:
 </form>
 ```
 
-Esse exemplo não envia informações porque `event.preventDefault()` cancela a ação padrão do navegador. O destino `#` também não aponta para um processador de dados. Os nomes e valores são deliberadamente fictícios.
+Ao solicitar o envio desse exemplo, `event.preventDefault()` cancela o comportamento padrão. É esse cancelamento que impede a transmissão nativa; `#` tampouco identifica um processador de dados. Os campos foram pensados para valores fictícios, permitindo estudar a relação entre atributos sem montar um receptor de informações.
 
 ### `action`: o destino da requisição
 
-O atributo `action` informa a URL que receberia os dados quando o formulário fosse enviado pelo comportamento nativo do navegador. Ele não contém, por si só, a lógica que valida ou armazena informações. Essa lógica precisa existir no recurso localizado no destino, normalmente em uma aplicação de back-end.
+Antes de montar uma requisição nativa, o navegador precisa saber aonde enviá-la. O atributo `action` fornece essa URL. Ele funciona como indicação de destino, não como programa de validação ou armazenamento. Para produzir esses efeitos, o recurso destinatário precisaria oferecer lógica de aplicação, normalmente executada no back-end.
 
-Se a URL for relativa, como `processar.php`, o navegador a resolve em relação ao endereço atual. Em uma página servida na raiz do site, isso normalmente apontaria para um recurso no mesmo servidor. O navegador então iniciaria uma nova requisição HTTP para esse caminho.
+Um valor relativo, como `processar.php`, é interpretado a partir do endereço atual. No caso de uma página na raiz, ele normalmente designaria outro recurso do mesmo servidor. O efeito seria uma nova requisição HTTP ao caminho resultante; o atributo não abre diretamente um arquivo do sistema operacional remoto.
 
 ### `method`: como os valores entram na requisição
 
-O atributo `method` seleciona o método HTTP usado no envio. A aula trabalhou com `POST`, método no qual os pares de nome e valor costumam seguir no corpo da requisição.
+Depois do destino, vem a forma da requisição. O atributo `method` seleciona o método HTTP; no conteúdo da aula, ele era `POST`. Em formulários desse tipo, os controles participantes são representados como pares de nome e valor, normalmente transportados no corpo da mensagem.
 
-`POST` não significa que os dados estão criptografados. Em HTTP sem TLS, o conteúdo pode atravessar a rede sem a proteção fornecida pelo HTTPS. O método define a semântica da requisição; quem protege o transporte é o TLS usado pelo HTTPS.
+Colocar esses pares no corpo não os cifra. `POST` descreve a semântica do pedido, enquanto TLS trata da proteção do transporte usada por HTTPS. Se a comunicação ocorre por HTTP sem TLS, o método não oferece por conta própria a proteção que impediria a leitura do conteúdo no caminho.
 
 ### `name`: a chave associada ao valor
 
-Cada controle bem-sucedido que participa do envio precisa de um atributo `name`. Esse nome se torna a chave que acompanha o valor digitado.
+O servidor precisa ainda distinguir a que campo cada valor pertence. Nos controles bem-sucedidos que participam do envio, `name` fornece essa chave. O texto exibido ao lado do campo e o nome enviado não precisam ser iguais, pois cumprem funções diferentes.
 
-No exemplo seguro, se o campo `student_id` contivesse `ALUNO-01`, o back-end poderia receber um par conceitualmente equivalente a:
+Para visualizar a associação, considere apenas conceitualmente `ALUNO-01` no controle chamado `student_id`. Caso houvesse um envio, esse par poderia ser representado assim, embora o exemplo seguro cancele a operação:
 
 ```text
 student_id=ALUNO-01
 ```
 
-O `id` tem outra função. Ele identifica um elemento no documento e pode relacionar o campo a um `<label>`, a seletores CSS ou a JavaScript. O `name` participa da representação dos dados do formulário; o `id` identifica o elemento dentro do DOM.
+Já `id` identifica o elemento dentro do documento. Um `<label>`, uma regra CSS ou um trecho de JavaScript pode usá-lo para se referir àquele campo. Portanto, `name` responde “qual chave acompanha o valor?”, enquanto `id` responde “qual elemento do DOM estamos identificando?”. Trocar um pelo outro não preserva automaticamente o comportamento.
 
 ## O botão de envio
 
-Um botão com `type="submit"` solicita o envio do formulário ao qual pertence. Antes da requisição, o navegador dispara um evento chamado `submit`. JavaScript pode observar esse evento, validar campos, cancelá-lo com `preventDefault()` ou executar outro comportamento.
+O botão tradicional com `type="submit"` pede o envio do formulário associado. Antes de criar a requisição, o navegador dispara o evento `submit`, que abre espaço para a aplicação reagir. JavaScript pode conferir campos, cancelar a ação com `preventDefault()` ou iniciar um comportamento diferente. Por isso, a presença de um botão não basta para concluir que houve tráfego de rede.
 
-No arquivo estudado, o controle visível não era um `<button type="submit">` simples. A interface moderna utilizava um elemento com `role="button"`, enquanto havia um `input` de envio oculto. Essa composição dependia de JavaScript e era diferente do formulário tradicional apresentado na explicação do curso.
+A página analisada tornava essa distinção especialmente importante: o controle que aparecia na tela tinha `role="button"`, e existia também um `input` de envio oculto. O conjunto dependia de JavaScript. Não era, portanto, a mesma composição simples de `<button type="submit">` usada para introduzir o conceito.
 
-Essa diferença importa porque procurar apenas pela palavra `submit` não garante que o primeiro resultado seja o botão que a pessoa vê. É necessário confirmar a relação entre o resultado encontrado, o formulário e o elemento destacado no inspetor.
+Uma busca por `submit` poderia localizar o elemento oculto sem explicar o controle visível. A confirmação exige voltar ao inspetor e relacionar o resultado encontrado ao formulário e à área destacada. A investigação do mecanismo deve prevalecer sobre a escolha do primeiro texto que parece familiar.
 
 ## Por que remover um `id` não é uma regra geral
 
-Na demonstração, o instrutor removeu identificadores para evitar que o JavaScript original controlasse o formulário e o botão. Isso pode mudar o comportamento de uma página específica, mas não é uma regra confiável para formulários em geral.
+O instrutor retirou identificadores na tentativa de interromper o controle que os scripts originais exerciam sobre formulário e botão. Essa observação pertence à página demonstrada. Generalizá-la seria incorreto, porque scripts diferentes encontram elementos de maneiras diferentes e os identificadores também atendem a funções legítimas.
 
-Remover um `id` pode:
+Ao retirar um `id` sem examinar suas referências, vários efeitos são possíveis:
 
 - quebrar a associação entre `<label>` e campo;
 - impedir que CSS encontre o elemento;
@@ -97,15 +97,15 @@ Remover um `id` pode:
 - prejudicar acessibilidade e testes automatizados;
 - não produzir efeito algum, caso o código use classes, atributos ou referências internas.
 
-A decisão correta depende de descobrir qual código realmente observa o elemento. Alterar identificadores sem essa análise pode apenas quebrar a interface, sem controlar o fluxo de envio.
+O diagnóstico adequado pergunta qual código observa aquele elemento e por qual referência o encontra. Sem essa resposta, a edição pode quebrar a interface e, ainda assim, deixar o envio ativo. Uma mudança aparente na página não substitui a observação do comportamento.
 
 ## O limite entre HTML e PHP
 
-HTML descreve a estrutura da página no navegador. Ele não grava sozinho valores em um arquivo do servidor. Para receber uma requisição, interpretar os campos e produzir algum efeito persistente, é necessário um componente executado no lado do servidor.
+Até aqui, tratamos de estrutura e eventos no navegador. Nenhum desses elementos HTML grava, por si só, um arquivo na instância. Receber o pedido, interpretar seus campos e persistir alguma informação exige execução do lado do servidor, com os recursos e permissões daquele ambiente.
 
-Na aula, o instrutor propôs um arquivo PHP. **PHP** é uma linguagem que pode ser executada pelo servidor web quando o ambiente está configurado com um interpretador compatível. O navegador não recebe o código PHP original: ele envia uma requisição, o servidor executa o programa e devolve apenas a resposta produzida.
+A tecnologia apresentada pelo instrutor foi **PHP**. Essa linguagem é executada por um interpretador compatível no servidor, quando integrado ao atendimento web. O cliente pede um recurso; o programa roda na instância e produz uma resposta. É essa resposta que chega ao navegador, e não uma entrega do código PHP original para execução local.
 
-O fluxo conceitual apresentado foi:
+A separação de responsabilidades pode ser vista neste fluxo conceitual, que não representa uma coleta implementada no laboratório:
 
 ```mermaid
 flowchart LR
@@ -116,24 +116,24 @@ flowchart LR
     E --> A
 ```
 
-Criar um arquivo com extensão `.php` não garante que ele será executado. O Apache precisa estar configurado para encaminhar esse tipo de arquivo a um interpretador PHP. Sem essa integração, a requisição pode falhar ou o servidor pode tratar o arquivo de outra forma.
+A extensão do nome é insuficiente para garantir execução. O Apache precisa encaminhar o recurso ao interpretador por uma integração configurada. Sem ela, podem ocorrer falhas ou outro tratamento do arquivo. Encontrar um `.php` no diretório publicado não demonstra que exista um processador PHP funcional.
 
-O instrutor identificou os nomes dos campos e mostrou como um programa PHP poderia ler valores recebidos por `POST`. A etapa seguinte do curso pretendia gravá-los em um arquivo. Essa implementação de captura não foi incluída neste laboratório, pois credenciais são dados sensíveis e não devem ser coletadas nem mesmo em uma página pública de estudo.
+Na apresentação do curso, os nomes dos campos orientaram a leitura de valores recebidos por `POST`, preparando sua gravação posterior. Essa implementação não integra o laboratório documentado. Credenciais são segredos, e publicar uma página de estudo não autoriza coletá-las. A análise conserva a distinção entre envio e processamento sem reproduzir o receptor de captura.
 
 ## Adaptando o exercício para uma simulação segura
 
-Para estudar o mecanismo sem criar um coletor de credenciais, o formulário foi mantido visualmente igual, mas seu envio foi neutralizado.
+A adaptação segura separou aparência e comportamento. O formulário continuou com o mesmo aspecto visual, mas as ações capazes de enviar seus valores foram neutralizadas. Isso permitiu verificar se os controles de segurança alteravam a interface e se a interação permanecia local.
 
-O arquivo original já continha:
+O ponto de partida da adaptação incluía estes componentes, já presentes no arquivo:
 
 - um `<form>` com `id="login_form"` e `method="POST"`;
 - dois campos com atributos `name`;
 - um controle visual de entrada comandado por JavaScript;
 - um controle de envio oculto.
 
-Em vez de apontar `action` para um arquivo PHP, foi usado um destino neutro. Uma **Content Security Policy** também bloqueou ações de formulário, conexões iniciadas pela página, objetos incorporados e mudanças da URL-base. Um interceptador carregado antes dos scripts da aplicação cancelou os eventos do formulário, apagou os campos e exibiu uma mensagem informando que nada foi enviado ou armazenado.
+O destino escolhido não foi um endpoint PHP, e sim uma referência neutra. Além disso, uma **Content Security Policy** bloqueou ações de formulário, conexões da página, objetos incorporados e alterações da URL-base. Antes dos scripts da aplicação, um interceptador passou a cancelar os eventos, limpar os campos e mostrar uma confirmação local de que não houve envio nem armazenamento. A proteção foi aplicada ao fluxo, não apenas ao texto exibido pelo botão.
 
-O fluxo validado passou a ser:
+No comportamento validado, a interação terminava no próprio navegador, conforme esta sequência:
 
 ```mermaid
 flowchart LR
@@ -144,13 +144,13 @@ flowchart LR
     E --> F[Exibe a confirmação]
 ```
 
-Nenhum endpoint PHP foi criado. Nenhum arquivo de credenciais foi produzido.
+Essa versão não incluiu criação de endpoint PHP nem produziu arquivo de credenciais. O resultado seguro não deve ser descrito como uma captura seguida de descarte: o envio dos valores foi impedido.
 
 ## Confirmando o resultado no navegador
 
-A versão original e a versão segura foram abertas no mesmo navegador e no mesmo viewport. A comparação confirmou screenshot idêntico, além das mesmas posições, dimensões, fontes e cores para o formulário e seus controles. Isso demonstrou que os controles de segurança não mudaram o design.
+A verificação visual usou o mesmo navegador e o mesmo viewport para as versões original e segura. As screenshots coincidiram, assim como posições, dimensões, fontes e cores do formulário e de seus controles. A evidência sustentou uma conclusão limitada, mas importante: a adaptação não mudou o design observado naquele teste.
 
-O comportamento foi testado apenas com os valores fictícios `ALUNO-01` e `DEMO-1234`. Depois do acionamento do controle de entrada:
+Para a verificação de comportamento, foram usados exclusivamente `ALUNO-01` e `DEMO-1234`, valores fictícios. Depois de acionar o controle de entrada, o teste registrou:
 
 - a URL permaneceu a mesma;
 - os dois campos ficaram vazios;
@@ -158,14 +158,14 @@ O comportamento foi testado apenas com os valores fictícios `ALUNO-01` e `DEMO-
 - nenhuma requisição `POST` foi observada;
 - nenhum valor foi persistido.
 
-Depois do upload pelo FileZilla, a resposta do Apache foi baixada como bytes e comparada com o arquivo validado. Tamanho e hash SHA-256 coincidiram, confirmando que o servidor entregava exatamente a versão testada. Essa comparação prova a igualdade dos arquivos; o teste do navegador prova o comportamento observado.
+Havia ainda uma pergunta de publicação: o Apache estava servindo a versão que fora testada? Após o upload pelo FileZilla, sua resposta foi baixada como bytes. A comparação de tamanho e hash SHA-256 coincidiu com o arquivo validado. Essa evidência estabelece igualdade de conteúdo entre os arquivos comparados; a ausência de envio e a limpeza dos campos vêm do teste de comportamento no navegador. Uma verificação não substitui a outra.
 
 ## O que esta aula ensina
 
-Um formulário conecta a interface visível a uma futura requisição HTTP. O `form` delimita o conjunto de controles, `name` define as chaves dos valores, `method` escolhe o método HTTP e `action` indica o destino. O botão de envio inicia o processo, mas JavaScript pode interceptá-lo antes que o navegador crie a requisição.
+A leitura do formulário deve conectar três momentos: a estrutura reúne os controles, os atributos descrevem uma requisição possível e os eventos determinam se a ação nativa continuará. `form`, `name`, `method` e `action` não são peças independentes para decorar; em conjunto, explicam quem participa, como os valores são identificados e para onde iriam.
 
-Também ficou claro que uma aplicação moderna não precisa usar somente elementos tradicionais. Componentes com funções ARIA, controles ocultos e eventos JavaScript podem compor o comportamento final. Por isso, entender o DOM e observar a rede é mais confiável do que alterar atributos por tentativa.
+Em interfaces modernas, funções ARIA, elementos ocultos e scripts podem separar o controle visível do mecanismo tradicional de envio. Isso torna a inspeção do DOM e a observação da rede decisivas: aparência e nomes de atributos oferecem pistas, mas é o comportamento observado que confirma se uma requisição aconteceu.
 
-No lado do servidor, PHP ou outra tecnologia de back-end seria responsável por processar dados recebidos. `POST` não armazena informações automaticamente e não fornece criptografia. Persistência, validação, proteção e resposta dependem da aplicação e da configuração do servidor.
+Se existisse processamento remoto, ele caberia ao PHP ou a outro back-end configurado, sob as condições do servidor. Escolher `POST` não cria armazenamento nem fornece criptografia. Validação, persistência e resposta são decisões da aplicação, enquanto a proteção do transporte depende de TLS. No exercício validado, essa etapa remota deliberadamente não recebeu os valores.
 
-Por fim, o encerramento seguro do laboratório é parte do exercício. Uma cópia visual de uma marca não deve permanecer publicamente acessível. Depois da observação, substitua-a por uma página neutra de conscientização, restrinja a porta `80` no Security Group ou encerre a instância quando ela não for mais necessária.
+O cuidado continua depois da verificação. Uma cópia visual de marca não deve ficar pública como se fosse o serviço original. Ao terminar a observação, substitua-a por conteúdo neutro de conscientização, restrinja a porta `80` no Security Group ou encerre a instância sem função. Neutralizar o formulário não torna apropriada a permanência pública de uma aparência enganosa.

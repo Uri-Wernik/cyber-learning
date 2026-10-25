@@ -1,16 +1,135 @@
-{% extends "base.html" %}
+{% macro chapters(items) %}
+  {% for item in items %}
+    {% if item.children %}
+      <section class="contents-group">
+        <h3>{{ item.title }}</h3>
+        {{ chapters(item.children) }}
+        {% if item.title == "4. Phishing e sessões autenticadas" %}
+          <a class="quiet-link" href="{{ 'assets/lessons/secao-04-apoio.json' | url }}" download>Fontes e notas de validação da seção</a>
+        {% endif %}
+      </section>
+    {% else %}
+      <a class="chapter-link{% if item.active %} is-current{% endif %}" href="{{ item.url | url }}"{% if item.active %} aria-current="page"{% endif %}>{{ item.title }}</a>
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
+{% set is_home = page and page.is_homepage %}
+{% set is_quiz = page and page.file.src_path == "quiz.md" %}
+<!doctype html>
+<html lang="pt-BR" data-book-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+    <meta name="description" content="{{ page.meta.description if page and page.meta.description else config.site_description }}">
+    <meta name="author" content="{{ config.site_author }}">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#e8ebe3">
+    <meta name="application-name" content="Cyber Learning">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Cyber Learning">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>{% if page and not is_home %}{{ page.title }} | {% endif %}{{ config.site_name }}</title>
+    {% if page and page.canonical_url %}<link rel="canonical" href="{{ page.canonical_url }}">{% endif %}
+    <link rel="icon" href="{{ 'assets/site/cyber-learning-logo.svg' | url }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ 'assets/site/apple-touch-icon.png' | url }}">
+    <link rel="manifest" href="{{ 'manifest.webmanifest' | url }}">
+    <link rel="preload" href="{{ 'assets/fonts/ibm-plex-sans-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ 'stylesheets/book.css?v=20261025-7' | url }}">
+    {% if is_quiz %}<link rel="stylesheet" href="{{ 'stylesheets/quiz-book.css?v=20261025-2' | url }}">{% endif %}
+    <script src="{{ 'javascripts/book-theme.js?v=20261025-2' | url }}"></script>
+  </head>
+  <body data-md-color-scheme="default" class="{% if is_home %}library-view{% elif is_quiz %}quiz-route{% else %}reader-view{% endif %}">
+    <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+    <header class="book-header">
+      <a class="book-brand" href="{{ config.site_url | default('.', true) | url }}" data-library-link>
+        <img class="book-brand__mark" src="{{ 'assets/site/cyber-learning-logo.svg' | url }}" width="36" height="36" alt="">
+        <span>Cyber Learning</span>
+      </a>
+      <div class="book-header__context">{% if is_home %}Biblioteca pessoal{% elif is_quiz %}Praticar o que aprendeu{% else %}Seu livro de estudos{% endif %}</div>
+      <nav class="book-tools" aria-label="Ferramentas de leitura">
+        <button class="tool" type="button" data-open="contents-dialog">Sumário</button>
+        <button class="tool tool--search" type="button" data-open="search-dialog">Buscar</button>
+        <button class="tool" type="button" data-theme-toggle aria-label="Alternar tema" title="Alternar tema">Tema</button>
+      </nav>
+    </header>
 
-{% block extrahead %}
-  {{ super() }}
-  <link rel="manifest" href="{{ 'manifest.webmanifest' | url }}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ 'assets/site/apple-touch-icon.png' | url }}">
-  <meta name="theme-color" content="#070D1A">
-  <meta name="application-name" content="Cyber Learning">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Cyber Learning">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="format-detection" content="telephone=no">
-  <link rel="preload" href="{{ 'assets/fonts/ibm-plex-sans-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="{{ 'assets/fonts/literata-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
-{% endblock %}
+    {% if is_home or is_quiz %}
+      <main id="main-content" class="{% if is_home %}library{% else %}quiz-container md-typeset{% endif %}">
+        <article class="md-content__inner">{{ page.content if page else "" }}</article>
+      </main>
+    {% else %}
+      <main id="main-content" class="book-reader" data-book-reader
+            data-page-path="{{ page.url if page else '' }}"
+            data-page-title="{{ page.title if page else 'Página não encontrada' }}"
+            {% if page and page.next_page %}data-next-chapter="{{ page.next_page.url | url }}" data-next-title="{{ page.next_page.title }}"{% endif %}
+            {% if page and page.previous_page %}data-previous-chapter="{{ page.previous_page.url | url }}"{% endif %}>
+        <div class="reader-heading">
+          <a href="{{ '.' | url }}" class="quiet-link">Biblioteca</a>
+          <span class="reader-chapter">{{ page.title if page else "Página não encontrada" }}</span>
+          <label class="text-size desktop-reader-control">Folhas
+            <select data-page-layout aria-label="Disposição das folhas">
+              <option value="1">Uma</option>
+              <option value="2">Duas</option>
+            </select>
+          </label>
+          <label class="text-size desktop-reader-control">Zoom
+            <select data-page-zoom aria-label="Zoom da folha">
+              <option value="fit">Ajustar à tela</option>
+              <option value="0.75">75%</option>
+              <option value="1">100%</option>
+              <option value="1.25">125%</option>
+              <option value="1.5">150%</option>
+            </select>
+          </label>
+          <button class="tool desktop-reader-control" type="button" data-fullscreen aria-label="Entrar em tela cheia">Tela cheia</button>
+          <label class="text-size">Texto
+            <select data-text-size aria-label="Tamanho do texto">
+              <option value="17">Menor</option>
+              <option value="19" selected>Padrão</option>
+              <option value="22">Maior</option>
+              <option value="24">Confortável</option>
+              <option value="26">Ampliado</option>
+            </select>
+          </label>
+        </div>
+        <p class="reader-status" role="status" data-reader-loading>Preparando as páginas do livro…</p>
+        <p class="reader-error" role="alert" data-reader-error hidden></p>
+        <div class="reader-stage" data-reader-stage><div class="paper-space"><div class="spread" data-spread aria-label="Páginas do livro" hidden></div></div></div>
+        <article class="md-content__inner book-source page-body" data-book-source>{{ page.content if page else '<h1>Página não encontrada</h1><p>Abra o sumário para continuar a leitura.</p>' }}</article>
+        <nav class="page-controls" aria-label="Navegação entre páginas" hidden data-page-controls>
+          <button class="page-turn" type="button" data-page-previous><span aria-hidden="true">←</span> <span>Anterior</span></button>
+          <div class="page-position">
+            <span data-page-status role="status" aria-live="polite" aria-atomic="true"></span>
+            <label>Ir para <input type="number" min="1" value="1" data-page-jump aria-label="Ir para a página" inputmode="numeric"></label>
+          </div>
+          <button class="page-turn" type="button" data-page-next><span data-next-label>Próxima</span> <span aria-hidden="true">→</span></button>
+        </nav>
+      </main>
+    {% endif %}
+
+    <dialog id="contents-dialog" class="book-dialog" aria-labelledby="contents-title">
+      <div class="dialog-heading"><div><p class="dialog-kicker">Segurança ofensiva na nuvem</p><h2 id="contents-title">Escolha sua próxima aula</h2></div><button class="tool" data-close type="button" aria-label="Fechar sumário">Fechar</button></div>
+      <label class="search-label" for="chapter-filter">Filtrar por aula ou assunto</label>
+      <input id="chapter-filter" type="search" placeholder="Por exemplo: SSH, DNS ou aula 8" autocomplete="off">
+      <p class="search-status" data-chapter-count role="status" aria-live="polite"></p>
+      <nav class="section-picker" aria-label="Escolher seção"></nav>
+      <nav class="contents-list" aria-label="Capítulos do livro">{{ chapters(nav) }}</nav>
+    </dialog>
+    <dialog id="search-dialog" class="book-dialog" aria-labelledby="search-title">
+      <div class="dialog-heading"><h2 id="search-title">Buscar no livro</h2><button class="tool" data-close type="button" aria-label="Fechar busca">Fechar</button></div>
+      <label class="search-label" for="book-search">Conceito, ferramenta ou assunto</label>
+      <input id="book-search" type="search" placeholder="Por exemplo: DNS, nuvem, SSH" autocomplete="off" enterkeyhint="search">
+      <p class="search-status" role="status" aria-live="polite" data-search-status>Digite para encontrar um trecho nas aulas.</p>
+      <div class="search-results" data-search-results></div>
+    </dialog>
+    <dialog id="image-dialog" class="book-dialog image-dialog" aria-label="Desenho ampliado">
+      <div class="dialog-heading"><h2>Desenho ampliado</h2><button class="tool" data-close type="button">Fechar</button></div>
+      <div data-image-content></div>
+    </dialog>
+    <div class="book-notice" role="status" aria-live="polite" data-book-notice hidden></div>
+    <noscript><p class="no-script">Ative o JavaScript para passar páginas. O conteúdo completo permanece disponível abaixo em leitura contínua.</p></noscript>
+    <script src="{{ 'javascripts/book.js?v=20261025-6' | url }}" defer></script>
+    <script src="{{ 'javascripts/pwa.js?v=20261025-2' | url }}" defer></script>
+    {% if is_quiz %}<script src="{{ 'javascripts/quiz-loader.js?v=20261006-2' | url }}" defer></script>{% endif %}
+  </body>
+</html>

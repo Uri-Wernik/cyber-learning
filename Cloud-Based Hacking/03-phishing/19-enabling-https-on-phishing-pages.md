@@ -6,15 +6,15 @@
 >
 > **Escopo:** emissão de certificado para um domínio neutro e um servidor Apache sob controle do estudante. O procedimento não deve ser usado para dar aparência legítima a páginas que imitam terceiros.
 
-Na [aula anterior](18-introduction-to-https.md), HTTPS foi decomposto em HTTP protegido por TLS, com confidencialidade, integridade e autenticação do servidor. Agora o domínio do laboratório será validado pela Let's Encrypt, e o Certbot usará o certificado emitido para configurar o Apache.
+Como sair da ideia de transporte protegido para uma configuração que possa ser conferida? A [aula anterior](18-introduction-to-https.md) explicou confidencialidade, integridade e autenticação no HTTP protegido por TLS. Nesta sequência, a Let's Encrypt valida o controle do domínio e emite o certificado; o Certbot coordena o pedido e sua integração ao Apache. O objetivo é compreender o encadeamento e suas verificações, não presumir sucesso apenas porque um instalador terminou.
 
-Essa automação atravessa quatro componentes diferentes: DNS aponta o nome para a instância; o desafio ACME comprova controle do domínio; o Certbot obtém e administra os arquivos; e o Apache apresenta o certificado nas conexões TLS. Identificar cada componente evita procurar um erro de DNS no Security Group ou um erro de Apache na autoridade certificadora.
+Há responsabilidades separadas mesmo quando um programa automatiza parte do trabalho. DNS fornece o destino; **ACME**, o protocolo de automação, organiza o desafio de controle; **Certbot** solicita e administra o material; Apache o apresenta ao atender TLS. Essa divisão permite interpretar uma falha pela camada que a produziu. Nem a autoridade certificadora corrige a configuração local do Apache, nem uma regra de Security Group corrige um nome DNS incorreto.
 
 ## Preparando a validação
 
-O plugin Apache do Certbot normalmente utiliza o desafio **HTTP-01**. A Let's Encrypt fornece um token, o cliente ACME disponibiliza uma resposta temporária sob `/.well-known/acme-challenge/` e servidores de validação tentam buscá-la pelo domínio.
+O controle do domínio precisa de uma evidência que a autoridade consiga verificar. Com o plugin Apache, o método normalmente usado é **HTTP-01**. A Let's Encrypt fornece um token de desafio, e o cliente ACME prepara uma resposta temporária sob `/.well-known/acme-challenge/`. Os servidores de validação procuram essa resposta usando o domínio solicitado, em vez de confiar apenas no que aparece no terminal do administrador.
 
-Antes da emissão, confirme que:
+Antes de iniciar o pedido, as condições abaixo precisam ser verificadas porque cada uma pode impedir essa busca externa:
 
 - cada nome solicitado resolve publicamente para a instância correta;
 - registros A e AAAA não conduzem a servidores diferentes por engano;
@@ -23,35 +23,35 @@ Antes da emissão, confirme que:
 - não existe proxy ou redirecionamento enviando o caminho do desafio a outro sistema;
 - a página publicada é neutra e não coleta dados sensíveis.
 
-O HTTP-01 usa a porta `80`, mesmo que o objetivo final seja servir HTTPS na porta `443`. Abrir somente `443` antes da validação não satisfaz esse desafio. A porta `80` também precisa continuar disponível quando o mesmo método for usado nas renovações.
+É importante não trocar a porta do desafio pela porta do serviço final. HTTP-01 é verificado em `80`; HTTPS será atendido em `443`. Permitir apenas `443` não atende a essa validação. Se as futuras renovações continuarem usando HTTP-01, a disponibilidade de `80` permanecerá uma dependência do processo, não apenas uma necessidade da primeira emissão.
 
 ## Instalando sem manter uma sessão root
 
-Na demonstração, o instrutor abriu um shell permanente como `root`. Isso amplia o impacto de um comando digitado incorretamente. O laboratório pode manter a sessão no usuário administrativo e aplicar `sudo` apenas às operações que exigem privilégio.
+O instrutor usou um shell permanente de `root` na demonstração. Para o laboratório, não é necessário conservar esse nível de privilégio durante toda a sessão. Uma conta administrativa pode solicitar elevação com `sudo` nas operações necessárias, reduzindo o alcance de um comando incorreto digitado fora dessas operações.
 
-No ambiente Kali/Debian mostrado no curso, os pacotes usados são instalados com:
+As linhas de instalação abaixo se referem ao Kali/Debian do curso e devem ser interpretadas nesse contexto de sistema e repositórios:
 
 ```bash
 sudo apt update
 sudo apt install certbot python3-certbot-apache
 ```
 
-O primeiro comando atualiza o índice local de pacotes; ele não atualiza todos os programas instalados. O segundo solicita o cliente Certbot e o plugin que integra autenticação e instalação ao Apache. Leia a lista de dependências e confirme a origem dos repositórios antes de aceitar.
+Na instância, `sudo apt update` atualiza a lista local de pacotes disponíveis, sem atualizar todos os programas já instalados. Em seguida, `apt install` solicita o cliente e `python3-certbot-apache`, plugin que integra validação e instalação ao Apache. Antes de aceitar, examine dependências e origem dos repositórios; a lista solicitada e o resultado da instalação são estados diferentes.
 
-Métodos de instalação mudam entre distribuições e versões. Se esses pacotes não estiverem disponíveis ou se o sistema usar outro servidor web, consulte as [instruções oficiais do Certbot](https://certbot.eff.org/instructions) para a combinação realmente instalada, em vez de misturar pacotes de origens diferentes.
+Esses nomes de pacotes não devem ser generalizados a qualquer distribuição ou servidor web. Se o ambiente instalado não corresponder ao apresentado, use as [instruções oficiais do Certbot](https://certbot.eff.org/instructions) para essa combinação. Misturar métodos e origens para contornar uma diferença de versão pode introduzir outra causa de falha em vez de resolver a primeira.
 
-Depois da instalação, confirme que o programa existe e que a configuração atual do Apache é válida:
+A próxima evidência deve confirmar duas pré-condições locais: encontrar o executável instalado e validar a configuração do Apache antes de permitir alterações automáticas.
 
 ```bash
 certbot --version
 sudo apache2ctl configtest
 ```
 
-`certbot --version` identifica a versão executada. `apache2ctl configtest` analisa os arquivos do Apache e deve informar que a sintaxe está válida antes de qualquer modificação automática. Uma falha nessa etapa precisa ser corrigida antes de solicitar o certificado.
+O primeiro comando, `certbot --version`, informa qual versão foi executada. O segundo usa `apache2ctl configtest`, com privilégio administrativo, para analisar a sintaxe dos arquivos do Apache. Se ele apontar erro, essa configuração deve ser corrigida antes do pedido. Conseguir consultar a versão do cliente não compensa uma configuração web inválida.
 
 ## Solicitando somente os nomes necessários
 
-Com DNS e porta `80` confirmados, o plugin pode obter e instalar um certificado para os hosts explicitamente informados:
+Depois de conferir DNS e alcance em `80`, o pedido pode especificar exatamente os hosts neutros controlados pelo laboratório. O plugin Apache reúne as funções de obter e instalar o certificado:
 
 ```bash
 sudo certbot --apache \
@@ -59,80 +59,80 @@ sudo certbot --apache \
   -d portal-lab.<DOMINIO-DO-LAB>
 ```
 
-Os marcadores entre `<` e `>` precisam ser substituídos pelos nomes neutros realmente controlados antes da execução. No shell, eles não devem ser digitados literalmente.
+Os trechos entre `<` e `>` são marcadores de documentação, não nomes prontos para o shell. Antes de executar, substitua-os pelos domínios neutros realmente controlados. Digitar os sinais literalmente não representa a configuração pretendida e pode ser interpretado de outra forma pelo shell.
 
-`sudo` concede o privilégio necessário para ler e alterar configurações protegidas. `certbot` inicia o cliente ACME. A opção `--apache` seleciona um plugin que pode autenticar o domínio e instalar o certificado no Apache. Cada `-d` adiciona um nome que deverá passar pela validação e aparecer no certificado.
+A execução solicita elevação com `sudo` porque o cliente acessará configurações protegidas. `certbot` inicia a conversa ACME, enquanto `--apache` escolhe o plugin que pode validar e instalar no Apache. Cada ocorrência de `-d` acrescenta um nome ao pedido. Todos os nomes incluídos precisam satisfazer a validação e integrar o certificado resultante.
 
-Solicite apenas hosts que já apontam para esse servidor. Se um subdomínio ainda não foi configurado, omita-o em vez de permitir que uma autorização parcial esconda o problema.
+A lista deve corresponder aos hosts já preparados para essa instância. Se o subdomínio ainda não aponta corretamente, deixe-o fora do pedido até configurá-lo. Uma autorização parcial não deve ser usada para tratar como resolvida uma dependência que continua ausente.
 
-Durante a primeira execução, o Certbot pode solicitar um e-mail de contato, aceite dos termos da autoridade certificadora e uma decisão sobre redirecionar HTTP para HTTPS. Leia as opções exibidas pela versão instalada. O e-mail e os nomes usados podem aparecer em arquivos e logs administrativos; não os publique em capturas.
+Na primeira execução, a versão instalada pode pedir contato por e-mail, aceite dos termos da autoridade e uma escolha de redirecionamento de HTTP para HTTPS. Leia as opções reais, pois a interface pode variar. E-mail e nomes do laboratório podem ficar em configurações e logs administrativos; isso não os torna apropriados para aparecer em capturas públicas.
 
 ## O que acontece durante a emissão
 
-O Certbot cria ou seleciona uma conta ACME, prepara a resposta ao desafio e pede à Let's Encrypt que valide cada nome. A autoridade consulta o DNS e faz uma requisição HTTP pública para o token. Receber a resposta esperada comprova controle operacional daquele domínio naquele momento; não comprova propriedade de uma empresa nem legitimidade do conteúdo.
+Durante a emissão, o cliente cria ou seleciona uma conta ACME e prepara o desafio de cada nome. A Let's Encrypt consulta DNS e busca a resposta por HTTP público. Quando encontra o conteúdo esperado, obtém evidência de controle operacional do domínio naquele momento. Essa é uma comprovação delimitada: não identifica a empresa representada na página nem avalia se o conteúdo é legítimo.
 
-Depois da autorização, a autoridade assina o certificado. O plugin salva o material administrado sob `/etc/letsencrypt/` e ajusta o `VirtualHost` para usar a cadeia e a chave corretas. Em uma configuração comum, estes caminhos são referências atualizadas pelo próprio Certbot:
+Após autorizar os nomes, a autoridade assina o certificado. O material administrado fica sob `/etc/letsencrypt/`, e o plugin ajusta o `VirtualHost`, configuração do Apache que associa o site às suas opções, para usar cadeia e chave. Os caminhos comuns abaixo são referências mantidas pelo Certbot, não arquivos que precisam ser copiados para a pasta da página:
 
 ```text
 /etc/letsencrypt/live/<NOME-DO-CERTIFICADO>/fullchain.pem
 /etc/letsencrypt/live/<NOME-DO-CERTIFICADO>/privkey.pem
 ```
 
-`fullchain.pem` contém o certificado do servidor e a cadeia intermediária que o Apache apresenta ao cliente. `privkey.pem` contém a chave privada e deve permanecer secreta. Não copie a chave para um arquivo de notas, diretório web, captura de tela ou repositório. Também não apague manualmente arquivos dentro de `/etc/letsencrypt/`; o Certbot mantém versões e referências necessárias à renovação.
+Os dois arquivos têm sensibilidades diferentes. `fullchain.pem` reúne o certificado do servidor e a cadeia intermediária apresentada ao cliente; `privkey.pem` guarda a chave privada. Esta deve permanecer secreta, fora de notas, repositórios, capturas e diretórios web. Também não se deve apagar manualmente o conteúdo de `/etc/letsencrypt/`: versões e referências ali mantidas participam da administração e da renovação.
 
-A lista administrada pode ser consultada sem exibir o conteúdo das chaves:
+Para revisar os certificados administrados, é possível consultar seus metadados sem abrir nem mostrar o conteúdo das chaves:
 
 ```bash
 sudo certbot certificates
 ```
 
-Essa saída informa nomes cobertos, prazo e caminhos. Antes de compartilhá-la, remova domínio, e-mail e outros identificadores do laboratório.
+A consulta apresenta cobertura de nomes, validade e caminhos de arquivos. Ela ajuda a conferir o pedido, mas ainda pode revelar domínio, e-mail e outros identificadores. Remova esses dados antes de compartilhar a saída como evidência pública.
 
 ## Abrindo a porta HTTPS na nuvem
 
-Instalar o certificado não altera o Security Group da instância. Para um site público do laboratório, a regra de entrada correspondente a HTTPS usa protocolo TCP e porta de destino `443`. A origem pública, quando realmente necessária, costuma abranger os clientes autorizados ou a Internet; essa decisão amplia a superfície exposta e deve fazer parte do escopo do exercício.
+A instalação local não modifica o **Security Group**. Esse controle de tráfego da nuvem precisa permitir o alcance previsto para HTTPS, com TCP e porta de destino `443`. A origem deve refletir os clientes autorizados ou, apenas quando necessário ao site público do laboratório, a Internet. Ampliar essa origem é uma mudança de exposição que precisa caber no escopo, não uma consequência automática da emissão.
 
-O Security Group apenas permite que pacotes alcancem a interface. O Apache ainda precisa escutar em `443`, carregar a configuração TLS e possuir acesso à chave privada. Um firewall local pode acrescentar outro controle. Portanto, “regra salva” e “serviço HTTPS funcionando” são evidências distintas.
+Permitir pacotes na interface não garante que exista um serviço atendendo. O Apache precisa escutar em `443`, carregar as opções TLS e conseguir acessar a chave; um firewall do próprio sistema pode impor outro filtro. Logo, salvar a regra confirma uma configuração de rede, enquanto receber HTTPS confirma um fluxo mais amplo. Nenhuma das duas evidências deve ser usada no lugar da outra.
 
-Depois da alteração, teste novamente a sintaxe e recarregue o serviço somente se a configuração estiver válida:
+Antes de aplicar a configuração ao serviço, a sintaxe deve ser conferida novamente. As linhas abaixo são sequenciais: a segunda só deve ser executada se a primeira confirmar validade.
 
 ```bash
 sudo apache2ctl configtest
 sudo systemctl reload apache2
 ```
 
-`reload` pede ao Apache que releia a configuração sem a interrupção completa de um `restart`. Se o teste de sintaxe falhar, não execute a recarga; leia a mensagem e corrija o arquivo indicado.
+`systemctl reload apache2` solicita releitura da configuração sem a interrupção completa de um `restart`. Isso não é motivo para ignorar o teste anterior. Se `configtest` falhar, pare a sequência, examine a mensagem e corrija o arquivo indicado antes de recarregar.
 
 ## Confirmando o resultado sem confiar apenas no ícone
 
-Uma requisição de cabeçalhos verifica resolução, conexão TLS e resposta HTTP:
+A verificação externa pode começar por um pedido de cabeçalhos. Para produzir uma resposta, esse teste precisa passar por resolução, conexão TLS e atendimento HTTP:
 
 ```bash
 curl --head https://<DOMINIO-DO-LAB>
 ```
 
-O sucesso comprova que aquele cliente conseguiu negociar TLS e recebeu uma resposta. No navegador, confira o host completo e examine os detalhes do certificado: nomes cobertos, emissor e validade. Teste também cada subdomínio incluído; um certificado válido para o domínio principal não cobre automaticamente todos os subdomínios.
+Se o pedido funcionar, aquele cliente negociou TLS e recebeu HTTP. No navegador, examine também host completo, nomes cobertos, emissor e validade do certificado. Cada subdomínio incluído precisa de teste próprio: a validade para o domínio principal não estende automaticamente a cobertura a qualquer outro nome. O ícone sozinho oferece menos evidência que essa conferência.
 
-Se HTTP foi configurado para redirecionar, uma requisição a `http://<DOMINIO-DO-LAB>` deve retornar um status `3xx` e um cabeçalho `Location` com destino HTTPS. Esse é o redirecionamento HTTP que o registro A, por si só, não realizava.
+Se foi escolhida a migração por redirecionamento, a resposta a `http://<DOMINIO-DO-LAB>` deve trazer um status `3xx` e `Location` para HTTPS. Essa orientação vem do servidor HTTP. Ela permite observar, na prática, a operação que um registro A não fazia: pedir ao navegador que solicite outra URL.
 
 ## Renovação precisa ser testada
 
-Certificados públicos têm validade limitada. Uma mensagem de que a renovação foi configurada não prova que ela continuará funcionando depois de mudanças em DNS, firewall, plugins ou configuração do Apache.
+A emissão inicial não encerra a administração, porque o certificado expira. **Renovação** é a obtenção de outro certificado antes desse vencimento. Uma mensagem de agendamento não garante que o processo continuará possível depois de alterar DNS, firewall, plugin ou Apache; as dependências precisam permanecer disponíveis.
 
-A instalação pode fornecer um timer do `systemd` ou outra tarefa agendada. Verifique o mecanismo presente no sistema e execute uma simulação:
+Conforme o método instalado, o agendamento pode usar um timer do `systemd` ou outra tarefa. A verificação deve identificar o mecanismo real e testar a repetição da validação:
 
 ```bash
 systemctl list-timers --all | grep certbot
 sudo certbot renew --dry-run
 ```
 
-O primeiro comando procura um timer relacionado ao Certbot; ausência de saída exige conferir o método de instalação e a documentação correspondente. O segundo usa o ambiente de testes para simular a renovação sem substituir o certificado ativo por um certificado de produção novo. Um teste bem-sucedido mostra que o método atual conseguiu repetir a validação naquele momento.
+`systemctl list-timers --all` lista os timers, e `grep certbot` filtra os relacionados ao cliente. Sem saída, investigue o método de instalação antes de concluir que não existe agendamento. Já `certbot renew --dry-run` usa o ambiente de testes para simular a renovação, sem trocar o certificado ativo por uma nova emissão de produção. O sucesso valida o método nas condições atuais, não garante que futuras mudanças não o interrompam.
 
-Não é necessário copiar os caminhos do certificado para um arquivo pessoal: o Certbot e a configuração do Apache já mantêm essas referências. O material mais importante para investigar falhas fica normalmente em `/var/log/letsencrypt/`, mas logs devem ser sanitizados antes de serem compartilhados.
+Certbot e Apache já mantêm as referências necessárias aos arquivos, dispensando copiá-las para notas pessoais como parte da instalação. Para investigar falhas, os registros costumam estar em `/var/log/letsencrypt/`. Eles devem ser lidos no contexto do erro e sanitizados antes de compartilhamento, pois podem conter identificadores administrativos.
 
 ## Interpretando falhas pela camada correta
 
-Uma falha de emissão pode ser localizada pela evidência apresentada:
+Quando a emissão falha, a mensagem deve orientar a próxima investigação, em vez de motivar uma repetição indiscriminada. A relação entre evidência e camada pode ser organizada assim:
 
 | Evidência | Camada a investigar |
 |---|---|
@@ -143,13 +143,13 @@ Uma falha de emissão pode ser localizada pela evidência apresentada:
 | Erro de configuração do Apache | sintaxe, módulo, arquivos ou permissões locais |
 | Certificado válido, mas alerta de site enganoso | reputação ou conteúdo, não a negociação TLS |
 
-Não repita solicitações de produção indiscriminadamente: autoridades certificadoras aplicam limites de emissão. Corrija a causa e use os mecanismos de teste documentados antes de tentar novamente.
+Autoridades aplicam limites de emissão, de modo que insistir em pedidos de produção pode criar outra restrição sem corrigir a causa inicial. Localize o problema e use os mecanismos de teste documentados antes de tentar novamente. Uma falha no desafio não é evidência de que o certificado precise de mais tentativas iguais.
 
 ## Encerrando o laboratório
 
-Ao finalizar, remova a página de treinamento, feche portas que não precisam permanecer públicas e elimine registros DNS que apontem para uma instância encerrada. Se a chave privada tiver sido exposta, o certificado deve ser revogado e substituído; apenas apagar uma cópia local não desfaz o comprometimento.
+Ao concluir, retire a página de treinamento, feche exposições sem função e elimine apontamentos DNS para instâncias encerradas. Se houve exposição da chave privada, apagar a cópia visível não basta: o certificado precisa ser revogado e substituído. O encerramento deve tratar tanto da infraestrutura quanto da confiança no material criptográfico.
 
-O resultado correto desta aula não é um site “legítimo” por possuir cadeado. É uma cadeia técnica verificável: o domínio chega ao servidor autorizado, o desafio ACME comprova controle, a CA emite o certificado, o Apache apresenta a cadeia correta, a porta `443` conduz ao serviço e a renovação consegue repetir o processo.
+A conclusão adequada relaciona evidências: domínio apontando ao servidor autorizado, desafio de controle atendido, certificado emitido pela CA, cadeia apresentada pelo Apache, serviço alcançável em `443` e renovação testada. Essa cadeia descreve transporte protegido administrável. Ela não declara a página legítima por possuir um cadeado nem substitui a verificação de cada componente.
 
 ## Referências oficiais
 

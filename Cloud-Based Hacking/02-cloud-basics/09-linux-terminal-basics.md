@@ -2,72 +2,59 @@
 
 ## Do SSH ao terminal
 
-Na [aula 8](08-communicating-with-cloud-computers-remotely-using-ssh.md), usamos SSH para abrir uma sessão na máquina Kali. Depois da conexão, os comandos digitados são executados na máquina remota, não no computador local.
+Onde um comando será executado quando sua janela está no computador local, mas existe uma sessão SSH aberta? Na [aula 8](08-communicating-with-cloud-computers-remotely-using-ssh.md), o canal foi apresentado como acesso ao Kali remoto. Dentro dessa sessão, quem interpreta a linha é o sistema remoto; o computador local continua apresentando teclado e tela.
 
-Antes de executar qualquer comando, confirme máquina e usuário no prompt.
+Antes de alterar qualquer coisa, reconheça a identidade e a máquina indicadas no prompt. O exemplo a seguir serve para aprender a leitura, não é saída capturada de uma sessão validada nesta reescrita.
 
 ```text
 kali@servidor:~$
 ```
 
-Nesse prompt, `kali` identifica o usuário atual, `servidor` representa o nome da máquina e `~` indica o diretório pessoal. O símbolo `$` costuma acompanhar usuários comuns, enquanto `#` aparece frequentemente em uma shell administrativa de `root`.
+À esquerda, `kali` representa o usuário e `servidor`, o nome do computador. O `~` informa o diretório pessoal. O final `$` costuma aparecer para usuário comum, enquanto `#` é frequente em sessões administrativas de `root`. Como a apresentação pode ser personalizada, esses sinais ajudam a orientação, mas não substituem uma conferência da identidade quando necessário.
 
-O prompt não faz parte do comando e não deve ser digitado.
+Digite apenas a instrução, nunca o prompt que a precede. Copiar `kali@servidor:~$` junto de um exemplo muda a entrada que o interpretador receberá e pode gerar um erro que nada tem a ver com o programa pretendido.
 
 ## Terminal, shell e CLI
 
-O **terminal** é o aplicativo que apresenta entrada e saída textual. Dentro dele, o **shell**, como Bash ou Zsh, interpreta os comandos. **CLI** significa *Command-Line Interface* e descreve essa forma de interação por texto. O **prompt** indica que o shell está pronto para receber uma nova instrução.
+A janela por onde você lê e digita é o terminal. O programa que dá significado à linha é a shell, como Bash ou Zsh. Já CLI, de *Command-Line Interface*, nomeia a interação por comandos textuais em vez de controles gráficos. O prompt é a indicação de que a shell aguarda outra instrução.
 
-Ao pressionar Enter, o shell interpreta a linha, localiza o comando, processa opções e argumentos, executa a operação e mostra saída ou erro.
+Ao receber Enter, a shell interpreta a linha, distingue o comando de suas opções e argumentos e inicia a operação correspondente. Ela apresenta a saída ou as mensagens de erro de volta no terminal. Separar essas funções evita atribuir à janela o trabalho que pertence ao interpretador ou ao programa executado.
 
 ## A árvore de diretórios
 
-O sistema de arquivos Linux forma uma única hierarquia iniciada em `/`, o diretório raiz. Dentro dela ficam diretórios como `/etc`, usado por configurações, `/home`, que reúne diretórios pessoais de usuários comuns, `/root`, reservado ao usuário administrativo, `/tmp`, `/usr` e `/var`. O caminho `/var/www/html`, usado posteriormente pelo Apache, também pertence a essa mesma hierarquia.
+Para localizar um arquivo, imagine uma hierarquia que parte de um único início: `/`, o diretório raiz. Abaixo dele estão locais com funções diferentes, como `/etc` para configurações e `/home` para diretórios pessoais de usuários comuns. `/root`, `/tmp`, `/usr` e `/var` também pertencem a essa árvore. Mais adiante, o conteúdo web em `/var/www/html` será localizado seguindo essa mesma estrutura.
 
-A palavra *root* aparece em sentidos diferentes:
+O nome *root* exige cuidado porque pode se referir a coisas distintas. A barra `/` marca a raiz da hierarquia; `root`, sem barra, é a identidade administrativa; e `/root` é o diretório pessoal dessa identidade. Estar na raiz dos arquivos não significa ser administrador, e entrar em `/root` não é o mesmo que entrar em `/`.
 
-- `/`: diretório raiz do sistema de arquivos;
-- `root`: usuário administrativo;
-- `/root`: diretório pessoal do usuário `root`.
-
-Portanto, `/` e `/root` não são o mesmo diretório.
-
-Diretórios pessoais de usuários comuns normalmente ficam em `/home`. Para `kali`, costuma ser `/home/kali`.
-
-O símbolo `~` representa o diretório pessoal do usuário atual:
-
-- para `kali`, geralmente `/home/kali`;
-- para `root`, `/root`.
+O diretório pessoal de `kali` normalmente é `/home/kali`. A forma `~` representa o diretório pessoal do usuário atual, não sempre o de Kali: para `root`, ela corresponde a `/root`. Por isso, a interpretação de um caminho com `~` depende de quem está usando a sessão.
 
 ## Caminhos absolutos e relativos
 
-Um caminho informa onde está um item.
+Um caminho descreve a localização de um arquivo ou diretório. Para interpretá-lo corretamente, observe se ele começa na raiz ou se depende do lugar em que a shell está naquele momento.
 
 ### Caminho absoluto
 
-Começa em `/` e descreve a localização desde a raiz:
+Quando o caminho começa por `/`, a busca parte da raiz. O exemplo aponta para um arquivo dentro da sequência de diretórios indicada:
 
 ```text
 /var/www/html/index.html
 ```
 
-Identifica o mesmo local independentemente do diretório atual.
+Como o ponto inicial está declarado, mudar o diretório da sessão não altera o local identificado por esse caminho absoluto.
 
 ### Caminho relativo
 
-É interpretado a partir do diretório atual:
+Sem a barra inicial, a localização é relativa ao diretório de trabalho. Considere esta indicação:
 
 ```text
 www/html
 ```
 
-Se o diretório atual for `/var`, aponta para `/var/www/html`.
+Partindo de `/var`, ela chega a `/var/www/html`; partindo de outro diretório, pode chegar a outro lugar ou não encontrar nada. Saber o diretório atual é, portanto, uma pré-condição para interpretar uma referência relativa.
 
-O ponto `.` representa o diretório atual, `..` representa o diretório pai e `~` representa o diretório pessoal do usuário atual. A barra `/` identifica a raiz quando aparece no início e separa os nomes ao longo do caminho.
+O ponto `.` representa o lugar atual, e `..`, seu diretório pai. Já `~` é a forma usada para o diretório pessoal. Ao longo do caminho, `/` separa nomes; no início, indica a raiz. No Linux, não se troca essa barra pela invertida `\` comum em caminhos Windows.
 
-Linux usa `/`, não a barra invertida `\` comum no Windows. Nomes diferenciam maiúsculas de minúsculas. `Downloads` e `downloads` podem ser locais distintos.
-
-Para nomes com espaços, use aspas:
+A grafia também importa: `Downloads` e `downloads` podem ser diretórios diferentes. Se o nome tiver espaços, as aspas mantêm o conjunto como um único argumento. A instrução abaixo só poderá mudar para o diretório se ele existir no local em que for interpretado.
 
 ```bash
 cd "Meus Arquivos"
@@ -75,39 +62,41 @@ cd "Meus Arquivos"
 
 ## Comando, opção e argumento
 
+Antes de usar uma linha como receita, separe operação, ajustes e destino. Este exemplo solicita uma listagem, sem modificar os arquivos:
+
 ```bash
 ls -la /var/www/html
 ```
 
-Nessa linha, `ls` é o comando e define a operação principal. `-la` combina as opções `-l` e `-a`, alterando o formato da listagem e incluindo entradas ocultas. `/var/www/html` é o argumento, ou seja, o diretório sobre o qual `ls` trabalhará.
+O comando `ls` escolhe a operação de listar. A opção combinada `-la` reúne `-l`, para detalhes, e `-a`, para incluir entradas ocultas. O argumento `/var/www/html` informa sobre qual diretório trabalhar; não é parte do nome do programa.
 
-Opções curtas normalmente usam um hífen, como `-l`. Longas usam dois, como `--help`. Cada programa define suas próprias opções.
+Um hífen costuma introduzir opções curtas, como `-l`, e dois introduzem opções longas, como `--help`. Essas convenções não significam que todos os programas aceitam as mesmas letras. Consulte a documentação do comando que será executado para compreender o efeito real de cada opção.
 
 ## `pwd`: descobrir o diretório atual
 
-`pwd` significa *print working directory*.
+Quando houver dúvida sobre onde uma referência relativa começa, consulte o diretório de trabalho. `pwd`, de *print working directory*, lê essa informação na sessão:
 
 ```bash
 pwd
 ```
 
-Sem opções ou argumentos, `pwd` imprime o caminho absoluto do diretório atual, como `/home/kali`.
+Sem receber opções ou argumentos, ele apresenta o caminho absoluto do local atual. `/home/kali` é um exemplo possível, não uma saída garantida em qualquer sessão. Essa leitura será usada para conferir as mudanças produzidas por `cd`.
 
 ## `ls`: listar conteúdo
 
-Sem argumentos, lista o diretório atual:
+O comando `ls` permite olhar o conteúdo antes de decidir para onde ir. Sem um caminho explícito, ele lista o diretório em que a sessão se encontra:
 
 ```bash
 ls
 ```
 
-Com outro caminho:
+Para consultar outro local sem mudar de diretório, passe o caminho como argumento:
 
 ```bash
 ls /var
 ```
 
-Opções comuns:
+As opções abaixo mudam o que é apresentado e como a listagem aparece. Os comentários explicam as três variantes, não devem ser confundidos com nomes de arquivos:
 
 ```bash
 ls -l   # formato detalhado
@@ -117,30 +106,21 @@ ls -la  # combina as duas opções
 
 ### Como ler `ls -l`
 
-Uma entrada pode começar assim:
+O formato detalhado oferece pistas sobre tipo e acesso. O início de uma entrada de diretório pode ter esta forma:
 
 ```text
 drwxr-xr-x
 ```
 
-O primeiro caractere indica o tipo:
+O primeiro caractere informa o tipo: `d` indica diretório, `-` indica arquivo comum e `l` indica link simbólico. Depois dele, os nove caracteres se dividem em três conjuntos: permissões do proprietário, do grupo e dos demais usuários, nessa ordem.
 
-- `d`: diretório;
-- `-`: arquivo comum;
-- `l`: link simbólico.
+Dentro de cada conjunto, `r` representa leitura, `w` representa escrita e `x` representa execução de arquivo ou travessia de diretório. Um `-` nessa posição indica que aquela permissão está ausente. No exemplo `rwxr-xr-x`, o dono possui as três, enquanto grupo e outros possuem leitura e execução ou travessia.
 
-Os nove caracteres seguintes formam três grupos de três: o primeiro pertence ao proprietário, o segundo ao grupo e o terceiro aos demais usuários. Em `rwxr-xr-x`, o proprietário possui leitura, escrita e execução; grupo e outros possuem leitura e execução.
-
-- `r`: leitura;
-- `w`: escrita;
-- `x`: execução em arquivos ou travessia em diretórios;
-- `-`: permissão ausente.
-
-A listagem também pode mostrar links, proprietário, grupo, tamanho, última modificação e nome. A data normalmente é de modificação, não necessariamente de criação.
+A linha detalhada também pode apresentar quantidade de links, proprietário, grupo, tamanho, horário e nome. O horário normalmente corresponde à última modificação, não necessariamente à criação. Assim, a listagem ajuda a verificar propriedades específicas, mas não deve ser usada para concluir uma história do arquivo que ela não mostra.
 
 ## `cd`: mudar o diretório
 
-`cd` significa *change directory* e normalmente é interno ao shell.
+Depois de localizar um diretório, `cd`, de *change directory*, muda o lugar de trabalho da própria sessão. Ele normalmente é uma função interna da shell, pois a mudança precisa afetar o interpretador em uso. As variantes abaixo mostram destinos absolutos e formas especiais de navegação:
 
 ```bash
 cd /var  # caminho absoluto
@@ -150,21 +130,23 @@ cd ~     # diretório pessoal
 cd -     # diretório anterior, quando suportado
 ```
 
-Em `cd /var`, `cd` é um comando interno do shell e `/var` é o argumento. A operação muda o diretório da sessão e normalmente não mostra saída; `pwd` confirma o novo local.
+Em `cd /var`, o argumento é `/var`; `cd` é a operação interna que altera o diretório atual. Já `cd ..` usa o pai, `cd` sem caminho e `cd ~` voltam ao diretório pessoal, e `cd -` pode retornar ao diretório anterior quando suportado.
 
-Ausência de texto não comprova, sozinha, que qualquer comando funcionou. Use uma verificação apropriada.
+Uma mudança bem-sucedida normalmente não imprime uma confirmação. Use `pwd` para verificar onde a sessão ficou. A ausência de texto não é uma regra universal de sucesso: o resultado deve ser conferido pela propriedade que o comando pretendia ler ou alterar.
 
 ## Consultando documentação
 
 ### `man`
 
+Não é preciso decorar todas as opções. Para consultar o manual do programa de listagem, abra a documentação pelo nome:
+
 ```bash
 man ls
 ```
 
-`man` abre a página de manual e `ls` informa o assunto procurado. Pressione `q` para sair da visualização.
+O programa `man` procura a página do assunto recebido como argumento, aqui `ls`. Durante a leitura, `q` sai da visualização. A documentação de um comando interno pode estar na própria shell, não em uma página individual.
 
-Alguns comandos, como `cd`, pertencem ao shell. No Bash, consulte:
+Para o `cd` no Bash, a consulta correspondente é:
 
 ```bash
 help cd
@@ -172,35 +154,41 @@ help cd
 
 ### `--help`
 
+Muitos programas também oferecem uma ajuda curta diretamente por opção:
+
 ```bash
 ls --help
 ```
 
-`--help` possui dois hífens. Nem todo comando implementa essa opção; use também `man`, `help` e documentação oficial.
+Nesse caso, `--help` tem dois hífens e solicita a ajuda de `ls`. Não presuma que a mesma opção existe em qualquer comando: quando não houver suporte, recorra a `man`, à ajuda da shell ou à documentação oficial.
 
 ## Histórico
+
+Para consultar instruções já usadas na sessão, peça o histórico:
 
 ```bash
 history
 ```
 
-O histórico lista comandos anteriores. As setas para cima e para baixo percorrem essa lista. Revise a linha antes de executar, pois pode conter caminho ou parâmetro que já não é adequado.
+A saída apresenta comandos anteriores, e as setas para cima e para baixo permitem recuperar linhas. Recuperar não significa que a instrução ainda seja adequada: usuário, diretório ou destino podem ter mudado. Leia a linha inteira antes de executá-la novamente.
 
-Segredos incluídos em argumentos também podem ficar registrados. Evite colocar senhas, tokens ou chaves privadas na linha de comando quando houver alternativa.
+O histórico também explica um risco de privacidade: um segredo digitado como argumento pode permanecer registrado. Quando houver alternativa, não coloque senhas, tokens ou material de chave privada na linha de comando. Compartilhar o histórico sem revisar pode publicar esses dados.
 
 ## Preenchimento com Tab
 
-Tab é um recurso do shell para completar nomes. Após digitar:
+Para reduzir erros de grafia, a shell oferece preenchimento com Tab. Por exemplo, você pode começar um caminho ainda incompleto:
 
 ```text
 cd /var/ww
 ```
 
-Tab pode completar o caminho se houver uma única correspondência. Com várias, pressionar novamente pode exibi-las.
+Se houver uma correspondência única, Tab pode completar o restante. Se houver várias, pressioná-lo novamente pode apresentar as possibilidades. Esse recurso depende dos nomes disponíveis naquele ambiente; não cria um diretório que está faltando.
 
-O preenchimento reduz erros, mas não executa o comando. Confira antes de Enter.
+Completar não executa a instrução. Confira o caminho resultante antes de Enter, especialmente quando nomes parecidos correspondem a recursos diferentes.
 
 ## Percorrendo a hierarquia na prática
+
+A sequência abaixo permite relacionar cada mudança à leitura de sua consequência no Kali do laboratório. Ela percorre diretórios e lista conteúdo, sem criar uma saída artificial para representar o seu ambiente:
 
 ```bash
 pwd
@@ -216,7 +204,7 @@ pwd
 ls -la
 ```
 
-Depois de `cd /`, `pwd` deve mostrar `/`. A partir dali, `cd var` usa um caminho relativo e entra em `/var`; `cd ..` retorna à raiz. `cd ~` volta ao diretório pessoal, e `ls -la` inclui também as entradas iniciadas por ponto.
+Observe a alternância entre ação e conferência. Depois de ir a `/`, `pwd` deve mostrar a raiz. A instrução relativa `cd var` passa então a significar `/var`, e `cd ..` retorna ao pai, que nesse ponto é `/`. Ao final, `cd ~` recupera o diretório pessoal do usuário, e `ls -la` apresenta também entradas iniciadas por ponto. Compare os resultados reais em vez de apenas executar a sequência sem leitura.
 
 ## Investigando erros
 
@@ -228,17 +216,14 @@ Depois de `cd /`, `pwd` deve mostrar `/`. A partir dali, `cd var` usa um caminho
 | `Not a directory` | Parte do caminho é arquivo | Liste o caminho por etapas |
 | Nenhuma saída | Pode ter funcionado ou não produzir texto | Use verificação específica |
 
-O código de saída do último comando fica em `$?`:
+A mensagem ajuda a localizar a falha, mas também existe uma indicação numérica: a shell guarda em `$?` o código de saída do último comando. Para consultá-lo imediatamente:
 
 ```bash
 echo $?
 ```
 
-- `0`: normalmente sucesso;
-- outro valor: algum erro.
+O programa `echo` apresenta o valor expandido de `$?`. Em geral, `0` indica sucesso e outro número indica erro; a interpretação específica pertence ao comando executado. Consulte logo após a operação em dúvida, porque executar outra instrução substitui o valor que você queria examinar.
 
-Consulte imediatamente, pois o comando seguinte substitui o valor.
+A investigação deve começar por grafia, caminho, usuário e permissões. Não acrescente `sudo` por reflexo: aumentar privilégios não corrige um nome errado nem explica a causa. Use a tabela como orientação inicial e confirme a condição concreta antes de alterar o ambiente.
 
-Não adicione `sudo` automaticamente ao encontrar erro. Primeiro confirme comando, caminho, usuário e permissões.
-
-Lembre que `/` é a raiz, enquanto `/root` é o diretório pessoal do usuário `root`. Caminhos Linux usam `/`, e `ls -l` normalmente mostra a última modificação, não a criação. Um comando sem saída também não está automaticamente validado.
+O aprendizado fica completo quando você consegue dizer em qual máquina está, qual caminho foi interpretado, qual programa recebeu quais argumentos e qual observação confirma o efeito. A raiz `/`, o usuário `root` e o diretório `/root` continuam distintos; da mesma forma, uma data de modificação ou uma linha sem saída não autoriza conclusões além do que foi verificado.

@@ -9,6 +9,7 @@ const dataFiles = [
   path.join(docsRoot, "javascripts", "quiz-exam-data.js"),
 ];
 const allowedDifficulties = new Set(["easy", "medium", "hard"]);
+const examDifficulties = new Set(["easy"]);
 const allowedScopes = new Set(["lesson-fixation", "exam"]);
 const expectedExamConcepts = new Set([
   "iam",
@@ -33,6 +34,16 @@ const expectedExamConcepts = new Set([
   "php",
   "certbot",
   "evilginx",
+  "autorizacao",
+  "computacao-em-nuvem",
+  "regiao-aws",
+  "ciclo-de-vida-ec2",
+  "key-pair",
+  "terminal-shell",
+  "phishing",
+  "document-root",
+  "formulario-post",
+  "permissoes-linux",
 ]);
 const errors = [];
 const context = { window: {} };
@@ -131,8 +142,25 @@ if (!Array.isArray(questions)) {
 
       if (!fs.existsSync(absoluteMarkdownPath)) {
         errors.push(`${label}: aula de origem não existe (${markdownPath}).`);
-      } else if (!mkdocsConfig.includes(markdownPath)) {
-        errors.push(`${label}: aula de origem não está publicada (${markdownPath}).`);
+      } else {
+        if (!mkdocsConfig.includes(markdownPath)) {
+          errors.push(
+            `${label}: aula de origem não está publicada (${markdownPath}).`
+          );
+        }
+
+        if (question.scope === "exam") {
+          const sourceFragment = question.source.split("#", 2)[1];
+          const markdown = fs.readFileSync(absoluteMarkdownPath, "utf8");
+          if (
+            !sourceFragment ||
+            !markdown.includes(`id="${sourceFragment}"`)
+          ) {
+            errors.push(
+              `${label}: a âncora ${sourceFragment || "<ausente>"} não existe em ${markdownPath}.`
+            );
+          }
+        }
       }
 
       if (
@@ -163,13 +191,21 @@ if (!Array.isArray(questions)) {
     }
   }
 
-  for (const difficulty of allowedDifficulties) {
+  for (const question of examQuestions) {
+    if (!examDifficulties.has(question.difficulty)) {
+      errors.push(
+        `${question.id}: o quiz final deve conter somente perguntas básicas.`
+      );
+    }
+  }
+
+  for (const difficulty of examDifficulties) {
     const count = examQuestions.filter(
       (question) => question.difficulty === difficulty
     ).length;
-    if (count < 22) {
+    if (count !== expectedExamConcepts.size) {
       errors.push(
-        `Simulado ${difficulty}: mínimo de 22 questões; encontrado ${count}.`
+        `Quiz final: esperado ${expectedExamConcepts.size} questões; encontrado ${count}.`
       );
     }
   }
@@ -178,7 +214,7 @@ if (!Array.isArray(questions)) {
     const conceptQuestions = examQuestions.filter(
       (question) => question.concept === concept
     );
-    for (const difficulty of allowedDifficulties) {
+    for (const difficulty of examDifficulties) {
       const count = conceptQuestions.filter(
         (question) => question.difficulty === difficulty
       ).length;
@@ -200,7 +236,7 @@ if (!Array.isArray(questions)) {
 
   const correctLengthRanks = { shortest: 0, middle: 0, longest: 0 };
   const ranksByDifficulty = Object.fromEntries(
-    [...allowedDifficulties].map((difficulty) => [
+    [...examDifficulties].map((difficulty) => [
       difficulty,
       { shortest: 0, middle: 0, longest: 0 },
     ])
@@ -240,7 +276,9 @@ if (!Array.isArray(questions)) {
       rank = "middle";
     }
     correctLengthRanks[rank] += 1;
-    ranksByDifficulty[question.difficulty][rank] += 1;
+    if (ranksByDifficulty[question.difficulty]) {
+      ranksByDifficulty[question.difficulty][rank] += 1;
+    }
   }
 
   const dominantRank = Math.max(...Object.values(correctLengthRanks));
@@ -260,7 +298,7 @@ if (!Array.isArray(questions)) {
     const dominantDifficultyRank = Math.max(...Object.values(ranks));
     if (questionCount > 0 && dominantDifficultyRank / questionCount > 0.6) {
       errors.push(
-        `Simulado ${difficulty}: padrão de extensão previsível (${JSON.stringify(
+        `Quiz final ${difficulty}: padrão de extensão previsível (${JSON.stringify(
           ranks
         )}).`
       );
@@ -269,7 +307,7 @@ if (!Array.isArray(questions)) {
 
   if (errors.length === 0) {
     const counts = Object.fromEntries(
-      [...allowedDifficulties].map((difficulty) => [
+      [...examDifficulties].map((difficulty) => [
         difficulty,
         examQuestions.filter(
           (question) => question.difficulty === difficulty
@@ -279,7 +317,7 @@ if (!Array.isArray(questions)) {
     console.log(
       `Quiz válido: ${questions.length} questões (${lessonQuestions.length} por aula, ${examQuestions.length} no simulado).`
     );
-    console.log(`Simulado por dificuldade: ${JSON.stringify(counts)}.`);
+    console.log(`Questões do quiz final: ${JSON.stringify(counts)}.`);
     console.log(
       `Posição relativa da resposta correta: ${JSON.stringify(
         correctLengthRanks

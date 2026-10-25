@@ -37,6 +37,9 @@ jobs:
       - name: Construir o site
         run: python -m mkdocs build --strict
 
+      - name: Validar o livro e os recursos offline
+        run: python scripts/validate-editorial.py
+
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v6
 

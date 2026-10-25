@@ -54,6 +54,9 @@ plugins:
   - search:
       lang: pt
 
+hooks:
+  - scripts/illustrated_lessons.py
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -73,11 +76,13 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
-  - stylesheets/extra.css?v=20260924-2
+  - stylesheets/book.css?v=20261025-7
 
 extra_javascript:
-  - javascripts/pwa.js?v=20260803
-  - javascripts/quiz-loader.js?v=20261005-2
+  - javascripts/book-theme.js?v=20261025-2
+  - javascripts/book.js?v=20261025-6
+  - javascripts/pwa.js?v=20261025-2
+  - javascripts/quiz-loader.js?v=20261006-2
 
 extra:
   social:
@@ -89,7 +94,7 @@ nav:
   - Início: index.md
   - Preparação para a prova:
       - Conceitos essenciais: 04-preparacao-para-prova/01-guia-de-estudo.md
-      - Simulado configurável: quiz.md
+      - Quiz: quiz.md
   - 1. Contexto e fundamentos:
       - 1. Visão geral do curso: 01-introduction-to-cloud-computing-for-hackers/01-teaser.md
       - 2. Hacking ético, pentest e Red Team: 01-introduction-to-cloud-computing-for-hackers/02-introduction-to-hacking-using-the-cloud.md
@@ -112,6 +117,8 @@ nav:
       - 17. Publicando registros DNS: 03-phishing/17-linking-domain-names-to-phishing-pages.md
       - 18. O que o HTTPS protege: 03-phishing/18-introduction-to-https.md
       - 19. Certificado TLS com Certbot: 03-phishing/19-enabling-https-on-phishing-pages.md
+  - Ponte Blue Team:
+      - Da exposição à investigação: blue-team/01-da-exposicao-a-investigacao.md
   - 4. Phishing e sessões autenticadas:
       - 20. Intermediando uma autenticação: 04-phishing-bypassing-2fa-mfa/20-introduction-to-evilginx.md
       - 21. Preparando o Evilginx: 04-phishing-bypassing-2fa-mfa/21-installing-evilginx-on-the-cloud.md

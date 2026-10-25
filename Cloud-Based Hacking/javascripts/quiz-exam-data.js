@@ -1,7 +1,7 @@
 window.CYBER_QUIZ_QUESTIONS = window.CYBER_QUIZ_QUESTIONS || [];
 
 (() => {
-  const levels = ["easy", "medium", "hard"];
+  const levels = ["easy"];
   const guide = "04-preparacao-para-prova/01-guia-de-estudo/";
   const concepts = [
     {
@@ -999,6 +999,209 @@ window.CYBER_QUIZ_QUESTIONS = window.CYBER_QUIZ_QUESTIONS || [];
           correct: 1,
           explanation:
             "Expiração curta, revogação e vínculo ao contexto limitam onde e por quanto tempo um token capturado pode ser reutilizado.",
+        },
+      },
+    },
+    {
+      id: "autorizacao",
+      topic: "Autorização e escopo",
+      lesson: "Fundamento essencial: autorização",
+      source: `${guide}#autorizacao`,
+      questions: {
+        easy: {
+          question:
+            "O que precisa existir antes de um teste de segurança contra um ativo?",
+          choices: [
+            "Autorização explícita de quem possui autoridade sobre o ativo",
+            "Uma conta ativa em qualquer serviço público de computação em nuvem",
+            "Um endereço IP que responda a conexões iniciadas pela Internet",
+            "Uma ferramenta capaz de identificar automaticamente alguma falha",
+          ],
+          correct: 0,
+          explanation:
+            "A autorização precisa vir de quem possui autoridade sobre o ativo e deve ser acompanhada por escopo e limites claros.",
+        },
+      },
+    },
+    {
+      id: "computacao-em-nuvem",
+      topic: "Computação em nuvem",
+      lesson: "Fundamento essencial: computação em nuvem",
+      source: `${guide}#computacao-em-nuvem`,
+      questions: {
+        easy: {
+          question: "O que caracteriza a computação em nuvem?",
+          choices: [
+            "Um computador remoto que permanece ligado sem qualquer virtualização",
+            "Recursos provisionados sob demanda e administrados por rede",
+            "Um conjunto de sites acessados somente por navegadores conectados à Web",
+            "Um programa local que substitui a conexão do dispositivo com a Internet",
+          ],
+          correct: 1,
+          explanation:
+            "A nuvem oferece recursos computacionais por rede, com provisionamento sob demanda, administração padronizada e uso mensurado.",
+        },
+      },
+    },
+    {
+      id: "regiao-aws",
+      topic: "AWS Region",
+      lesson: "Fundamento essencial: AWS Region",
+      source: `${guide}#regiao-aws`,
+      questions: {
+        easy: {
+          question: "O que é uma AWS Region?",
+          choices: [
+            "Uma conta separada usada apenas para controlar a cobrança do laboratório",
+            "Uma rede pública que substitui todos os Security Groups de uma instância",
+            "Uma área geográfica da AWS que reúne infraestrutura e serviços regionais",
+            "Uma imagem global que instala o mesmo sistema em qualquer provedor de nuvem",
+          ],
+          correct: 2,
+          explanation:
+            "Uma Region é uma área geográfica da AWS. Vários recursos, como instâncias, AMIs e volumes, pertencem à Região escolhida.",
+        },
+      },
+    },
+    {
+      id: "ciclo-de-vida-ec2",
+      topic: "Ciclo de vida do EC2",
+      lesson: "Fundamento essencial: ciclo de vida do EC2",
+      source: `${guide}#ciclo-de-vida-ec2`,
+      questions: {
+        easy: {
+          question: "Qual ação remove definitivamente uma instância EC2?",
+          choices: [
+            "Reiniciar a instância pelo Console da AWS",
+            "Encerrar somente a sessão remota do SSH",
+            "Parar a instância para preservar seu estado",
+            "Terminar a instância no serviço EC2",
+          ],
+          correct: 3,
+          explanation:
+            "Parar preserva a instância para um novo início. Terminar remove a instância e é uma ação irreversível.",
+        },
+      },
+    },
+    {
+      id: "key-pair",
+      topic: "Key pair",
+      lesson: "Fundamento essencial: key pair",
+      source: `${guide}#key-pair`,
+      questions: {
+        easy: {
+          question:
+            "No key pair usado pelo SSH, qual parte deve permanecer secreta no computador local?",
+          choices: [
+            "A chave privada",
+            "A chave pública",
+            "A chave de host",
+            "A fingerprint pública",
+          ],
+          correct: 0,
+          explanation:
+            "A chave pública pode ficar autorizada na instância. A chave privada correspondente permanece protegida no computador local.",
+        },
+      },
+    },
+    {
+      id: "terminal-shell",
+      topic: "Terminal e shell",
+      lesson: "Fundamento essencial: terminal e shell",
+      source: `${guide}#terminal-shell`,
+      questions: {
+        easy: {
+          question:
+            "Qual componente interpreta os comandos digitados em um terminal Linux?",
+          choices: [
+            "O Security Group associado à instância",
+            "O shell, como Bash ou Zsh",
+            "O volume EBS conectado ao sistema",
+            "O resolvedor DNS configurado na rede",
+          ],
+          correct: 1,
+          explanation:
+            "O terminal apresenta entrada e saída. O shell interpreta a linha digitada e solicita a execução do comando.",
+        },
+      },
+    },
+    {
+      id: "phishing",
+      topic: "Phishing",
+      lesson: "Fundamento essencial: phishing",
+      source: `${guide}#phishing`,
+      questions: {
+        easy: {
+          question: "O que é phishing?",
+          choices: [
+            "Uma falha de rede que libera portas fechadas de um servidor",
+            "Um protocolo que cifra automaticamente toda mensagem recebida",
+            "Uma forma de engenharia social que tenta induzir uma ação",
+            "Um serviço de nuvem usado para criar máquinas virtuais",
+          ],
+          correct: 2,
+          explanation:
+            "Phishing é uma forma de engenharia social. A infraestrutura técnica serve como meio para apresentar a mensagem ou receber a ação.",
+        },
+      },
+    },
+    {
+      id: "document-root",
+      topic: "Document root",
+      lesson: "Fundamento essencial: document root",
+      source: `${guide}#document-root`,
+      questions: {
+        easy: {
+          question: "O que é o document root de um servidor web?",
+          choices: [
+            "A conta administrativa usada para iniciar a máquina virtual",
+            "A regra de rede que libera conexões destinadas à porta HTTP",
+            "A chave privada usada pelo cliente para autenticação remota",
+            "O diretório no qual o servidor procura o conteúdo que pode publicar",
+          ],
+          correct: 3,
+          explanation:
+            "O document root é o diretório inicial usado pelo servidor web para localizar os arquivos que poderá entregar.",
+        },
+      },
+    },
+    {
+      id: "formulario-post",
+      topic: "Formulário HTML",
+      lesson: "Fundamento essencial: formulário e POST",
+      source: `${guide}#formulario-post`,
+      questions: {
+        easy: {
+          question: "Em um formulário HTML, o que o atributo action informa?",
+          choices: [
+            "A URL que receberá os dados quando o formulário for enviado",
+            "A porta TCP que o Security Group precisa liberar na instância",
+            "A permissão Linux aplicada ao arquivo que contém o formulário",
+            "A chave privada usada para proteger os campos durante o envio",
+          ],
+          correct: 0,
+          explanation:
+            "O atributo action indica a URL de destino. O processamento dos dados precisa existir no recurso que recebe a requisição.",
+        },
+      },
+    },
+    {
+      id: "permissoes-linux",
+      topic: "Permissões no Linux",
+      lesson: "Fundamento essencial: permissões no Linux",
+      source: `${guide}#permissoes-linux`,
+      questions: {
+        easy: {
+          question: "Por que chmod 777 não deve ser uma correção genérica?",
+          choices: [
+            "Porque impede o proprietário de ler e modificar o próprio arquivo",
+            "Porque concede leitura, escrita e execução de forma muito ampla",
+            "Porque remove automaticamente o usuário que executa o serviço web",
+            "Porque desliga o processo antes de alterar as permissões do arquivo",
+          ],
+          correct: 1,
+          explanation:
+            "A permissão 777 concede acesso amplo. O correto é identificar quais identidades precisam de cada operação e aplicar menor privilégio.",
         },
       },
     },

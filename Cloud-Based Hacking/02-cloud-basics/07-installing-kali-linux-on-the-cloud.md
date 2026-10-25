@@ -1,36 +1,30 @@
 # Provisionando Kali Linux no Amazon EC2
 
-Esta aula parte de uma [conta AWS protegida, uma Região definida e alertas de cobrança configurados](06-signing-up-with-aws.md).
+Como transformar as escolhas do Console em um computador de laboratório? Antes de iniciar, tenha a [conta AWS protegida, a Região escolhida e os alertas de cobrança preparados](06-signing-up-with-aws.md). Esta aula acompanha as decisões de provisionamento, sem afirmar que uma instância já foi criada ou testada no seu ambiente.
 
-A definição de computação em nuvem está na [aula 3: O que é a nuvem?](../01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md).
+Se precisar retomar o que está sendo alugado, consulte a [aula 3: O que é a nuvem?](../01-introduction-to-cloud-computing-for-hackers/03-what-is-the-cloud.md). Aqui, o foco é reconhecer a função de cada componente antes de aceitar a criação de um recurso cobrável.
 
 ## Linux, Debian e Kali Linux
 
-**Linux** é o núcleo, ou *kernel*, que gerencia processador, memória, dispositivos e processos. Uma **distribuição Linux** combina esse kernel com ferramentas de sistema, gerenciador de pacotes, repositórios, configurações e aplicações.
+O computador precisa de uma camada que administre processador, memória, dispositivos e programas em execução. Linux é esse núcleo, também chamado *kernel*. Para formar um sistema utilizável, ele é reunido a aplicações, ferramentas administrativas, configurações, repositórios e um gerenciador de pacotes; esse conjunto recebe o nome de distribuição Linux.
 
-**Debian** é uma distribuição Linux que serve de base para várias outras.
+Debian é uma dessas distribuições e serve de base para outras. Kali Linux deriva dessa base, mas é mantido com configurações, repositórios, ferramentas e metapacotes voltados a testes de segurança. Metapacotes agrupam a seleção de outros pacotes; não se deve reduzir o Kali a uma instalação indiferenciada de Debian com alguns executáveis extras.
 
-**Kali Linux** é uma distribuição baseada no Debian e mantida para testes de segurança. Possui repositórios, configurações, metapacotes e ferramentas voltados a esse trabalho. Portanto, não é apenas “Debian com alguns programas instalados”.
-
-Imagens do Kali para nuvem podem ser enxutas. Não presuma que toda ferramenta esteja pré-instalada: confira a documentação e instale somente o necessário.
+A imagem destinada à nuvem pode trazer um conjunto menor do que o sistema conhecido em outras instalações. Uma ferramenta ausente não prova defeito da imagem. Consulte sua documentação e instale apenas o necessário ao exercício autorizado, sem presumir que tudo já está disponível.
 
 ## Máquina virtual, EC2, AMI e instância
 
-Uma **máquina virtual**, ou VM, é um computador definido em software que recebe recursos de um host físico por uma camada de virtualização.
+Uma máquina virtual é um computador apresentado por software sobre recursos físicos de um host. A camada de virtualização fornece ao sistema convidado recursos com que ele trabalha como processador, memória e dispositivos. Na AWS, Amazon Elastic Compute Cloud, ou EC2, é o serviço usado para criar e administrar essa capacidade.
 
-**Amazon Elastic Compute Cloud (EC2)** é o serviço da AWS usado para provisionar e administrar capacidade computacional virtual.
+Para iniciar o sistema, é preciso escolher uma AMI, sigla de Amazon Machine Image. Ela é um modelo com software de inicialização e informações de armazenamento, não uma máquina já ligada. A partir desse modelo nasce uma instância EC2: o recurso concreto que terá identificador, estado, rede, armazenamento e capacidade próprios.
 
-Uma **Amazon Machine Image (AMI)** não é a máquina em execução. É uma imagem ou template de inicialização que contém o software necessário para preparar o sistema e informações sobre armazenamento.
+Cada escolha responde a uma pergunta diferente. A AMI determina o sistema inicial; o tipo de instância fornece vCPU, memória e características de rede; os volumes conservam dados; e a configuração de rede, junto do Security Group, delimita a conectividade. O key pair seleciona a chave pública para o acesso inicial.
 
-Uma **instância EC2** é o recurso criado a partir da AMI. Possui estado, identificador, rede, armazenamento e capacidade próprios.
-
-Ao criar uma instância, a AMI fornece o sistema e a configuração inicial. O tipo de instância acrescenta vCPU, RAM e capacidade de rede; os volumes fornecem armazenamento; a rede e o Security Group definem a conectividade permitida; e o key pair fornece a chave pública usada no acesso inicial.
-
-Uma AMI pode iniciar várias instâncias. AMIs são regionais e precisam ser compatíveis com a arquitetura escolhida.
+Várias instâncias podem partir da mesma AMI sem se tornarem a mesma máquina. A imagem precisa estar disponível na Região utilizada e ser compatível com a arquitetura escolhida. Conferir apenas o nome “Kali” não resolve essas duas dependências.
 
 ## Tipo de instância, CPU, RAM e disco
 
-O **instance type** representa uma combinação de recursos. Nomes e elegibilidade mudam, portanto não dependa de um tipo citado em gravação antiga.
+O *instance type*, ou tipo de instância, reúne características de capacidade. Escolha-o pelo trabalho pretendido, não porque seu nome apareceu em uma gravação: disponibilidade, elegibilidade e condições comerciais podem mudar. A tabela separa recursos que um iniciante pode confundir.
 
 | Recurso | Significado |
 |---|---|
@@ -40,117 +34,75 @@ O **instance type** representa uma combinação de recursos. Nomes e elegibilida
 | EBS | Armazenamento persistente configurado separadamente |
 | Instance store | Armazenamento temporário de alguns tipos |
 
-O tipo define principalmente processamento, memória e características de rede. O disco normalmente é um volume **Amazon Elastic Block Store (EBS)**.
+Processamento e memória pertencem principalmente à escolha do tipo, enquanto o disco normalmente será um volume EBS, de *Elastic Block Store*. A persistência desse volume é administrada separadamente da execução da instância.
 
-RAM e armazenamento não são equivalentes. A RAM perde conteúdo ao desligar; um volume EBS pode permanecer e continuar sendo cobrado mesmo com a instância parada.
+Isso explica por que RAM e disco não são substitutos: a memória de trabalho perde seu conteúdo quando o sistema desliga, mas o volume pode guardar arquivos para a próxima inicialização. A permanência útil dos dados também significa possível permanência de cobrança com a instância parada. Alguns tipos ainda oferecem *instance store*, armazenamento temporário que não deve ser confundido com a persistência do EBS.
 
 ## Escolhendo uma imagem confiável
 
-Uma AMI de terceiros inicia código com amplo controle dentro da instância. Imagem falsa ou abandonada pode conter credenciais, serviços inseguros ou software modificado.
+Confiar na imagem é confiar no código que começará a controlar o sistema. Uma AMI falsa, modificada ou abandonada pode trazer serviços inseguros e credenciais indevidas. O primeiro resultado de busca não é uma prova de procedência.
 
-Para o Kali:
+Comece na [página oficial de imagens](https://www.kali.org/get-kali/#kali-cloud) e siga a referência para o AWS Marketplace. Confira produto e publicador e leia as instruções de acesso. Depois compare arquitetura, data, Região, termos e eventual preço de software com o que será selecionado no Console.
 
-1. parta da [página oficial de imagens](https://www.kali.org/get-kali/#kali-cloud);
-2. use o link oficial para o AWS Marketplace;
-3. confirme produto e publicador;
-4. leia instruções e nome de usuário padrão;
-5. confira arquitetura, data, Região e preço de software;
-6. não selecione apenas o primeiro resultado de busca.
+Não trate um AMI ID de outra época ou Região como identificador universal. Ele pode mudar, assim como a disponibilidade. A documentação da imagem oficial do Kali informa `kali` como usuário SSH; esse dado deve ser conferido na imagem efetivamente usada.
 
-Não fixe um AMI ID nas notas: ele é regional e pode mudar. Na imagem oficial documentada pelo Kali, o usuário SSH é `kali`.
-
-O selo “Free Tier eligible” não garante custo zero. Depende de plano, créditos, tipo, duração, armazenamento, endereço público, tráfego e Marketplace.
+A revisão financeira também tem várias partes: plano, créditos, tipo, duração, disco, endereço público, tráfego e cobrança do Marketplace. Um selo “Free Tier eligible” não afirma que essa combinação inteira terá custo zero.
 
 ## Key pair
 
-Um **key pair** do EC2 contém duas partes relacionadas matematicamente:
+O key pair liga duas chaves relacionadas matematicamente, com funções distintas. A parte pública pode ser colocada no servidor; a privada fica protegida no computador de quem fará o acesso. Essa divisão permite comprovar posse da privada sem transmiti-la à instância.
 
-- **chave pública:** colocada na instância durante a primeira inicialização;
-- **chave privada:** mantida no computador do usuário.
+Na primeira inicialização, a chave pública escolhida é incluída em `~/.ssh/authorized_keys` para o usuário definido pela AMI. A [aula 8 sobre autenticação SSH](08-communicating-with-cloud-computers-remotely-using-ssh.md) explicará como a chave privada participa da assinatura usada no login. Ela não funciona como uma senha comum enviada ao servidor.
 
-Na primeira inicialização, a chave pública selecionada é adicionada a `~/.ssh/authorized_keys` do usuário definido pela AMI. A chave privada correspondente será usada na [autenticação SSH da aula 8](08-communicating-with-cloud-computers-remotely-using-ssh.md).
+Ao criar o par, guarde o arquivo privado em um diretório local protegido. Não o compartilhe, não o inclua nas notas e não o coloque em repositórios ou diretórios web. Normalmente o download só está disponível na criação; a AWS não fornece depois uma cópia recuperável dessa privada.
 
-A chave privada:
-
-- não é uma senha comum;
-- não é enviada ao servidor durante a conexão;
-- não deve ser compartilhada;
-- não deve ficar em repositórios, diretórios web ou notas;
-- deve ser armazenada em diretório local protegido;
-- normalmente só pode ser baixada uma vez ao ser criada.
-
-A AWS não mantém cópia recuperável da chave privada. Criar outro key pair com o mesmo nome não faz a nova chave funcionar automaticamente em instância antiga.
-
-Para OpenSSH, escolha normalmente `.pem`. O formato `.ppk` é destinado ao PuTTY.
+O nome do par é apenas uma identificação administrativa. Criar um novo par com o mesmo nome não troca a chave pública já instalada em uma instância antiga. Para o cliente OpenSSH, o formato normalmente escolhido é `.pem`; `.ppk` atende ao PuTTY. Escolha conforme o cliente, sem publicar ou fotografar o conteúdo para documentar a escolha.
 
 ## Levando essas escolhas para o Console
 
-Os nomes e posições dos controles podem mudar, mas as decisões técnicas permanecem.
+A interface pode reorganizar controles, mas cada decisão abaixo continua necessária. Leia as opções pelo efeito que produzem e não apenas pela posição em que apareciam na gravação.
 
 ### Confirmar a Região
 
-Selecione a Região definida na aula anterior. AMIs, key pairs, instâncias e Security Groups serão criados nela.
+Comece selecionando o local registrado na aula anterior. É nesse contexto que serão procurados ou criados AMI, key pair, instância e Security Group. Essa conferência evita interpretar uma lista de outra Região como ausência de recursos.
 
 ### Abrir o EC2
 
-Localize **EC2** e inicie uma nova instância. Use nome descritivo, como `kali-lab`, sem dados de clientes ou alvos reais.
+Encontre o serviço EC2 e abra a criação de instância. Um nome como `kali-lab` permite reconhecer a finalidade sem revelar clientes ou alvos. O nome ajuda a organização; ele não define o sistema operacional nem suas permissões.
 
 ### Selecionar a AMI
 
-Use a referência oficial do projeto Kali e confira:
-
-- publicador;
-- arquitetura;
-- instruções;
-- usuário `kali`;
-- preço de software;
-- termos do Marketplace.
+Na seleção da imagem, retome a referência oficial do Kali. Confira se o publicador e a arquitetura correspondem ao produto pretendido, leia os termos e o preço do Marketplace e confirme as instruções e o usuário `kali`. A seleção só está coerente quando esses dados concordam, não apenas quando o título da imagem parece correto.
 
 ### Escolher o tipo
 
-Escolha a menor capacidade suficiente. Confirme vCPUs, RAM, arquitetura, preço e eventual cobertura por créditos.
-
-Uma instância pode consumir capacidade cobrável ao entrar em `running`, mesmo sem SSH aberto.
+Compare vCPU, RAM e arquitetura e escolha a menor capacidade que atende ao exercício. Confira o preço e a eventual cobertura pelos créditos da sua conta. Uma máquina no estado `running` já pode consumir capacidade cobrável mesmo que ninguém tenha aberto SSH.
 
 ### Criar o key pair
 
-Crie um key pair relacionado ao laboratório, baixe a chave privada e mova-a para diretório protegido. Não abra, fotografe, publique ou cole seu conteúdo.
+Selecione ou crie o par adequado ao laboratório e guarde o download privado em local protegido. A documentação do exercício pode mencionar qual par foi escolhido, mas não deve abrir, colar, fotografar ou publicar seu conteúdo.
 
 ### Configurar a rede
 
-Confirme que a instância receberá endereço público se o acesso vier diretamente da Internet.
+Se o computador local chegar diretamente pela Internet, confira a atribuição de endereço público. O Security Group é um filtro virtual associado à interface da instância e acompanha o estado das conexões, propriedade chamada *stateful*.
 
-O **Security Group** é um firewall virtual e stateful associado à interface. Para SSH, crie regra de entrada:
+Para esta etapa, a entrada necessária é TCP na porta de destino `22`, limitada ao seu IP público atual, normalmente representado com `/32`. Não escolha `0.0.0.0/0` para SSH no laboratório pessoal: essa faixa permitiria tentativas de qualquer IPv4 da Internet, e não somente da sua máquina.
 
-- protocolo: TCP;
-- porta de destino: `22`;
-- origem: somente seu IP público atual, normalmente `/32`.
-
-Não use `0.0.0.0/0` para SSH em laboratório pessoal. Essa origem permite tentativas de qualquer endereço IPv4 da Internet.
-
-Liberar TCP/22 não inicia o SSH. Um `sshd` ativo também não será alcançável se a rede bloquear.
-
-Não libere HTTP ou HTTPS nesta etapa.
+A regra permite a passagem; ela não liga o servidor SSH. Da mesma forma, um `sshd` ativo não pode ser alcançado se o caminho ou os filtros impedirem a comunicação. HTTP e HTTPS ainda não são necessários e não devem ser liberados nesta criação.
 
 ### Configurar armazenamento
 
-Confira tipo e tamanho do EBS, preço atual, exclusão na terminação e volumes adicionais. Não aumente o disco apenas porque um limite antigo já foi gratuito.
+Escolha tipo e tamanho do EBS pelo uso previsto e confira o preço atual. Observe a opção de exclusão na terminação e qualquer volume adicional, pois isso determina o que pode sobrar depois. Uma franquia antiga não justifica aumentar o disco sem necessidade.
 
 ### Revisar e iniciar
 
-Revise Região, AMI, publicador, tipo, key pair, regra TCP/22, endereço público, volumes e estimativa de preço. Depois, inicie.
+Antes de confirmar, reúna a revisão: Região e procedência da AMI, tipo compatível, par correto, entrada TCP/22 restrita, endereço público quando necessário e volumes previstos. Compare a estimativa de custo com o limite definido. Só então solicite a inicialização.
 
 ### Verificar o resultado
 
-Aguarde:
+Depois da solicitação, aguarde o estado `running` e as verificações de status aprovadas. Confira IPv4 ou DNS público, key pair e Security Group. Esses dados confirmam a configuração e a preparação da instância, mas ainda não comprovam um login SSH.
 
-- estado `running`;
-- verificações de status aprovadas;
-- IPv4 ou DNS público;
-- key pair correto;
-- Security Group esperado.
-
-Registre Região, instance ID, AMI, tipo, key pair e Security Group. Não registre o conteúdo da chave privada.
+Anote os identificadores necessários para administrar o laboratório, como Região, instance ID, AMI, tipo, par e grupo. Esses registros administrativos devem ser tratados conforme a privacidade do ambiente; em material público, use referências sanitizadas. O conteúdo da chave privada não faz parte dessa documentação.
 
 ## Ciclo de vida
 
@@ -162,39 +114,31 @@ Registre Região, instance ID, AMI, tipo, key pair e Security Group. Não regist
 | `stopping` / `stopped` | Interrompe computação e preserva EBS |
 | `shutting-down` / `terminated` | Remove definitivamente a instância |
 
-Ao parar e iniciar, o IPv4 público automático pode mudar. A terminação é irreversível. O volume raiz costuma ser excluído por padrão; volumes adicionais dependem da configuração.
+Parar não tem o mesmo efeito que terminar. Uma instância parada preserva EBS e pode voltar a executar; na retomada, seu IPv4 público automático pode ser outro. A terminação remove definitivamente a instância e não pode ser desfeita. O volume raiz costuma acompanhar a exclusão por padrão, mas volumes adicionais dependem da opção configurada e precisam de conferência própria.
 
 ## Custos e limpeza
 
-Além do tempo da instância, verifique EBS, snapshots, IPv4 público, Elastic IP, tráfego e preço da AMI.
+O tempo de execução é apenas parte da conta. Examine também EBS, snapshots, IPv4 público, Elastic IP, tráfego e eventual preço do software da AMI. A parada da computação não demonstra encerramento de todas essas parcelas.
 
-Ao terminar definitivamente, encerre a sessão SSH e termine a instância. Em seguida, confira volumes restantes, remova snapshots, endereços, regras e Security Groups sem uso e só exclua o key pair e a chave local quando nenhum recurso depender deles. Consulte a cobrança depois da atualização.
+Quando o exercício acabar de vez, feche SSH e termine a instância pelo Console. Procure volumes remanescentes e retire snapshots, endereços, regras e Security Groups que perderam a finalidade. Exclua o par e sua privada local somente depois de confirmar que nenhum recurso ainda depende deles. Finalmente, confira a cobrança atualizada: a limpeza precisa aparecer tanto nos recursos quanto nos custos.
 
 ## Problemas comuns
 
 ### A imagem não aparece
 
-- confirme a Região;
-- acesse pelo link oficial;
-- verifique limitações do plano;
-- confira a assinatura do Marketplace.
+Confira primeiro a Região e retome o caminho oficial de acesso à imagem. Se ela continuar ausente, examine as condições do plano e a assinatura do Marketplace. Não substitua por uma imagem de procedência desconhecida apenas para contornar a ausência.
 
 ### O tipo não pode ser selecionado
 
-- confira arquitetura da AMI;
-- verifique disponibilidade e cota;
-- escolha outro tipo compatível após revisar o preço.
+Compare a arquitetura exigida pela AMI com a oferecida pelo tipo. Depois confira disponibilidade regional e cotas. Se precisar mudar de tipo, escolha outro compatível e revise novamente o preço antes de aceitar.
 
 ### A instância demora a ficar pronta
 
-- aguarde as verificações;
-- confira mensagens do Marketplace;
-- verifique notificações da conta;
-- consulte o log do sistema.
+Observe as verificações de status antes de repetir a criação. Mensagens do Marketplace, notificações da conta e log do sistema podem esclarecer o que impediu a preparação. Uma demora não comprova falha definitiva nem justifica criar várias máquinas cobradas.
 
 ### O Kali possui poucas ferramentas
 
-Isso pode ser esperado em imagem de nuvem. Consulte os metapacotes oficiais e instale somente o necessário.
+Uma instalação enxuta pode ser a composição prevista para a imagem de nuvem. Compare com a documentação e os metapacotes oficiais antes de concluir que algo está errado. Instalar somente as ferramentas exigidas pelo exercício mantém o ambiente e seu propósito compreensíveis.
 
 ## Referências oficiais
 

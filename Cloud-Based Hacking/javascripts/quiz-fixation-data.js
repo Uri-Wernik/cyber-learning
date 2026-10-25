@@ -3604,6 +3604,204 @@ window.CYBER_QUIZ_QUESTIONS.push(
     ],
     "correct": 3,
     "explanation": "Encerrar exige desfazer o fluxo e a infraestrutura: desabilitar lures e phishlets, revogar sessões na aplicação, remover segredos e artefatos, retirar DNS e exposição de rede e terminar recursos sem função."
+  },
+  {
+    "id": "fix-bt-01",
+    "scope": "lesson-fixation",
+    "fixationNumber": 1,
+    "difficulty": "easy",
+    "topic": "Alcance do host",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "O que a mensagem `Host is up` permite concluir em uma execução do Nmap?",
+    "choices": [
+      "Que todas as portas TCP do host estão abertas e aceitam conexões externas",
+      "Que o servidor respondeu com `200 OK` e entregou o corpo completo da página",
+      "Que ao menos uma sonda recebeu resposta compatível com um host alcançável",
+      "Que o sistema operacional foi identificado de forma conclusiva como Linux"
+    ],
+    "correct": 2,
+    "explanation": "`Host is up` informa alcance do host segundo as sondas usadas. O estado `open` é determinado separadamente para cada porta, e a mensagem não identifica sistema operacional nem resposta HTTP."
+  },
+  {
+    "id": "fix-bt-02",
+    "scope": "lesson-fixation",
+    "fixationNumber": 2,
+    "difficulty": "easy",
+    "topic": "Porta, transporte e serviço",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "Como deve ser interpretada a linha `443/tcp open ssl/http`?",
+    "choices": [
+      "A porta lógica é 443, TCP transporta os dados e o Nmap classificou o serviço como HTTP protegido por TLS",
+      "A porta física é 443, SSL transporta os pacotes IP e TCP identifica o servidor Apache",
+      "O serviço TCP está cifrado por HTTP, enquanto a porta 443 identifica obrigatoriamente um C2",
+      "O protocolo 443 está aberto, TCP é a aplicação e SSL comprova que o conteúdo é legítimo"
+    ],
+    "correct": 0,
+    "explanation": "A linha separa porta, protocolo de transporte, estado e serviço estimado. Nesse contexto, HTTP opera dentro de TLS sobre uma conexão TCP destinada à porta 443."
+  },
+  {
+    "id": "fix-bt-03",
+    "scope": "lesson-fixation",
+    "fixationNumber": 3,
+    "difficulty": "medium",
+    "topic": "Scripts HTTP do Nmap",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "O que faz `nmap -p 80 --script http-title,http-headers <IP-DO-LAB>`?",
+    "choices": [
+      "Baixa o HTML em um arquivo local e executa os scripts JavaScript encontrados na página",
+      "Testa todas as portas do host e usa o título para identificar o sistema operacional",
+      "Abre a porta 80 no firewall e pede ao Apache que revele sua configuração interna",
+      "Limita o teste à porta 80 e coleta o título e os cabeçalhos HTTP da página inicial"
+    ],
+    "correct": 3,
+    "explanation": "`-p 80` restringe a porta. Os scripts selecionados observam o título e os cabeçalhos; eles não alteram firewall, não executam JavaScript da página e não salvam automaticamente o corpo."
+  },
+  {
+    "id": "fix-bt-04",
+    "scope": "lesson-fixation",
+    "fixationNumber": 4,
+    "difficulty": "medium",
+    "topic": "HEAD e Content-Length",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "Como interpretar `Content-Length: 6259` em uma resposta `HEAD` observada no laboratório?",
+    "choices": [
+      "O servidor declarou 6259 bytes para o corpo correspondente, mas não o enviou nessa resposta `HEAD`",
+      "O Nmap recebeu 6259 linhas de HTML e executou cada uma antes de mostrar os cabeçalhos",
+      "O arquivo no disco possui sempre 6259 bytes, mesmo com compressão ou conteúdo dinâmico",
+      "O cabeçalho comprova que 6259 clientes acessaram a página desde a inicialização do Apache"
+    ],
+    "correct": 0,
+    "explanation": "`HEAD` retorna metadados sem o corpo. `Content-Length` descreve o tamanho declarado da representação correspondente; ele não conta linhas, acessos nem garante o tamanho permanente de um arquivo no disco."
+  },
+  {
+    "id": "fix-bt-05",
+    "scope": "lesson-fixation",
+    "fixationNumber": 5,
+    "difficulty": "medium",
+    "topic": "Resposta HTTP com curl",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "Por que `curl -i http://<IP-DO-LAB>/` complementa o script `http-headers` usado na aula?",
+    "choices": [
+      "Porque converte automaticamente HTTP em HTTPS e corrige qualquer certificado inválido",
+      "Porque faz uma varredura de versões em todas as portas antes de acessar a página",
+      "Porque realiza `GET` por padrão e mostra os cabeçalhos junto com o corpo retornado",
+      "Porque consulta uma cópia histórica da página armazenada nos servidores do Shodan"
+    ],
+    "correct": 2,
+    "explanation": "`curl -i` atua como cliente HTTP: inclui os cabeçalhos na saída e, com `GET` padrão, recebe também o corpo. Ele não escaneia outras portas, não corrige TLS e não consulta o Shodan."
+  },
+  {
+    "id": "fix-bt-06",
+    "scope": "lesson-fixation",
+    "fixationNumber": 6,
+    "difficulty": "medium",
+    "topic": "Região de nuvem",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "Qual inferência é defensável quando um hostname da AWS contém `il-central-1`?",
+    "choices": [
+      "O operador mora em Israel e acessa a instância sem qualquer intermediário de rede",
+      "A infraestrutura estava na região AWS Israel, mas o operador podia estar em outro país",
+      "O tráfego usava obrigatoriamente uma VPN israelense administrada pela própria AWS",
+      "O domínio foi registrado em Israel pela mesma pessoa que criou a conta de nuvem"
+    ],
+    "correct": 1,
+    "explanation": "O código identifica a região AWS Israel (Tel Aviv) usada pela infraestrutura. Ele não revela residência, nacionalidade, localização atual, uso de VPN ou identidade do operador."
+  },
+  {
+    "id": "fix-bt-07",
+    "scope": "lesson-fixation",
+    "fixationNumber": 7,
+    "difficulty": "medium",
+    "topic": "Observação direta e dados indexados",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "Por que o horário da coleta precisa acompanhar uma comparação entre Nmap e Shodan?",
+    "choices": [
+      "Porque o Nmap só funciona no mesmo minuto em que o Shodan atualiza todos os endereços da Internet",
+      "Porque os dois resultados devem ser idênticos; qualquer diferença prova adulteração dos registros",
+      "Porque o Shodan controla a configuração atual do servidor e pode abrir ou fechar portas remotamente",
+      "Porque o Nmap observa o estado atual, enquanto o índice pode refletir uma coleta feita em outro momento"
+    ],
+    "correct": 3,
+    "explanation": "Serviços, endereços e certificados mudam. O Nmap mede o momento do teste; a plataforma exibe dados indexados em outra coleta. O horário permite distinguir mudança de estado de erro de interpretação."
+  },
+  {
+    "id": "fix-bt-08",
+    "scope": "lesson-fixation",
+    "fixationNumber": 8,
+    "difficulty": "hard",
+    "topic": "Vulnerabilidades inferidas",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "Como tratar CVEs sugeridos pelo Shodan a partir do produto e da versão aparentes?",
+    "choices": [
+      "Como hipóteses que exigem validação da versão real, dos patches, da configuração e da exposição",
+      "Como prova de exploração, desde que o host também apresente um certificado público válido",
+      "Como confirmação de que todos os módulos vulneráveis estão carregados e acessíveis pela Internet",
+      "Como autorização implícita para testar cada falha, pois os banners foram publicados pelo servidor"
+    ],
+    "correct": 0,
+    "explanation": "A associação por versão pode ignorar backports, patches da distribuição, configuração, módulos e banners imprecisos. Ela prioriza investigação; não confirma vulnerabilidade, exploração nem autorização."
+  },
+  {
+    "id": "fix-bt-09",
+    "scope": "lesson-fixation",
+    "fixationNumber": 9,
+    "difficulty": "medium",
+    "topic": "Limite do certificado TLS",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "O que um certificado válido da Let's Encrypt para o domínio observado permite afirmar?",
+    "choices": [
+      "Que a autoridade certificadora auditou o conteúdo e confirmou que a página não pratica phishing",
+      "Que o domínio pertence juridicamente à organização cujo nome aparece no conteúdo visual",
+      "Que o nome passou pela validação e foi associado ao certificado naquele período de validade",
+      "Que todas as conexões anteriores e futuras permanecerão protegidas mesmo após vazamento da chave"
+    ],
+    "correct": 2,
+    "explanation": "A emissão comprova controle do nome segundo o desafio aplicado e associa esse nome ao certificado. Ela não valida intenção, identidade visual, conteúdo ou segurança permanente da chave."
+  },
+  {
+    "id": "fix-bt-10",
+    "scope": "lesson-fixation",
+    "fixationNumber": 10,
+    "difficulty": "hard",
+    "topic": "Indicadores e atribuição",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "Vários servidores apresentam o mesmo título, banner Apache e região de nuvem. Qual conclusão é adequada?",
+    "choices": [
+      "Todos pertencem ao mesmo operador, porque três semelhanças eliminam a necessidade de investigar horários",
+      "Todos são phishing, pois páginas legítimas não repetem título, versão de servidor ou provedor de nuvem",
+      "Os dados formam um agrupamento útil para investigação, mas não provam finalidade nem autoria comum",
+      "Os servidores são C2, porque qualquer serviço HTTPS repetido em uma região constitui beaconing"
+    ],
+    "correct": 2,
+    "explanation": "Características compartilhadas permitem formar um cluster e procurar novas relações. Serviços legítimos também reutilizam títulos, versões e provedores; finalidade e autoria exigem evidências adicionais."
+  },
+  {
+    "id": "fix-bt-11",
+    "scope": "lesson-fixation",
+    "fixationNumber": 11,
+    "difficulty": "hard",
+    "topic": "Correlação e beaconing",
+    "lesson": "Ponte Blue Team: Da exposição à investigação",
+    "source": "blue-team/01-da-exposicao-a-investigacao/",
+    "question": "Depois de encontrar um servidor suspeito, qual evidência interna fortalece melhor a hipótese de comunicação C2?",
+    "choices": [
+      "A existência isolada da porta 443 e de um certificado emitido por uma autoridade pública",
+      "Conexões periódicas de um processo identificado, correlacionadas em DNS, proxy ou EDR e no mesmo intervalo do incidente",
+      "A região do provedor e o idioma do título HTML, sem registros de clientes que tenham acessado o endereço",
+      "Uma lista de CVEs inferidos pelo banner, mesmo sem tráfego interno, processo de origem ou horário relacionado"
+    ],
+    "correct": 1,
+    "explanation": "C2 é uma hipótese comportamental. Periodicidade, processo de origem, destino e coincidência temporal em fontes internas independentes fornecem uma relação muito mais forte que porta, certificado, região ou CVEs isolados."
   }
 ]
 );
