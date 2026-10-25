@@ -143,9 +143,19 @@ button:disabled { cursor: default; opacity: .4; }
 .paper-space { display: flex; flex: 1; min-width: 0; min-height: 0; }
 .paper-space > .spread { width: 100%; }
 .desktop-reader-control { display: none; }
+:fullscreen.is-paginated .book-header,
+:fullscreen.is-paginated .reader-heading,
+:fullscreen.is-paginated .page-controls { display: none; }
+:fullscreen.is-paginated .book-reader,
+:fullscreen.is-paginated .reader-stage { padding: 0; }
+:fullscreen.is-paginated .reader-stage { outline: none; }
+.reader-stage.is-dragging-page { user-select: none; -webkit-user-select: none; cursor: grabbing; }
+@media (min-width:1000px) {
+  :fullscreen.is-paginated .reader-stage { touch-action: pan-y pinch-zoom; }
+}
 @media (min-width:1000px) {
   .desktop-reader-control { display: flex; }
-  .reader-stage { display: block; overflow: auto; padding: 16px; overscroll-behavior: contain; }
+  .reader-stage { display: block; overflow: auto; padding: 16px; overscroll-behavior: contain; scrollbar-gutter: stable; }
   .reader-stage .paper-space { position: relative; display: block; overflow: clip; margin-inline: auto; }
   .reader-stage .spread { position: absolute; top: 0; left: 0; width: max-content; height: 1123px; grid-template-columns: repeat(var(--sheet-columns,1),794px); gap: 20px; transform-origin: top left; }
   .reader-stage .book-leaf, .measure-leaf { width: 794px; height: 1123px; padding: 48px 48px 44px; }

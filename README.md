@@ -32,12 +32,21 @@ sem fotografia de banco de imagens nem recorte de uma aula.
 
 No computador, as folhas têm uma composição fixa de 794 × 1123 px, na proporção
 A4. É possível escolher uma folha centralizada ou duas lado a lado, ajustar
-a folha à tela, selecionar zoom de 75% a 150% e entrar em tela cheia. O zoom
+a folha à tela ou à largura, selecionar zoom de 75% a 150% e entrar em tela cheia. O zoom
 escala a composição inteira sem repaginar o conteúdo nem esticar a folha.
 O tamanho inicial do texto é 19 px; a preferência existente continua em
 `cyber-book-text-v2`. Alterar o tamanho do texto, diferente do zoom, repagina
 a aula. Disposição e zoom também ficam salvos localmente.
 No celular, permanece a composição responsiva de uma folha com gesto lateral.
+
+Em tela cheia, cabeçalho, ferramentas e navegação ficam ocultos: aparecem
+somente as folhas. Use Esc para voltar aos controles. As setas continuam
+funcionando; no computador também é possível deslizar horizontalmente na tela
+de toque, arrastar por uma margem sem selecionar texto ou usar o gesto
+horizontal do touchpad. Gestos verticais continuam rolando a folha ampliada.
+Escolha “Ajustar à largura” antes de entrar em tela cheia para ampliar até
+as laterais sem deformar o papel; o restante da folha fica acessível por
+rolagem vertical. Virar a página retorna ao topo da próxima folha.
 
 As 22 aulas possuem uma nova redação autoral das explicações, desenvolvida a
 partir dos assuntos e evidências das notas anteriores. Não se trata apenas de

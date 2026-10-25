@@ -1,14 +1,14 @@
 const APP_ROOT = "/cyber-learning/";
 const CACHE_PREFIX = "cyber-learning-";
-const CACHE_NAME = `${CACHE_PREFIX}pwa-20261025-paper-reader-v22`;
+const CACHE_NAME = `${CACHE_PREFIX}pwa-20261025-immersive-reader-v23`;
 
 const PRECACHE_URLS = [
   APP_ROOT,
   `${APP_ROOT}manifest.webmanifest`,
-  `${APP_ROOT}stylesheets/book.css?v=20261025-7`,
+  `${APP_ROOT}stylesheets/book.css?v=20261025-8`,
   `${APP_ROOT}stylesheets/quiz-book.css?v=20261025-2`,
   `${APP_ROOT}javascripts/book-theme.js?v=20261025-2`,
-  `${APP_ROOT}javascripts/book.js?v=20261025-6`,
+  `${APP_ROOT}javascripts/book.js?v=20261025-7`,
   `${APP_ROOT}javascripts/pwa.js?v=20261025-2`,
   `${APP_ROOT}javascripts/quiz-loader.js?v=20261006-2`,
   `${APP_ROOT}javascripts/quiz-fixation-data.js?v=20261005-3`,

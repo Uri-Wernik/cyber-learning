@@ -78,8 +78,8 @@ class EditorialTests(unittest.TestCase):
         for name in ("provision", "virtual", "control", "network", "url", "request",
                      "conditions", "responsibility", "availability", "scale"):
             self.assertTrue(any(f"aula-03/{name}.svg" in r for r in resources))
-        self.assertIn("stylesheets/book.css?v=20261025-7", resources)
-        self.assertIn("javascripts/book.js?v=20261025-6", resources)
+        self.assertIn("stylesheets/book.css?v=20261025-8", resources)
+        self.assertIn("javascripts/book.js?v=20261025-7", resources)
         self.assertIn("assets/site/course-cover-illustrated.svg",resources)
         catalog=json.loads((ROOT/"scripts/lesson-editorial.json").read_text(encoding="utf-8"))
         for number,data in catalog.items():

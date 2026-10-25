@@ -76,11 +76,11 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
-  - stylesheets/book.css?v=20261025-7
+  - stylesheets/book.css?v=20261025-8
 
 extra_javascript:
   - javascripts/book-theme.js?v=20261025-2
-  - javascripts/book.js?v=20261025-6
+  - javascripts/book.js?v=20261025-7
   - javascripts/pwa.js?v=20261025-2
   - javascripts/quiz-loader.js?v=20261006-2
 

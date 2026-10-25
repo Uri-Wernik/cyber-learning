@@ -34,7 +34,7 @@
     <link rel="apple-touch-icon" href="{{ 'assets/site/apple-touch-icon.png' | url }}">
     <link rel="manifest" href="{{ 'manifest.webmanifest' | url }}">
     <link rel="preload" href="{{ 'assets/fonts/ibm-plex-sans-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="{{ 'stylesheets/book.css?v=20261025-7' | url }}">
+    <link rel="stylesheet" href="{{ 'stylesheets/book.css?v=20261025-8' | url }}">
     {% if is_quiz %}<link rel="stylesheet" href="{{ 'stylesheets/quiz-book.css?v=20261025-2' | url }}">{% endif %}
     <script src="{{ 'javascripts/book-theme.js?v=20261025-2' | url }}"></script>
   </head>
@@ -75,13 +75,14 @@
           <label class="text-size desktop-reader-control">Zoom
             <select data-page-zoom aria-label="Zoom da folha">
               <option value="fit">Ajustar à tela</option>
+              <option value="width">Ajustar à largura</option>
               <option value="0.75">75%</option>
               <option value="1">100%</option>
               <option value="1.25">125%</option>
               <option value="1.5">150%</option>
             </select>
           </label>
-          <button class="tool desktop-reader-control" type="button" data-fullscreen aria-label="Entrar em tela cheia">Tela cheia</button>
+          <button class="tool desktop-reader-control" type="button" data-fullscreen aria-label="Entrar em tela cheia" title="Mostra somente as folhas. Use Esc para sair; setas ou gestos laterais para navegar.">Tela cheia</button>
           <label class="text-size">Texto
             <select data-text-size aria-label="Tamanho do texto">
               <option value="17">Menor</option>
@@ -94,7 +95,7 @@
         </div>
         <p class="reader-status" role="status" data-reader-loading>Preparando as páginas do livro…</p>
         <p class="reader-error" role="alert" data-reader-error hidden></p>
-        <div class="reader-stage" data-reader-stage><div class="paper-space"><div class="spread" data-spread aria-label="Páginas do livro" hidden></div></div></div>
+        <div class="reader-stage" data-reader-stage tabindex="0" aria-label="Área de leitura"><div class="paper-space"><div class="spread" data-spread aria-label="Páginas do livro" hidden></div></div></div>
         <article class="md-content__inner book-source page-body" data-book-source>{{ page.content if page else '<h1>Página não encontrada</h1><p>Abra o sumário para continuar a leitura.</p>' }}</article>
         <nav class="page-controls" aria-label="Navegação entre páginas" hidden data-page-controls>
           <button class="page-turn" type="button" data-page-previous><span aria-hidden="true">←</span> <span>Anterior</span></button>
@@ -128,7 +129,7 @@
     </dialog>
     <div class="book-notice" role="status" aria-live="polite" data-book-notice hidden></div>
     <noscript><p class="no-script">Ative o JavaScript para passar páginas. O conteúdo completo permanece disponível abaixo em leitura contínua.</p></noscript>
-    <script src="{{ 'javascripts/book.js?v=20261025-6' | url }}" defer></script>
+    <script src="{{ 'javascripts/book.js?v=20261025-7' | url }}" defer></script>
     <script src="{{ 'javascripts/pwa.js?v=20261025-2' | url }}" defer></script>
     {% if is_quiz %}<script src="{{ 'javascripts/quiz-loader.js?v=20261006-2' | url }}" defer></script>{% endif %}
   </body>

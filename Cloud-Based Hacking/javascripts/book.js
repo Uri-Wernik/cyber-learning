@@ -192,7 +192,7 @@
       const savedSize = readSaved("cyber-book-text-v2");
       this.layout.value = readSaved("cyber-book-layout") === "2" ? "2" : "1";
       const savedZoom = readSaved("cyber-book-zoom");
-      this.zoom.value = ["fit", "0.75", "1", "1.25", "1.5"].includes(savedZoom) ? savedZoom : "fit";
+      this.zoom.value = ["fit", "width", "0.75", "1", "1.25", "1.5"].includes(savedZoom) ? savedZoom : "fit";
       this.size.value = String([17, 19, 22, 24, 26].includes(savedSize) ?
         savedSize : 19);
       document.documentElement.style.setProperty("--reader-text", `${this.size.value}px`);
@@ -248,8 +248,12 @@
         return;
       }
       const width = 794 * this.columns + 20 * (this.columns - 1);
-      const fit = Math.min((this.stage.clientWidth - 32) / width, (this.stage.clientHeight - 32) / 1123);
-      const scale = this.zoom.value === "fit" ? Math.max(.1, fit) : Number(this.zoom.value);
+      const style = getComputedStyle(this.stage);
+      const availableWidth = this.stage.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+      const availableHeight = this.stage.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+      const fit = Math.min(availableWidth / width, availableHeight / 1123);
+      const scale = this.zoom.value === "fit" ? Math.max(.1, fit) :
+        this.zoom.value === "width" ? availableWidth / width : Number(this.zoom.value);
       this.spread.style.transform = `scale(${scale})`;
       this.spread.parentElement.style.width = `${width * scale}px`;
       this.spread.parentElement.style.height = `${1123 * scale}px`;
@@ -661,6 +665,7 @@
       if (aligned === this.index) return;
       this.index = aligned;
       this.render(animate);
+      this.stage.scrollTop = 0;
     }
 
     showError(error) {
@@ -684,6 +689,54 @@
       let touching = false;
       let pinching = false;
       let pendingTouchLayout = false;
+      let swipeStart = null;
+      let wheelDistance = 0;
+      let wheelTime = 0;
+      let wheelTurnTime = -Infinity;
+      const immersive = () => Boolean(document.fullscreenElement) && this.desktopQuery.matches &&
+        !document.querySelector("dialog[open]");
+      this.stage.addEventListener("pointerdown", (event) => {
+        swipeStart = null;
+        if (!immersive() || !event.isPrimary || event.button !== 0 ||
+            event.target.closest("a,button,input,select,textarea,summary,[contenteditable]")) return;
+        if (event.pointerType === "mouse") {
+          if (event.target.closest(".page-body")) return;
+          this.stage.classList.add("is-dragging-page");
+          this.stage.setPointerCapture(event.pointerId);
+        }
+        swipeStart = { id: event.pointerId, x: event.clientX, y: event.clientY, time: performance.now() };
+      }, { passive: true });
+      this.stage.addEventListener("pointercancel", () => {
+        swipeStart = null;
+        this.stage.classList.remove("is-dragging-page");
+      }, { passive: true });
+      this.stage.addEventListener("pointerup", (event) => {
+        const start = swipeStart;
+        swipeStart = null;
+        this.stage.classList.remove("is-dragging-page");
+        if (!start || start.id !== event.pointerId || !immersive() ||
+            performance.now() - start.time > 1200 || !getSelection()?.isCollapsed) return;
+        const dx = event.clientX - start.x;
+        const dy = event.clientY - start.y;
+        if (Math.abs(dx) >= Math.max(60, this.stage.clientWidth * .08) && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          this.turn(dx < 0 ? 1 : -1);
+        }
+      }, { passive: true });
+      this.stage.addEventListener("wheel", (event) => {
+        if (!immersive() || event.ctrlKey || Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+        event.preventDefault();
+        const now = performance.now();
+        const factor = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? this.stage.clientWidth : 1;
+        if (now - wheelTime > 180 || Math.sign(wheelDistance) !== Math.sign(event.deltaX)) wheelDistance = 0;
+        wheelTime = now;
+        if (now - wheelTurnTime < 450) return;
+        wheelDistance += event.deltaX * factor;
+        if (Math.abs(wheelDistance) >= 100) {
+          this.turn(wheelDistance > 0 ? 1 : -1);
+          wheelDistance = 0;
+          wheelTurnTime = now;
+        }
+      }, { passive: false });
       const reflow = () => {
         if (touching) { pendingTouchLayout = true; return; }
         pendingTouchLayout = false;
@@ -758,9 +811,16 @@
         }
       });
       document.addEventListener("fullscreenchange", () => {
+        swipeStart = null;
+        this.stage.classList.remove("is-dragging-page");
+        wheelDistance = 0;
         this.fullscreen.textContent = document.fullscreenElement ? "Sair da tela cheia" : "Tela cheia";
         this.fullscreen.setAttribute("aria-label", document.fullscreenElement ? "Sair da tela cheia" : "Entrar em tela cheia");
-        this.updateScale();
+        if (!this.desktopQuery.matches) {
+          try { this.paginate(); } catch (error) { this.showError(error); }
+        } else this.updateScale();
+        if (document.fullscreenElement) this.stage.focus({ preventScroll: true });
+        else this.fullscreen.focus({ preventScroll: true });
       });
       this.previousButton.addEventListener("click", (event) => this.turn(-1, event.detail > 0));
       this.nextButton.addEventListener("click", (event) => this.turn(1, event.detail > 0));
@@ -786,6 +846,11 @@
       document.addEventListener("keydown", (event) => {
         if (document.querySelector("dialog[open]") || event.target.closest("input,select,textarea,[contenteditable]") ||
             event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.key === "Escape" && document.fullscreenElement) {
+          event.preventDefault();
+          this.fullscreen.click();
+          return;
+        }
         if (["ArrowRight", "PageDown", "ArrowLeft", "PageUp"].includes(event.key)) {
           event.preventDefault();
           this.turn(["ArrowRight", "PageDown"].includes(event.key) ? 1 : -1);
