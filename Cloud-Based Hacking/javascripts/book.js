@@ -25,11 +25,12 @@
     document.documentElement.dataset.bookTheme = theme;
     document.body.dataset.mdColorScheme = theme === "dark" ? "slate" : "default";
     document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#15211e" : "#e8ebe3";
-    document.querySelector("[data-theme-toggle]").setAttribute("aria-label", theme === "dark" ? "Usar tema claro" : "Usar tema escuro");
+    document.querySelectorAll("[data-theme-toggle]").forEach(button =>
+      button.setAttribute("aria-label", theme === "dark" ? "Usar tema claro" : "Usar tema escuro"));
   };
   setTheme(document.documentElement.dataset.bookTheme);
   document.querySelector("[data-library-link]").href = root.href;
-  document.querySelector("[data-theme-toggle]").addEventListener("click", () => {
+  document.querySelectorAll("[data-theme-toggle]").forEach(button => button.addEventListener("click", () => {
     const theme = document.documentElement.dataset.bookTheme === "dark" ? "light" : "dark";
     setTheme(theme);
     try {
@@ -37,11 +38,12 @@
     } catch (error) {
       console.warn("Não foi possível guardar o tema escolhido.", error);
     }
-  });
+  }));
 
   document.querySelectorAll("[data-open]").forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
+      button.closest("dialog")?.close();
       document.getElementById(button.dataset.open).showModal();
     });
   });
@@ -191,8 +193,10 @@
     async start() {
       const savedSize = readSaved("cyber-book-text-v2");
       this.layout.value = readSaved("cyber-book-layout") === "2" ? "2" : "1";
-      const savedZoom = readSaved("cyber-book-zoom");
-      this.zoom.value = ["fit", "width", "0.75", "1", "1.25", "1.5"].includes(savedZoom) ? savedZoom : "fit";
+      const savedZoom = readSaved("cyber-book-zoom-v2");
+      const legacyZoom = readSaved("cyber-book-zoom");
+      const preferredZoom = savedZoom || (legacyZoom !== "fit" ? legacyZoom : null);
+      this.zoom.value = ["fit", "width", "0.75", "1", "1.25", "1.5"].includes(preferredZoom) ? preferredZoom : "width";
       this.size.value = String([17, 19, 22, 24, 26].includes(savedSize) ?
         savedSize : 19);
       document.documentElement.style.setProperty("--reader-text", `${this.size.value}px`);
@@ -796,7 +800,7 @@
         this.render(false);
       });
       this.zoom.addEventListener("change", () => {
-        save("cyber-book-zoom", this.zoom.value);
+        save("cyber-book-zoom-v2", this.zoom.value);
         this.updateScale();
       });
       this.fullscreen.hidden = !document.fullscreenEnabled;
@@ -835,6 +839,7 @@
         this.jump.setCustomValidity("");
         this.index = number - 1 - (number - 1) % this.columns;
         this.render(false);
+        this.jump.closest("dialog")?.close();
       });
       this.jump.addEventListener("input", () => this.jump.setCustomValidity(""));
       this.size.addEventListener("change", () => {

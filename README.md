@@ -39,6 +39,13 @@ O tamanho inicial do texto é 19 px; a preferência existente continua em
 a aula. Disposição e zoom também ficam salvos localmente.
 No celular, permanece a composição responsiva de uma folha com gesto lateral.
 
+Na leitura normal, há somente uma barra superior compacta (Sumário, Opções e
+Tela cheia) e uma navegação inferior discreta. A folha abre ajustada à largura
+por padrão, inclusive para quem ainda tinha o ajuste automático antigo salvo.
+Zoom, disposição, tamanho do texto, salto de página, busca e tema ficam em
+Opções. A preferência de zoom passa a usar `cyber-book-zoom-v2`; uma escolha
+explícita posterior de “Ajustar à tela” continua sendo respeitada.
+
 Em tela cheia, cabeçalho, ferramentas e navegação ficam ocultos: aparecem
 somente as folhas. Use Esc para voltar aos controles. As setas continuam
 funcionando; no computador também é possível deslizar horizontalmente na tela

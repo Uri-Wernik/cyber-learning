@@ -34,7 +34,7 @@
     <link rel="apple-touch-icon" href="{{ 'assets/site/apple-touch-icon.png' | url }}">
     <link rel="manifest" href="{{ 'manifest.webmanifest' | url }}">
     <link rel="preload" href="{{ 'assets/fonts/ibm-plex-sans-latin.woff2' | url }}" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="{{ 'stylesheets/book.css?v=20261025-8' | url }}">
+    <link rel="stylesheet" href="{{ 'stylesheets/book.css?v=20261025-9' | url }}">
     {% if is_quiz %}<link rel="stylesheet" href="{{ 'stylesheets/quiz-book.css?v=20261025-2' | url }}">{% endif %}
     <script src="{{ 'javascripts/book-theme.js?v=20261025-2' | url }}"></script>
   </head>
@@ -64,8 +64,13 @@
             {% if page and page.next_page %}data-next-chapter="{{ page.next_page.url | url }}" data-next-title="{{ page.next_page.title }}"{% endif %}
             {% if page and page.previous_page %}data-previous-chapter="{{ page.previous_page.url | url }}"{% endif %}>
         <div class="reader-heading">
-          <a href="{{ '.' | url }}" class="quiet-link">Biblioteca</a>
+          <button class="tool" type="button" data-open="contents-dialog">Sumário</button>
           <span class="reader-chapter">{{ page.title if page else "Página não encontrada" }}</span>
+          <button class="tool" type="button" data-open="reader-settings" aria-haspopup="dialog">Opções</button>
+          <button class="tool desktop-reader-control" type="button" data-fullscreen aria-label="Entrar em tela cheia" title="Mostra somente as folhas. Use Esc para sair; setas ou gestos laterais para navegar.">Tela cheia</button>
+        </div>
+        <dialog id="reader-settings" class="book-dialog reader-settings" aria-labelledby="reader-settings-title">
+          <div class="dialog-heading"><h2 id="reader-settings-title">Opções de leitura</h2><button class="tool" data-close type="button" aria-label="Fechar opções">Fechar</button></div>
           <label class="text-size desktop-reader-control">Folhas
             <select data-page-layout aria-label="Disposição das folhas">
               <option value="1">Uma</option>
@@ -82,7 +87,6 @@
               <option value="1.5">150%</option>
             </select>
           </label>
-          <button class="tool desktop-reader-control" type="button" data-fullscreen aria-label="Entrar em tela cheia" title="Mostra somente as folhas. Use Esc para sair; setas ou gestos laterais para navegar.">Tela cheia</button>
           <label class="text-size">Texto
             <select data-text-size aria-label="Tamanho do texto">
               <option value="17">Menor</option>
@@ -92,7 +96,15 @@
               <option value="26">Ampliado</option>
             </select>
           </label>
-        </div>
+          <label class="text-size">Ir para a página
+            <input type="number" min="1" value="1" data-page-jump aria-label="Ir para a página" inputmode="numeric">
+          </label>
+          <div class="reader-settings-actions">
+            <button class="tool" type="button" data-open="search-dialog">Buscar no livro</button>
+            <button class="tool" type="button" data-theme-toggle aria-label="Alternar tema">Tema</button>
+            <a class="tool" href="{{ '.' | url }}">Biblioteca</a>
+          </div>
+        </dialog>
         <p class="reader-status" role="status" data-reader-loading>Preparando as páginas do livro…</p>
         <p class="reader-error" role="alert" data-reader-error hidden></p>
         <div class="reader-stage" data-reader-stage tabindex="0" aria-label="Área de leitura"><div class="paper-space"><div class="spread" data-spread aria-label="Páginas do livro" hidden></div></div></div>
@@ -101,7 +113,6 @@
           <button class="page-turn" type="button" data-page-previous><span aria-hidden="true">←</span> <span>Anterior</span></button>
           <div class="page-position">
             <span data-page-status role="status" aria-live="polite" aria-atomic="true"></span>
-            <label>Ir para <input type="number" min="1" value="1" data-page-jump aria-label="Ir para a página" inputmode="numeric"></label>
           </div>
           <button class="page-turn" type="button" data-page-next><span data-next-label>Próxima</span> <span aria-hidden="true">→</span></button>
         </nav>
@@ -129,7 +140,7 @@
     </dialog>
     <div class="book-notice" role="status" aria-live="polite" data-book-notice hidden></div>
     <noscript><p class="no-script">Ative o JavaScript para passar páginas. O conteúdo completo permanece disponível abaixo em leitura contínua.</p></noscript>
-    <script src="{{ 'javascripts/book.js?v=20261025-7' | url }}" defer></script>
+    <script src="{{ 'javascripts/book.js?v=20261025-8' | url }}" defer></script>
     <script src="{{ 'javascripts/pwa.js?v=20261025-2' | url }}" defer></script>
     {% if is_quiz %}<script src="{{ 'javascripts/quiz-loader.js?v=20261006-2' | url }}" defer></script>{% endif %}
   </body>
